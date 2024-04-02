@@ -5,6 +5,7 @@
     android:id="@+id/registerWind"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".RegisterWindowActivity"
     android:background="@drawable/tlo">
 
     <TextView
@@ -41,12 +42,12 @@
         android:id="@+id/medicineText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="124dp"
-        android:layout_marginBottom="312dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="248dp"
         android:text="Przyjmowane leki"
         android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -72,7 +73,7 @@
         android:layout_width="294dp"
         android:layout_height="56dp"
         android:layout_marginStart="59dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="58dp"
         android:background="@drawable/rounded_edit_text"
         android:ems="10"
@@ -89,12 +90,43 @@
         android:id="@+id/cycleLenText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="104dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
         android:text="Długość cyklu (dni)"
         android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterLastPeriod" />
+
+    <EditText
+        android:id="@+id/periodLen"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="58dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:inputType="text"
+        android:text="dlugosc"
+        android:textAlignment="center"
+        android:textColor="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cycleLenText" />
+
+    <TextView
+        android:id="@+id/periodLenText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="112dp"
+        android:text="Długość okresu (dni)"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterLastPeriod" />
 
@@ -119,7 +151,6 @@
         android:layout_width="300dp"
         android:layout_height="149dp"
         android:layout_marginStart="59dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="58dp"
         android:background="@drawable/rounded_edit_text"
         android:ems="10"
@@ -127,10 +158,12 @@
         android:text="leki"
         android:textAlignment="center"
         android:textColor="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medicineText" />
+        app:layout_constraintTop_toBottomOf="@+id/medicineText"
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:id="@+id/lastPeriodText"
@@ -141,9 +174,22 @@
         android:text="Data ostatniej menstruacji"
         android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/enterLastPeriod"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/buttonConfirmRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FDF4F7"
+        android:text="Potwierdz"
+        android:textColor="#C69AA7"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineInput"
+        tools:layout_editor_absoluteX="287dp"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

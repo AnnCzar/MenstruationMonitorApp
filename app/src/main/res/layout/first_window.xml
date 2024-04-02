@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".FirstWindowActivity"
     android:background="@drawable/tlo">
 
     <TextView
@@ -30,17 +30,17 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/button_signin"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_app_name"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints,NotSibling" />
 
     <Button
-        android:id="@+id/button_signin"
+        android:id="@+id/button_register"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="250dp"
         android:backgroundTint="#D1A1AF"
         android:text="zarejestruj"
         android:textAlignment="center"
@@ -48,7 +48,10 @@
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.648"
         tools:ignore="DuplicateIds,MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
