@@ -12,43 +12,46 @@
         android:id="@+id/loginText"
         android:layout_width="231dp"
         android:layout_height="82dp"
-        android:layout_marginTop="248dp"
         android:text="Zaloguj się"
         android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.274" />
 
     <EditText
         android:id="@+id/enterLogin"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:layout_marginTop="428dp"
         android:background="@drawable/rounded_edit_text"
         android:ems="10"
         android:hint="Login"
         android:inputType="text"
         android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.454" />
 
     <EditText
         android:id="@+id/enterPassword"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:layout_marginTop="512dp"
         android:background="@drawable/rounded_edit_text"
         android:hint="Hasło"
         android:inputType="textPassword"
         android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.567" />
 
     <Button
         android:id="@+id/buttonConfirmLogin"
@@ -62,7 +65,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.691" />
+        app:layout_constraintVertical_bias="0.689" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
