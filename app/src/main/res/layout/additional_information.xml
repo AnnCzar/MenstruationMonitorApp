@@ -16,8 +16,9 @@
         android:text="@string/dodatkowe_informacje"
         android:textColor="#C69AA7"
         android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="60dp"
         tools:layout_editor_absoluteY="143dp" />
 
     <TextView
