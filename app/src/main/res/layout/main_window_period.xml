@@ -82,7 +82,7 @@
         app:layout_constraintVertical_bias="0.269" />
 
     <TextView
-        android:id="@+id/daysLeftPregnancy"
+        android:id="@+id/daysLeftOwulation"
         android:layout_width="100dp"
         android:layout_height="54dp"
         android:background="@drawable/rounded_edit_text"
@@ -140,7 +140,7 @@
         app:layout_constraintVertical_bias="0.427" />
 
     <Button
-        android:id="@+id/toCalendarButtonPregn"
+        android:id="@+id/toCalendarButtonPeriod"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
@@ -168,7 +168,7 @@
         app:layout_constraintVertical_bias="0.878" />
 
     <Button
-        android:id="@+id/begginingPregnancyButtonPregnancyButton"
+        android:id="@+id/begginingPregnancyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
