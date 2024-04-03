@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/additionalInfoWindow"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdditionalInformationActivity"
+    android:background="@drawable/tlo">
+
+
+    <TextView
+        android:id="@+id/textAdditionalInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dodatkowe_informacje"
+        android:textColor="#C69AA7"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="143dp" />
+
+    <TextView
+        android:id="@+id/textMood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/og_lne_samopoczucie"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="211dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/imageButtonHappy"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:srcCompat="@drawable/happy_emoticon"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="249dp" />
+
+    <ImageButton
+        android:id="@+id/imageButtonNeutral"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:srcCompat="@drawable/neutral_emoticon"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="249dp" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSad"
+
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/sad_emoticon"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="249dp" />
+
+    <TextView
+        android:id="@+id/textViewSymptoms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Symptomy"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="303dp"
+        tools:ignore="MissingConstraints" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="309dp"
+        android:layout_height="226dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAdditionalInfo"
+        app:layout_constraintVertical_bias="0.30"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkBox_headache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ból głowy" />
+
+            <CheckBox
+                android:id="@+id/checkBox_acne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trądzik" />
+
+            <CheckBox
+                android:id="@+id/checkBox_stomachahe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ból brzucha" />
+
+            <CheckBox
+                android:id="@+id/checkBox_mastalgia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ból piersi" />
+
+            <CheckBox
+                android:id="@+id/checkBox_dizziness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zawroty głowy" />
+
+            <CheckBox
+                android:id="@+id/checkBox_fever"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gorączka" />
+
+            <CheckBox
+                android:id="@+id/checkBox_bachache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ból pleców" />
+
+            <CheckBox
+                android:id="@+id/checkBox_bedabbling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="plamienie" />
+
+            <CheckBox
+                android:id="@+id/checkBox_nerves"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zdenerowanie" />
+
+            <CheckBox
+                android:id="@+id/checkBox_hunger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nasilony głód" />
+
+            <CheckBox
+                android:id="@+id/checkBox_diarrhoea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Biegunka" />
+
+            <CheckBox
+                android:id="@+id/checkBox_constipation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zaparcie" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textView_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waga"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAdditionalInfo"
+        app:layout_constraintVertical_bias="0.59000003"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="45dp" />
+
+    <TextView
+        android:id="@+id/textView_bodyTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="535dp"
+        android:text="Temperatura ciała"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAdditionalInfo"
+        app:layout_constraintVertical_bias="0.028"
+        tools:layout_editor_absoluteX="45dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/enterWeight"
+        android:layout_width="217dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="648dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/enterTemperature"
+        android:layout_width="217dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="778dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

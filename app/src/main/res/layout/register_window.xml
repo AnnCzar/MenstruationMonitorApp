@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registerWind"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterWindowActivity"
+    android:background="@drawable/tlo">
+
+    <TextView
+        android:id="@+id/registerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="732dp"
+        android:text="Zarejestruj się"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/enterLoginRegister"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:hint="Login"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/enterPasswordRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/medicineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="248dp"
+        android:text="Przyjmowane leki"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/enterLastPeriod"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="472dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:hint="DD/MM/RRRR"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/cycleLen"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="58dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:inputType="text"
+        android:text="dlugosc"
+        android:textAlignment="center"
+        android:textColor="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cycleLenText" />
+
+    <TextView
+        android:id="@+id/cycleLenText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
+        android:text="Długość cyklu (dni)"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterLastPeriod" />
+
+    <EditText
+        android:id="@+id/periodLen"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="58dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:inputType="text"
+        android:text="dlugosc"
+        android:textAlignment="center"
+        android:textColor="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cycleLenText" />
+
+    <TextView
+        android:id="@+id/periodLenText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="112dp"
+        android:text="Długość okresu (dni)"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterLastPeriod" />
+
+    <EditText
+        android:id="@+id/enterPasswordRegister"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="600dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="Hasło"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/medicineInput"
+        android:layout_width="300dp"
+        android:layout_height="149dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="58dp"
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:inputType="text"
+        android:text="leki"
+        android:textAlignment="center"
+        android:textColor="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineText"
+        app:layout_constraintVertical_bias="0.09" />
+
+    <TextView
+        android:id="@+id/lastPeriodText"
+        android:layout_width="313dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="12dp"
+        android:text="Data ostatniej menstruacji"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/enterLastPeriod"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/buttonConfirmRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FDF4F7"
+        android:text="Potwierdz"
+        android:textColor="#C69AA7"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineInput"
+        tools:layout_editor_absoluteX="287dp"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

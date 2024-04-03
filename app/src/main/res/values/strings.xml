@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">project</string>
+    <string name="dodatkowe_informacje">Dodatkowe informacje</string>
+    <string name="og_lne_samopoczucie">Ogólne samopoczucie</string>
 </resources>
