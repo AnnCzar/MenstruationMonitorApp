@@ -11,8 +11,8 @@ class AdditionalInformationActivity : AppCompatActivity(){
     private lateinit var imageButtonHappy: ImageButton
     private lateinit var imageButtonNeutral: ImageButton
     private lateinit var imageButtonSad: ImageButton
-    private lateinit var enterWeight: EditText
-    private lateinit var enterTemperature: EditText
+//    private lateinit var enterWeight: EditText
+//    private lateinit var enterTemperature: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.additional_information)
@@ -20,8 +20,8 @@ class AdditionalInformationActivity : AppCompatActivity(){
         imageButtonHappy = findViewById(R.id.imageButtonHappy)
         imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
         imageButtonSad = findViewById(R.id.imageButtonSad)
-        enterWeight = findViewById(R.id.enterWeight)
-        enterTemperature = findViewById(R.id.enterTemperature)
+//        enterWeight = findViewById(R.id.enterWeight)
+//        enterTemperature = findViewById(R.id.enterTemperature)
 
         imageButtonHappy.setOnClickListener {
 
@@ -35,12 +35,12 @@ class AdditionalInformationActivity : AppCompatActivity(){
 
         }
 
-        enterWeight.setOnClickListener {
-
-        }
-
-        enterTemperature.setOnClickListener {
-        }
+//        enterWeight.setOnClickListener {
+//
+//        }
+//
+//        enterTemperature.setOnClickListener {
+//        }
 
     }
 }

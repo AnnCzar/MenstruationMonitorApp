@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class MainWindowPregnancyActivity : AppCompatActivity(){
-    private lateinit var daysLeftPregnency: EditText
+//    private lateinit var daysLeftPregnency: EditText
     private lateinit var medicineCheckbox: CheckBox
     private lateinit var toCalendarButtonPeriod: Button
     private lateinit var begginingPeriodButton: Button
@@ -21,7 +21,7 @@ class MainWindowPregnancyActivity : AppCompatActivity(){
         setContentView(R.layout.main_window_period)
 
         // znalezienie elementów
-        daysLeftPregnency = findViewById(R.id.daysLeftPregnancy)
+//        daysLeftPregnency = findViewById(R.id.daysLeftPregnancy)
         medicineCheckbox = findViewById(R.id.medicineCheckbox)
         toCalendarButtonPeriod = findViewById(R.id.toCalendarButtonPeriod)
         begginingPeriodButton = findViewById(R.id.begginingPeriodButton)

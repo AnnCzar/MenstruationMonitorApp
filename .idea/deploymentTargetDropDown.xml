@@ -2,15 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="CalendarActivity">
-        <State />
-      </entry>
-      <entry key="DayPeriodActivity">
-        <State />
-      </entry>
-      <entry key="MainWindowPeriodActivity">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>

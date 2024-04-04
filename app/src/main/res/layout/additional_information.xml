@@ -187,21 +187,24 @@
         android:text="Waga"
         android:textColor="#C69AA7"
         android:textSize="20sp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.738"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="27dp" />
 
     <TextView
         android:id="@+id/textView_bodyTemperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="535dp"
         android:text="Temperatura ciała"
         android:textColor="#C69AA7"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textAdditionalInfo"
-        app:layout_constraintVertical_bias="0.028"
-        tools:layout_editor_absoluteX="45dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="27dp" />
 
     <EditText
         android:id="@+id/enterWeight"
@@ -211,9 +214,13 @@
         android:ems="10"
         android:inputType="text"
         android:textAlignment="center"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="654dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.829"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/enterTemperature"
@@ -224,7 +231,7 @@
         android:inputType="text"
         android:textAlignment="center"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="778dp" />
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="675dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

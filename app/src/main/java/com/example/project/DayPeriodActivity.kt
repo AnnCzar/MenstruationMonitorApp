@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class DayPeriodActivity : AppCompatActivity(){
 
-    private lateinit var cycleDayPeriod: EditText
-    private lateinit var medicineCheckboxPeriodDay: EditText
+//    private lateinit var cycleDayPeriod: EditText
+//    private lateinit var medicineCheckboxPeriodDay: EditText
     private lateinit var doctorsListPeriod: ListView
     private lateinit var additionalInfoPeriod: Button
     private lateinit var buttonMinus: Button
@@ -18,9 +18,9 @@ class DayPeriodActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.day_period)
-
-        cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
-        medicineCheckboxPeriodDay = findViewById(R.id.medicineCheckboxPeriodDay)
+//
+//        cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
+//        medicineCheckboxPeriodDay = findViewById(R.id.medicineCheckboxPeriodDay)
         doctorsListPeriod = findViewById(R.id.doctorsListPeriod)
         additionalInfoPeriod = findViewById(R.id.additionalInfoPeriod)
         buttonMinus = findViewById(R.id.buttonMinus)
