@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class LoginWindowActivity : AppCompatActivity(){
@@ -27,7 +28,7 @@ class LoginWindowActivity : AppCompatActivity(){
     }
 
     private fun openMainWindowPeriodActivity() {
-        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
         startActivity(intent)
     }
 
