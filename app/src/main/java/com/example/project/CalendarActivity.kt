@@ -9,13 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 
 class CalendarActivity : AppCompatActivity(){
 
-    private lateinit var daysToEndOfMenstruaction: EditText
+//    private lateinit var daysToEndOfMenstruaction: EditText
     private lateinit var calendar: CalendarView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.calendar)
 
-        daysToEndOfMenstruaction = findViewById(R.id.daysToEndOfMenstruaction)
+//        daysToEndOfMenstruaction = findViewById(R.id.daysToEndOfMenstruaction)
         calendar = findViewById(R.id.calendarView)
 
         calendar.setOnDateChangeListener {_, year, month, day ->
