@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class LoginWindowActivity : AppCompatActivity(){
-//    private lateinit var enterPassword: EditText
+    private lateinit var enterPassword: EditText
     private var enterLogin: EditText? = null
     private lateinit var buttonConfirmLogin: Button
 
@@ -17,9 +17,10 @@ class LoginWindowActivity : AppCompatActivity(){
         setContentView(R.layout.login_window)
 
         // znalezienie elementów
-//        enterLogin = findViewById(R.id.enterLogin)
-//        enterPassword = findViewById(R.id.enterPassword)
+        enterLogin = findViewById(R.id.enterLogin)
+        enterPassword = findViewById(R.id.enterPassword)
         buttonConfirmLogin = findViewById(R.id.buttonConfirmLogin)
+
 
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięica przycisku
         buttonConfirmLogin.setOnClickListener {
@@ -27,7 +28,7 @@ class LoginWindowActivity : AppCompatActivity(){
         }
     }
 
-    public fun openMainWindowPeriodActivity() {
+    private fun openMainWindowPeriodActivity() {
 //        val login = enterLogin.text.toString()
 //        val password = enterPassword.text.toString()
 

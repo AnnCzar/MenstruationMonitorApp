@@ -81,19 +81,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.345" />
 
-    <Button
-        android:id="@+id/additionalInfoPeriod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#D1A1AF"
-        android:text="Wprowadź dodatkowe informacje"
-        android:textAlignment="center"
+    <ListView
+        android:id="@+id/doctorsListPeriod"
+        android:layout_width="260dp"
+        android:layout_height="127dp"
+        android:background="@drawable/rounded_edit_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778" />
+        app:layout_constraintVertical_bias="0.623" />
 
     <TextView
         android:id="@+id/doctorsTextDayPeriod"
@@ -105,22 +103,70 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintHorizontal_bias="0.158"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.52" />
+        app:layout_constraintVertical_bias="0.478" />
 
-    <ListView
-        android:id="@+id/doctorsListPeriod"
-        android:layout_width="260dp"
-        android:layout_height="127dp"
-        android:background="@drawable/rounded_edit_text"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="0"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.264"
+        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67" />
+        app:layout_constraintVertical_bias="0.831"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/additionalInfoPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D1A1AF"
+        android:text="Wprowadź dodatkowe informacje"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.246"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.735" />
+
+    <Button
+        android:id="@+id/buttonPlus"
+        android:layout_width="61dp"
+        android:layout_height="54dp"
+        android:layout_alignBaseline="@id/textView"
+        android:layout_toLeftOf="@id/textView"
+        android:backgroundTint="#D1A1AF"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.422"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.889" />
+
+    <Button
+        android:id="@+id/buttonMinus"
+        android:layout_width="61dp"
+        android:layout_height="54dp"
+        android:layout_alignBaseline="@id/textView"
+        android:layout_toRightOf="@id/textView"
+        android:backgroundTint="#D1A1AF"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.105"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.889"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textViewGlassOfWater"
@@ -131,50 +177,37 @@
         android:textColor="#C69AA7"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.823"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="13dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="0"
-        android:textSize="24sp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="780dp" />
-
-    <Button
-        android:id="@+id/buttonPlus"
-        android:layout_width="59dp"
-        android:layout_height="0dp"
-        android:layout_alignBaseline="@id/textView"
-        android:layout_marginBottom="64dp"
-        android:layout_toLeftOf="@id/textView"
-        android:backgroundTint="#D1A1AF"
-        android:text="+"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.417"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonMinus"
-        android:layout_width="61dp"
-        android:layout_height="54dp"
-        android:layout_alignBaseline="@id/textView"
-        android:layout_marginBottom="60dp"
-        android:layout_toRightOf="@id/textView"
-        android:backgroundTint="#D1A1AF"
-        android:text="-"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintHorizontal_bias="0.274"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.784"
         tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/dayPeriodAcountButton"
+        android:layout_width="205dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
+
+    <ImageButton
+        android:id="@+id/dayPeriodSettingsButton"
+        android:layout_width="210dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

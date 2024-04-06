@@ -23,20 +23,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.274" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/enterLogin"-->
-<!--        android:layout_width="286dp"-->
-<!--        android:layout_height="53dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Login"-->
-<!--        android:inputType="text"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.528"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.466" />-->
     <EditText
         android:id="@+id/enterLogin"
         android:layout_width="286dp"
@@ -45,6 +31,8 @@
         android:ems="10"
         android:hint="Login"
         android:inputType="text"
+        android:textColorHint="@color/black"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.528"
@@ -57,16 +45,18 @@
         android:id="@+id/enterPassword"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/round_shape"
+        android:ems="10"
         android:hint="Hasło"
         android:inputType="textPassword"
+        android:textColorHint="@color/black"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.567" />
+        app:layout_constraintVertical_bias="0.56" />
 
     <Button
         android:id="@+id/buttonConfirmLogin"
