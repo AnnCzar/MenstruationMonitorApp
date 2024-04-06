@@ -13,68 +13,15 @@
         android:id="@+id/textAdditionalInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
         android:text="@string/dodatkowe_informacje"
         android:textColor="#C69AA7"
         android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textMood"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="172dp"
-        android:text="@string/og_lne_samopoczucie"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.212"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <ImageButton
-        android:id="@+id/imageButtonHappy"
-        android:layout_width="38dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="212dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/happy_emoticon"
-        tools:ignore="MissingConstraints" />
-
-    <ImageButton
-        android:id="@+id/imageButtonNeutral"
-        android:layout_width="38dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="212dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/neutral_emoticon"
-        tools:ignore="MissingConstraints" />
-
-    <ImageButton
-        android:id="@+id/imageButtonSad"
-
-        android:layout_width="38dp"
-        android:layout_height="37dp"
-        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintHorizontal_bias="0.622"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305"
-        app:srcCompat="@drawable/sad_emoticon"
+        app:layout_constraintVertical_bias="0.168"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -84,9 +31,102 @@
         android:text="Symptomy"
         android:textColor="#C69AA7"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.331"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="271dp"
-        tools:layout_editor_absoluteY="185dp" />
+        tools:layout_editor_absoluteX="56dp" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSad"
+
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.271"
+        app:srcCompat="@drawable/sad_emoticon"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/enterWeight"
+        android:layout_width="217dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.237"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.711"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/addInfoEnterTemperature"
+        android:layout_width="217dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.237"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.827"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView_bodyTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperatura ciała"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.767"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waga"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.648"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/imageButtonHappy"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.271"
+        app:srcCompat="@drawable/happy_emoticon"
+        tools:ignore="MissingConstraints" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -94,10 +134,10 @@
         android:layout_height="226dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textAdditionalInfo"
-        app:layout_constraintVertical_bias="0.30"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.489"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -180,58 +220,76 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/textView_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Waga"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.738"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp" />
-
-    <TextView
-        android:id="@+id/textView_bodyTemperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Temperatura ciała"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp" />
-
-    <EditText
-        android:id="@+id/enterWeight"
-        android:layout_width="217dp"
-        android:layout_height="40dp"
-        android:background="@drawable/rounded_edit_text"
-        android:ems="10"
-        android:inputType="text"
-        android:textAlignment="center"
+    <ImageButton
+        android:id="@+id/imageButtonNeutral"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.324"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829"
+        app:layout_constraintVertical_bias="0.271"
+        app:srcCompat="@drawable/neutral_emoticon"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/enterTemperature"
-        android:layout_width="217dp"
-        android:layout_height="40dp"
-        android:background="@drawable/rounded_edit_text"
-        android:ems="10"
-        android:inputType="text"
-        android:textAlignment="center"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="675dp" />
+    <TextView
+        android:id="@+id/textMood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/og_lne_samopoczucie"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.264"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.228"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/buttonSaveAddInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FDF4F7"
+        android:text="Zapisz"
+        android:textColor="#C69AA7"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.919"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.908"
+        tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/addInfoSettingAcountButton"
+        android:layout_width="205dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
+
+    <ImageButton
+        android:id="@+id/addInfoSettingButton"
+        android:layout_width="210dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

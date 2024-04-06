@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- okno_otwarcia strings -->
+
+	<string name="app_name">Page 1</string>
+	<string name="ek_img_content">ExportKit Image</string>
+	<string name="nazwa_apki_string">Nazwa apki</string>
+	<string name="zaloguj_string">zaloguj</string>
+	<string name="zarejestruj_string">zarejestruj</string>
+</resources>
