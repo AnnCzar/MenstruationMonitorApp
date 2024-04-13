@@ -25,21 +25,8 @@
         app:layout_constraintVertical_bias="0.209" />
 
     <ImageButton
-        android:id="@+id/accountWindowAcountButton"
-        android:layout_width="205dp"
-        android:layout_height="58dp"
-        android:background="#BA798C"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
-
-    <ImageButton
         android:id="@+id/accountWidnowSettingButton"
-        android:layout_width="210dp"
+        android:layout_width="206.5dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,5 +36,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
+
+    <ImageButton
+        android:id="@+id/homeButtonProfil"
+        android:layout_width="206.5dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

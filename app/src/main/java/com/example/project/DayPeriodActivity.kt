@@ -1,6 +1,7 @@
 package com.example.project
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 class DayPeriodActivity : AppCompatActivity(){
 
     private lateinit var cycleDayPeriod: TextView
+    private lateinit var  imageButtonDayPeriod: ImageButton
 //    private lateinit var medicineCheckboxPeriodDay: EditText
     private lateinit var doctorsListPeriod: ListView
     private lateinit var additionalInfoPeriod: Button
@@ -22,6 +24,7 @@ class DayPeriodActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.day_period)
+        imageButtonDayPeriod = findViewById(R.id.imageButtonDayPeriod)
 //
         cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
 //        medicineCheckboxPeriodDay = findViewById(R.id.medicineCheckboxPeriodDay)
@@ -50,6 +53,7 @@ class DayPeriodActivity : AppCompatActivity(){
         buttonPlus.setOnClickListener {
 
         }
+        // dodac przejscie do okna glownego
     }
 
 

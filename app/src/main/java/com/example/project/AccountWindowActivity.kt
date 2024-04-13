@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class AccountWindowActivity : AppCompatActivity(){
     private lateinit var accountWidnowSettingButton: ImageButton
-    private lateinit var accountWindowAcountButton: ImageButton
+//    private lateinit var accountWindowAcountButton: ImageButton
+    private lateinit var homeButtonProfil : ImageButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,12 +16,13 @@ class AccountWindowActivity : AppCompatActivity(){
         setContentView(R.layout.account_window)
 
         accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
-        accountWindowAcountButton = findViewById(R.id.accountWindowAcountButton)
+        homeButtonProfil = findViewById(R.id.homeButtonSetting)
 
+        // dodac przechodzenie do main
 
-        accountWindowAcountButton.setOnClickListener {
-            openAccountWindowActivity()
-        }
+//        accountWindowAcountButton.setOnClickListener {
+//            openAccountWindowActivity()
+//        }
 
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity()
@@ -32,10 +34,10 @@ class AccountWindowActivity : AppCompatActivity(){
         startActivity(intent)
     }
 
-    private fun openAccountWindowActivity(){
-        val intent = Intent(this, AccountWindowActivity::class.java)
-        startActivity(intent)
-    }
+//    private fun openAccountWindowActivity(){
+//        val intent = Intent(this, AccountWindowActivity::class.java)
+//        startActivity(intent)
+//    }
 
 
 

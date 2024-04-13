@@ -66,7 +66,7 @@
 
     <ImageButton
         android:id="@+id/calendarAcountButton"
-        android:layout_width="205dp"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -79,7 +79,7 @@
 
     <ImageButton
         android:id="@+id/calendarSettingButton"
-        android:layout_width="210dp"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -89,5 +89,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
+
+    <ImageButton
+        android:id="@+id/homeButtonCalendar"
+        android:layout_width="137dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
