@@ -34,10 +34,13 @@ class AdditionalInformationActivity : AppCompatActivity(){
 
     private lateinit var addInfoSettingAcountButton: ImageButton
     private lateinit var addInfoSettingButton: ImageButton
+    private lateinit var homeButtonaddInfo: ImageButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.additional_information)
 
+        homeButtonaddInfo = findViewById(R.id.homeButtonaddInfo)
         imageButtonHappy = findViewById(R.id.imageButtonHappy)
         imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
         imageButtonSad = findViewById(R.id.imageButtonSad)
@@ -64,6 +67,7 @@ class AdditionalInformationActivity : AppCompatActivity(){
         addInfoSettingButton = findViewById(R.id.addInfoSettingButton)
 
 
+        // dodac otwieranie okna glownego
 
         addInfoSettingButton.setOnClickListener {
             openSettingsWindowActivity()

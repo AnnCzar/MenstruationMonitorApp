@@ -6,7 +6,7 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsWindowActivity : AppCompatActivity(){
-    private lateinit var settingsWidnowSettingButton: ImageButton
+    private lateinit var homeButtonSetting: ImageButton
     private lateinit var settingWindowAcountButton: ImageButton
 
 
@@ -14,23 +14,24 @@ class SettingsWindowActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_window)
 
-        settingsWidnowSettingButton = findViewById(R.id.settingsWidnowSettingButton)
+
+        homeButtonSetting = findViewById(R.id.homeButtonSetting)
         settingWindowAcountButton = findViewById(R.id.settingWindowAcountButton)
 
 
         settingWindowAcountButton.setOnClickListener {
-            openSettingsWindowActivity()
-        }
-
-        settingsWidnowSettingButton.setOnClickListener {
             openAccountWindowActivity()
         }
 
+//        homeButtonSetting.setOnClickListener {
+//            openAccountMain()
+//        }
+
     }
-    private fun openSettingsWindowActivity() {
-        val intent = Intent(this, SettingsWindowActivity::class.java)
-        startActivity(intent)
-    }
+//    private fun openSettingsWindowActivity() {
+//        val intent = Intent(this, SettingsWindowActivity::class.java)
+//        startActivity(intent)
+//    }
     private fun openAccountWindowActivity(){
         val intent = Intent(this, AccountWindowActivity::class.java)
         startActivity(intent)
