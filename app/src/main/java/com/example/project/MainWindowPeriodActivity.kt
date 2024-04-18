@@ -5,39 +5,82 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainWindowPeriodActivity : AppCompatActivity(){
-    private lateinit var daysLeftPeriod:EditText
-    private lateinit var daysLeftOwulation:EditText
-    private lateinit var medicineCheckbox:CheckBox
-    private lateinit var toCalendarButtonPeriod:Button
-    private lateinit var begginingPeriodButton:Button
-    private lateinit var begginingPregnancyButton:Button
-
-
+    private lateinit var currentDateTextPregnancy: TextView
+    private lateinit var daysLeftPeriod: TextView
+    private lateinit var daysLeftOwulation: TextView
+//    private lateinit var medicineCheckbox: CheckBox
+    private lateinit var toCalendarButtonPeriod: Button
+    private lateinit var begginingPeriodButton: Button
+    private lateinit var begginingPregnancyButton: Button
+    private lateinit var mainWindowPeriodSettingButton: ImageButton
+    private lateinit var mainWindowPeriodAcountButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
 
-        // znalezienie elementów
+        // Initialize views
+        currentDateTextPregnancy = findViewById(R.id.currentDateTextPregnancy)
         daysLeftPeriod = findViewById(R.id.daysLeftPeriod)
         daysLeftOwulation = findViewById(R.id.daysLeftOwulation)
-        medicineCheckbox = findViewById(R.id.medicineCheckbox)
+//        medicineCheckbox = findViewById(R.id.medicineCheckbox)
         toCalendarButtonPeriod = findViewById(R.id.toCalendarButtonPeriod)
         begginingPeriodButton = findViewById(R.id.begginingPeriodButton)
         begginingPregnancyButton = findViewById(R.id.begginingPregnancyButton)
 
-        // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięica przycisku
+        mainWindowPeriodSettingButton = findViewById(R.id.mainWindowPeriodSettingButton)
+        mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
+
+
         toCalendarButtonPeriod.setOnClickListener {
             openCalendarActivity()
         }
 
+        //!!!
+        begginingPeriodButton.setOnClickListener{
+
+        }
+        // open a window where you need to enter information about the beginning of pregnancy
+        begginingPregnancyButton.setOnClickListener {
+
+        }
+        mainWindowPeriodAcountButton.setOnClickListener {
+            openAccountWindowActivity()
+        }
+
+        mainWindowPeriodSettingButton.setOnClickListener {
+            openSettingsWindowActivity()
+        }
     }
+
+
+
+
+
     private fun openCalendarActivity() {
         val intent = Intent(this, CalendarActivity::class.java)
         startActivity(intent)
     }
+
+    private fun openSettingsWindowActivity() {
+        val intent = Intent(this, SettingsWindowActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openAccountWindowActivity(){
+        val intent = Intent(this, AccountWindowActivity::class.java)
+        startActivity(intent)
+    }
+//
+//    private fun openBeginingPregnancyWindowAcivity(){
+//        val intent = Intent(this, BeginingPregnancyWindowAcivity::class.java)
+//        startActivity(intent)
+//
+//    }
 
 }

@@ -2,89 +2,75 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registerWind"
+    android:id="@+id/registerWindow2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterWindowActivity"
+    tools:context=".RegisterWindow2Activity"
     android:background="@drawable/tlo">
 
     <TextView
-        android:id="@+id/registerText"
+        android:id="@+id/medicineRegisterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginBottom="732dp"
+        android:layout_marginBottom="100dp"
         android:text="Zarejestruj się"
         android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
 
     <EditText
-        android:id="@+id/enterLoginRegister"
+        android:id="@+id/cycleLen"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/round_shape"
         android:ems="10"
-        android:hint="Login"
         android:inputType="text"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.075" />
-
-    <TextView
-        android:id="@+id/medicineText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="116dp"
-        android:layout_marginBottom="248dp"
-        android:text="Przyjmowane leki"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintVertical_bias="0.499" />
 
     <EditText
         android:id="@+id/enterLastPeriod"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/round_shape"
         android:ems="10"
         android:hint="DD/MM/RRRR"
         android:inputType="text"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305" />
-
-    <EditText
-        android:id="@+id/cycleLen"
-        android:layout_width="294dp"
-        android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
-        android:ems="10"
-        android:inputType="text"
-        android:text="dlugosc"
-        android:textAlignment="center"
-        android:textColor="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457" />
+        app:layout_constraintVertical_bias="0.346" />
 
     <TextView
-        android:id="@+id/cycleLenText"
+        android:id="@+id/lastPeriodText"
+        android:layout_width="304dp"
+        android:layout_height="75dp"
+        android:text="Data początku ostatniej menstruacji"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.263" />
+
+    <TextView
+        android:id="@+id/MedicneNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Długość cyklu (dni)"
@@ -93,29 +79,28 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.386" />
+        app:layout_constraintVertical_bias="0.426" />
 
     <EditText
         android:id="@+id/periodLen"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/round_shape"
         android:ems="10"
         android:inputType="text"
-        android:text="dlugosc"
         android:textAlignment="center"
-        android:textColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerText"
-        app:layout_constraintVertical_bias="0.592" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.659" />
 
     <TextView
-        android:id="@+id/periodLenText"
+        android:id="@+id/doseText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Długość okresu (dni)"
@@ -127,60 +112,14 @@
         app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.518" />
-
-    <EditText
-        android:id="@+id/enterPasswordRegister"
-        android:layout_width="294dp"
-        android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
-        android:hint="Hasło"
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168" />
-
-    <EditText
-        android:id="@+id/medicineInput"
-        android:layout_width="300dp"
-        android:layout_height="149dp"
-        android:background="@drawable/rounded_edit_text"
-        android:ems="10"
-        android:inputType="text"
-        android:text="leki"
-        android:textAlignment="center"
-        android:textColor="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829" />
-
-    <TextView
-        android:id="@+id/lastPeriodText"
-        android:layout_width="313dp"
-        android:layout_height="36dp"
-        android:text="Data ostatniej menstruacji"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.244" />
+        app:layout_constraintVertical_bias="0.578" />
 
     <Button
-        android:id="@+id/buttonConfirmRegister"
+        android:id="@+id/buttonConfirmRegisterWindow2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#FDF4F7"
-        android:text="Potwierdz"
+        android:text="Przejdź dalej"
         android:textColor="#C69AA7"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -191,5 +130,33 @@
         app:layout_constraintVertical_bias="0.957"
         tools:ignore="MissingConstraints" />
 
+    <TextView
+        android:id="@+id/weightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waga (kg)"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.734" />
+
+    <EditText
+        android:id="@+id/weightRegister"
+        android:layout_width="294dp"
+        android:layout_height="56dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.829" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
