@@ -9,19 +9,62 @@
     tools:context=".MainWindowPeriodActivity"
     android:textAlignment="center">
 
-    <TextView
-        android:id="@+id/mainWinPregnancyText"
-        android:layout_width="wrap_content"
+    <!--    <TextView-->
+<!--        android:id="@+id/daysLeftOwulation"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="54dp"-->
+<!--        android:background="@drawable/rounded_edit_text"-->
+<!--        android:text="dni"-->
+<!--        android:textColor="@android:color/transparent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.848"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.345" />-->
+
+    <Button
+        android:id="@+id/toCalendarButtonPeriod"
+        android:layout_width="252dp"
         android:layout_height="wrap_content"
-        android:text="Strona główna"
-        android:textColor="#C69AA7"
-        android:textSize="32sp"
+        android:layout_marginTop="136dp"
+        android:backgroundTint="#D1A1AF"
+        android:text="Przejdź do kalendarza"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.985"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/medicineCheckbox"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <Button
+        android:id="@+id/begginingPeriodButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D1A1AF"
+        android:text="Początek menstruacji"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.853" />
+
+    <Button
+        android:id="@+id/begginingPregnancyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D1A1AF"
+        android:text="Początek ciąży"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.922" />
 
     <TextView
         android:id="@+id/modeTextPregnancy"
@@ -29,71 +72,46 @@
         android:layout_height="wrap_content"
         android:text="Tryb miesiączkowy"
         android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
+        android:textColor="#A16476"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.083" />
-
-    <TextView
-        android:id="@+id/dateTextPregnancy"
-        android:layout_width="222dp"
-        android:layout_height="47dp"
-        android:hint="tu bedzie data"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.165" />
-
-    <TextView
-        android:id="@+id/daysLeftPeriod"
-        android:layout_width="100dp"
-        android:layout_height="54dp"
-        android:background="@drawable/rounded_edit_text"
-        android:text="dni"
-        android:textColor="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
-
-    <TextView
-        android:id="@+id/daysLeftPeriodText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dni pozostałe\ndo menstruacji:"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.269" />
+        app:layout_constraintVertical_bias="0.177" />
 
     <TextView
         android:id="@+id/daysLeftOwulation"
         android:layout_width="100dp"
         android:layout_height="54dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/round_shape"
+        android:ems="10"
         android:text="dni"
+        android:textAlignment="center"
         android:textColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.848"
+        app:layout_constraintHorizontal_bias="0.816"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
+        app:layout_constraintVertical_bias="0.383" />
+
+    <TextView
+        android:id="@+id/daysLeftPeriod"
+        android:layout_width="100dp"
+        android:layout_height="54dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:text="dni"
+        android:textAlignment="center"
+        android:textColor="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.383" />
 
     <TextView
         android:id="@+id/daysLeftOvulationText"
@@ -105,25 +123,56 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.878"
+        app:layout_constraintHorizontal_bias="0.844"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.269" />
+        app:layout_constraintVertical_bias="0.308" />
+
+    <TextView
+        android:id="@+id/daysLeftPeriodText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dni pozostałe\ndo menstruacji:"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.308" />
+
+    <TextView
+        android:id="@+id/currentDateTextPregnancy"
+        android:layout_width="222dp"
+        android:layout_height="47dp"
+        android:hint="tu bedzie data"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.239" />
+
 
     <TextView
         android:id="@+id/medicineCheckbox"
         android:layout_width="255dp"
         android:layout_height="124dp"
+        android:layout_marginTop="58dp"
         android:background="@drawable/rounded_edit_text"
         android:hint="tu będzie checklista z lekami"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.558" />
+        app:layout_constraintTop_toTopOf="@+id/medicineTextMainPregnancy"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/medicineTextMainPregnancy"
@@ -134,52 +183,36 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.222"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427" />
+        app:layout_constraintVertical_bias="0.456" />
 
-    <Button
-        android:id="@+id/toCalendarButtonPeriod"
-        android:layout_width="252dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#D1A1AF"
-        android:text="Przejdź do kalendarza"
-        android:textSize="20sp"
+    <ImageButton
+        android:id="@+id/mainWindowPeriodAcountButton"
+        android:layout_width="205dp"
+        android:layout_height="45dp"
+        android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.696" />
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
 
-    <Button
-        android:id="@+id/begginingPeriodButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#D1A1AF"
-        android:text="Początek menstruacji"
-        android:textSize="20sp"
+    <ImageButton
+        android:id="@+id/mainWindowPeriodSettingButton"
+        android:layout_width="210dp"
+        android:layout_height="45dp"
+        android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878" />
-
-    <Button
-        android:id="@+id/begginingPregnancyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#D1A1AF"
-        android:text="Początek ciąży"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948" />
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

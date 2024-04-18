@@ -34,7 +34,7 @@ class FirstWindowActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun openRegisterWindowActivity() {
-        val intent = Intent(this, RegisterWindowActivity::class.java)
+        val intent = Intent(this, RegisterWindow1Activity::class.java)
         startActivity(intent)
     }
 
