@@ -30,10 +30,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.192"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.164" />
 
     <TextView
         android:id="@+id/cycleDayPeriod"
@@ -46,10 +46,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.841"
+        app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.158" />
+        app:layout_constraintVertical_bias="0.165" />
 
     <TextView
         android:id="@+id/medicineTextDayPeriod"
@@ -61,10 +61,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.182"
+        app:layout_constraintHorizontal_bias="0.183"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintVertical_bias="0.246" />
 
     <TextView
         android:id="@+id/medicineCheckboxPeriodDay"
@@ -103,10 +103,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
+        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.478" />
+        app:layout_constraintVertical_bias="0.499" />
 
     <TextView
         android:id="@+id/textView"
@@ -117,10 +117,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.304"
+        app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.831"
+        app:layout_constraintVertical_bias="0.83"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -183,9 +183,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.784"
         tools:ignore="MissingConstraints" />
+
     <ImageButton
         android:id="@+id/dayPeriodAcountButton"
-        android:layout_width="205dp"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -198,7 +199,7 @@
 
     <ImageButton
         android:id="@+id/dayPeriodSettingsButton"
-        android:layout_width="210dp"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -208,6 +209,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonDayPeriod"
+        android:layout_width="137dp"
+        android:layout_height="58dp"
+        android:background="#BA798C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

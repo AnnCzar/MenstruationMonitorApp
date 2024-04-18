@@ -6,6 +6,7 @@ import android.widget.CalendarView
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.project.R.id.homeButtonCalendar
 
 class CalendarActivity : AppCompatActivity(){
 
@@ -13,6 +14,7 @@ class CalendarActivity : AppCompatActivity(){
     private lateinit var calendar: CalendarView
     private lateinit var calendarSettingButton: ImageButton
     private lateinit var calendarAcountButton: ImageButton
+    private lateinit var homeButtonCalendar: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +25,9 @@ class CalendarActivity : AppCompatActivity(){
         calendar = findViewById(R.id.calendarView)
         calendarSettingButton = findViewById(R.id.calendarSettingButton)
         calendarAcountButton = findViewById(R.id.calendarAcountButton)
+        homeButtonCalendar = findViewById(R.id.homeButtonCalendar)
+
+        //dodac otwieranie okna głownego
 
 
         calendar.setOnDateChangeListener {_, year, month, day ->

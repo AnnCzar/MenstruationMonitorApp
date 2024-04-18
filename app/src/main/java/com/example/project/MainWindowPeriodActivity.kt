@@ -56,12 +56,18 @@ class MainWindowPeriodActivity : AppCompatActivity(){
         mainWindowPeriodSettingButton.setOnClickListener {
             openSettingsWindowActivity()
         }
+        begginingPregnancyButton.setOnClickListener {
+            openPregnancyBegginingActivity()
+        }
+
+
     }
 
 
-
-
-
+    private fun openPregnancyBegginingActivity() {
+        val intent = Intent(this, PregnancyBegginingActivity::class.java)
+        startActivity(intent)
+    }
     private fun openCalendarActivity() {
         val intent = Intent(this, CalendarActivity::class.java)
         startActivity(intent)
@@ -76,11 +82,11 @@ class MainWindowPeriodActivity : AppCompatActivity(){
         val intent = Intent(this, AccountWindowActivity::class.java)
         startActivity(intent)
     }
-//
-//    private fun openBeginingPregnancyWindowAcivity(){
-//        val intent = Intent(this, BeginingPregnancyWindowAcivity::class.java)
-//        startActivity(intent)
-//
-//    }
+
+    private fun openPregnancyBegginingAcivity(){
+        val intent = Intent(this, PregnancyBegginingActivity::class.java)
+        startActivity(intent)
+
+    }
 
 }
