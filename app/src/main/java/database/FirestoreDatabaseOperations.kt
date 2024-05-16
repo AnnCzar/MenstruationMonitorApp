@@ -19,7 +19,6 @@ class FirestoreDatabaseOperations(private val db: FirebaseFirestore = Firebase.f
         try {
             db.collection("users").document(userId).set(user).await()
         } catch (e: Exception) {
-            // Obsługa błędów
             println("Błąd podczas dodawania użytkownika do bazy danych: ${e.message}")
         }
     }
@@ -29,7 +28,6 @@ class FirestoreDatabaseOperations(private val db: FirebaseFirestore = Firebase.f
             val doc = db.collection("users").document(userId).get().await()
             doc.toObject(Users::class.java)
         } catch (e: Exception) {
-            // Obsługa błędów
             println("Błąd podczas pobierania użytkownika z bazy danych: ${e.message}")
             null
         }
@@ -39,7 +37,6 @@ class FirestoreDatabaseOperations(private val db: FirebaseFirestore = Firebase.f
         try {
             db.collection("users").document(userId).set(updatedUser, SetOptions.merge()).await()
         } catch (e: Exception) {
-            // Obsługa błędów
             println("Błąd podczas aktualizacji użytkownika w bazie danych: ${e.message}")
         }
     }
@@ -48,10 +45,11 @@ class FirestoreDatabaseOperations(private val db: FirebaseFirestore = Firebase.f
         try {
             db.collection("users").document(userId).delete().await()
         } catch (e: Exception) {
-            // Obsługa błędów
             println("Błąd podczas usuwania użytkownika z bazy danych: ${e.message}")
         }
     }
+}
+
 
     // Metody dla kolekcji Pregnancy
     override suspend fun addPregnancy(userId: String, pregnancy: Pregnancy) {
