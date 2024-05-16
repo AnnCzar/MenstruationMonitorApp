@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "5978540514",
-    "project_id": "period-pregnancy-tracker",
-    "storage_bucket": "period-pregnancy-tracker.appspot.com"
+    "project_number": "487073369188",
+    "project_id": "period-pregnancy-tracker-bba07",
+    "storage_bucket": "period-pregnancy-tracker-bba07.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:5978540514:android:1a63204c0cff59397891bb",
+        "mobilesdk_app_id": "1:487073369188:android:ce9bfc4c41a5d94ef52371",
         "android_client_info": {
           "package_name": "com.example.project"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA83Vlqc9wgGETk7QLlXRO3oT1DCWHGESY"
+          "current_key": "AIzaSyBxc8BBMHpgn4tevNpBtGLEJFfHCKiDNeE"
         }
       ],
       "services": {
