@@ -4,12 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class LoginWindowActivity : AppCompatActivity(){
+class LoginWindowActivity : AppCompatActivity() {
+    private lateinit var enterLogin: EditText
     private lateinit var enterPassword: EditText
-    private var enterLogin: EditText? = null
     private lateinit var buttonConfirmLogin: Button
+
+    // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,21 +30,44 @@ class LoginWindowActivity : AppCompatActivity(){
         enterPassword = findViewById(R.id.enterPassword)
         buttonConfirmLogin = findViewById(R.id.buttonConfirmLogin)
 
-
-        // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięica przycisku
+        // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmLogin.setOnClickListener {
-            openMainWindowPeriodActivity()
+            val login = enterLogin.text.toString()
+            val password = enterPassword.text.toString()
+
+            if (login.isNotEmpty() && password.isNotEmpty()) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    try {
+                        val user = db.collection("users")
+                            .whereEqualTo("email", login)
+                            .get()
+                            .await()
+                            .documents
+                            .firstOrNull()
+
+                        if (user != null) {
+                            val storedPassword = user.getString("password")
+                            if (storedPassword == password) {
+                                openMainWindowPeriodActivity(user.id)
+                            } else {
+                                Toast.makeText(this@LoginWindowActivity, "Nieprawidłowe hasło", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this@LoginWindowActivity, "Użytkownik nie istnieje", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this@LoginWindowActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun openMainWindowPeriodActivity() {
-//        val login = enterLogin.text.toString()
-//        val password = enterPassword.text.toString()
-
+    private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
-
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
-
-
 }
