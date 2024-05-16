@@ -22,6 +22,9 @@ class RegisterWindow2Activity : AppCompatActivity() {
     // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
     val db = Firebase.firestore
 
+    // Obiekt do obsługi operacji na bazie danych Firestore
+    private val dbOperations = FirestoreDatabaseOperations(db)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_window2)
@@ -39,30 +42,29 @@ class RegisterWindow2Activity : AppCompatActivity() {
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmRegisterWindow2.setOnClickListener {
             val lastPeriod = enterLastPeriod.text.toString()
-            val cycleLength = cycleLen.text.toString()
-            val periodLength = periodLen.text.toString()
-            val weight = weightRegister.text.toString()
+            val cycleLength = cycleLen.text.toString().toInt()
+            val periodLength = periodLen.text.toString().toInt()
+            val weight = weightRegister.text.toString().toDouble()
 
-            if (lastPeriod.isNotEmpty() && cycleLength.isNotEmpty() && periodLength.isNotEmpty() && weight.isNotEmpty()) {
-                // Utworzenie mapy z danymi użytkownika
-                val userDetails = mapOf(
-                    "lastPeriod" to lastPeriod,
-                    "cycleLength" to cycleLength,
-                    "periodLength" to periodLength,
-                    "weight" to weight
-                )
+            if (lastPeriod.isNotEmpty() && cycleLength.toString().isNotEmpty() && periodLength.toString().isNotEmpty() && weight.toString().isNotEmpty()) {
+                // Konwersja lastPeriod do Date
+                val lastPeriodDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(lastPeriod)
 
-                // Uruchomienie korutyny w wątku głównym
+                // Pobierz aktualnego użytkownika z Firestore
                 GlobalScope.launch(Dispatchers.Main) {
-                    // Dodanie danych użytkownika do bazy danych Firestore
-                    db.collection("users").document(userId!!)
-                        .set(userDetails)
-                        .addOnSuccessListener {
-                            openRegisterWindow3Activity()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this@RegisterWindow2Activity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
+                    val user = dbOperations.getUser(userId!!)
+                    if (user != null) {
+                        // Aktualizacja danych użytkownika
+                        user.lastPeriodDate = lastPeriodDate
+                        user.cycleLength = cycleLength
+                        user.periodLength = periodLength
+                        user.weight = weight
+                        // Zaktualizuj użytkownika w bazie danych Firestore
+                        dbOperations.updateUser(userId, user)
+                        openRegisterWindow3Activity()
+                    } else {
+                        Toast.makeText(this@RegisterWindow2Activity, "Błąd: Użytkownik nie znaleziony", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 // Wyświetlenie komunikatu o błędzie
