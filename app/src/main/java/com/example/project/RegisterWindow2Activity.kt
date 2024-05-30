@@ -8,9 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class RegisterWindow2Activity : AppCompatActivity() {
     private lateinit var enterLastPeriod: EditText
@@ -35,6 +32,9 @@ class RegisterWindow2Activity : AppCompatActivity() {
 
         // Pobranie userId z intent
         val userId = intent.getStringExtra("USER_ID")
+        val email = intent.getStringExtra("EMAIL")
+        val password = intent.getStringExtra("PASSWORD")
+        val username = intent.getStringExtra("USERNAME")
 
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmRegisterWindow2.setOnClickListener {
@@ -43,7 +43,8 @@ class RegisterWindow2Activity : AppCompatActivity() {
             val periodLength = periodLen.text.toString()
             val weight = weightRegister.text.toString()
 
-            if (lastPeriod.isNotEmpty() && cycleLength.isNotEmpty() && periodLength.isNotEmpty() && weight.isNotEmpty()) {
+            if (lastPeriod.isNotEmpty() && cycleLength.toInt() > 0 && periodLength.toInt() > 0 && weight.toInt() > 0) {
+                openRegisterWindow3Activity(userId!!, email!!, password!!, username!!, lastPeriod, cycleLength, periodLength, weight)
                 // Utworzenie mapy z danymi użytkownika
                 val userDetails = mapOf(
                     "lastPeriod" to lastPeriod,
@@ -53,17 +54,18 @@ class RegisterWindow2Activity : AppCompatActivity() {
                 )
 
                 // Uruchomienie korutyny w wątku głównym
-                GlobalScope.launch(Dispatchers.Main) {
-                    // Dodanie danych użytkownika do bazy danych Firestore
-                    db.collection("users").document(userId!!)
-                        .set(userDetails)
-                        .addOnSuccessListener {
-                            openRegisterWindow3Activity()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this@RegisterWindow2Activity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
+//                GlobalScope.launch(Dispatchers.Main) {
+//                    // Dodanie danych użytkownika do bazy danych Firestore
+//                    db.collection("users").document(userId!!)
+//                        .set(userDetails)
+//                        .addOnSuccessListener {
+//                            openRegisterWindow3Activity()
+//                        }
+//                        .addOnFailureListener { e ->
+//                            Toast.makeText(this@RegisterWindow2Activity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+//                        }
+//                }
+
             } else {
                 // Wyświetlenie komunikatu o błędzie
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
@@ -71,8 +73,20 @@ class RegisterWindow2Activity : AppCompatActivity() {
         }
     }
 
-    private fun openRegisterWindow3Activity() {
-        val intent = Intent(this, RegisterWindow3Activity::class.java)
+    private fun openRegisterWindow3Activity(
+        userId: String, email: String, password:String, username: String,
+        lastPeriod: String, cycleLength: String, periodLength: String, weight: String
+    ) {
+        val intent = Intent(this, RegisterWindow3Activity::class.java).apply {
+            intent.putExtra("USER_ID", userId)
+            intent.putExtra("EMAIL", email)
+            intent.putExtra("PASSWORD", password)
+            intent.putExtra("USERNAME", username)
+            intent.putExtra("LAST_PERIOD", lastPeriod)
+            intent.putExtra("CYCLE_LENGTH", cycleLength)
+            intent.putExtra("PERIOD_LENGTH", periodLength)
+            intent.putExtra("WEIGHT", weight)
+        }
         startActivity(intent)
     }
 }
