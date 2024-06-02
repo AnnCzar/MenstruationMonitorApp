@@ -66,14 +66,6 @@ class RegisterWindow1Activity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-//
-//                    // Uruchomienie korutyny w wątku głównym
-//                    GlobalScope.launch(Dispatchers.Main) {
-//                        // Dodanie użytkownika do bazy danych Firestore
-//                        dbOperations.addUser(userId, user)
-//                    }
-//                    // Przekazanie userId do następnej aktywności
-//                    openRegisterWindow2Activity(userId)
                     }
                 } else {
                     // Wyświetlenie komunikatu o błędzie
