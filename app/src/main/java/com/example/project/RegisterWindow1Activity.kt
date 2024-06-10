@@ -13,6 +13,7 @@ import database.collections.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 class RegisterWindow1Activity : AppCompatActivity() {
@@ -50,17 +51,22 @@ class RegisterWindow1Activity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty() && passwordConfirm.isNotEmpty() && username.isNotEmpty()) {
                 if (password == passwordConfirm) {
-                    // Generowanie unikalnego userId
-                    val userId = UUID.randomUUID().toString()
-                    // Utworzenie obiektu Users
-                    val user = Users(email, username, password)
-                    // Uruchomienie korutyny w wątku głównym
                     GlobalScope.launch(Dispatchers.Main) {
-                        // Dodanie użytkownika do bazy danych Firestore
-                        dbOperations.addUser(userId, user)
+                        val emailExists = checkIfEmailExists(email)
+                        if (!emailExists) {
+                            // Generowanie unikalnego userId
+                            val userId = UUID.randomUUID().toString()
+                            // Utworzenie obiektu Users
+                            val user = Users(email, username, password)
+                            openRegisterWindow2Activity(userId, email, password, username)
+                        } else {
+                            Toast.makeText(
+                                this@RegisterWindow1Activity,
+                                "Email już jest zajęty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                    // Przekazanie userId do następnej aktywności
-                    openRegisterWindow2Activity(userId)
                 } else {
                     // Wyświetlenie komunikatu o błędzie
                     Toast.makeText(this, "Hasła nie są zgodne", Toast.LENGTH_SHORT).show()
@@ -72,9 +78,27 @@ class RegisterWindow1Activity : AppCompatActivity() {
         }
     }
 
-    private fun openRegisterWindow2Activity(userId: String) {
-        val intent = Intent(this, RegisterWindow2Activity::class.java)
-        intent.putExtra("USER_ID", userId)
+    private suspend fun checkIfEmailExists(email: String): Boolean {
+        return try {
+            val result = db.collection("users").whereEqualTo("email", email).get().await()
+            !result.isEmpty
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun openRegisterWindow2Activity(
+        userId: String,
+        email: String,
+        password: String,
+        username: String
+    ) {
+        val intent = Intent(this, RegisterWindow2Activity::class.java).apply {
+            putExtra("USER_ID", userId)
+            putExtra("EMAIL", email)
+            putExtra("PASSWORD", password)
+            putExtra("USERNAME", username)
+        }
         startActivity(intent)
     }
 }
