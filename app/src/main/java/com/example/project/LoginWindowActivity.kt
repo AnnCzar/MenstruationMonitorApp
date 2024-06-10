@@ -39,7 +39,7 @@ class LoginWindowActivity : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main) {
                     try {
                         val user = db.collection("users")
-                            .whereEqualTo("email", login)
+                            .whereEqualTo("login", login)
                             .get()
                             .await()
                             .documents
