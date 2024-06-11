@@ -110,7 +110,7 @@ class RegisterWindow3Activity : AppCompatActivity() {
                 .set(user)
                 .addOnSuccessListener {
                     Toast.makeText(this@RegisterWindow3Activity, "Dane użytkownika zapisane", Toast.LENGTH_SHORT).show()
-                    openMainWindowPeriodActivity()
+                    openMainWindowPeriodActivity(userId)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this@RegisterWindow3Activity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -118,8 +118,9 @@ class RegisterWindow3Activity : AppCompatActivity() {
         }
     }
 
-    private fun openMainWindowPeriodActivity() {
+    private fun openMainWindowPeriodActivity(userId: String?) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId) // Przekazanie ID użytkownika do nowej aktywności
         startActivity(intent)
     }
 }

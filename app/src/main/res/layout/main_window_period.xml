@@ -27,16 +27,15 @@
         android:id="@+id/toCalendarButtonPeriod"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
         android:backgroundTint="#D1A1AF"
         android:text="Przejdź do kalendarza"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/medicineCheckbox"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.781" />
 
     <Button
         android:id="@+id/begginingPeriodButton"
@@ -48,6 +47,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.853" />
+
+    <Button
+        android:id="@+id/endPeriodButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D1A1AF"
+        android:text="Koniec okresu"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.853" />
@@ -89,7 +102,7 @@
         android:ems="10"
         android:text="dni"
         android:textAlignment="center"
-        android:textColor="@android:color/transparent"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.816"
@@ -105,13 +118,13 @@
         android:ems="10"
         android:text="dni"
         android:textAlignment="center"
-        android:textColor="@android:color/transparent"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.383" />
+        app:layout_constraintVertical_bias="0.391" />
 
     <TextView
         android:id="@+id/daysLeftOvulationText"
@@ -144,7 +157,7 @@
         app:layout_constraintVertical_bias="0.308" />
 
     <TextView
-        android:id="@+id/currentDateTextPregnancy"
+        android:id="@+id/currentDateTextPeriod"
         android:layout_width="222dp"
         android:layout_height="47dp"
         android:hint="tu bedzie data"
@@ -158,22 +171,31 @@
         app:layout_constraintVertical_bias="0.239" />
 
 
-    <TextView
-        android:id="@+id/medicineCheckbox"
+<!--    <TextView-->
+<!--        android:id="@+id/medicineCheckbox"-->
+<!--        android:layout_width="255dp"-->
+<!--        android:layout_height="124dp"-->
+<!--        android:layout_marginTop="58dp"-->
+<!--        android:background="@drawable/rounded_edit_text"-->
+<!--        android:hint="tu będzie checklista z lekami"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.429"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/medicineTextMainPregnancy"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/medicineRecyclerView"
         android:layout_width="255dp"
         android:layout_height="124dp"
         android:layout_marginTop="58dp"
-        android:background="@drawable/rounded_edit_text"
-        android:hint="tu będzie checklista z lekami"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.429"
+        app:layout_constraintTop_toBottomOf="@id/medicineTextMainPregnancy"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/medicineTextMainPregnancy"
-        app:layout_constraintVertical_bias="0.0" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/toCalendarButtonPeriod" />
     <TextView
         android:id="@+id/medicineTextMainPregnancy"
         android:layout_width="wrap_content"
