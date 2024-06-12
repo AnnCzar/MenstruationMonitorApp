@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AdditionalInformationActivity : AppCompatActivity(){
 
@@ -35,6 +36,10 @@ class AdditionalInformationActivity : AppCompatActivity(){
     private lateinit var addInfoSettingAcountButton: ImageButton
     private lateinit var addInfoSettingButton: ImageButton
     private lateinit var homeButtonaddInfo: ImageButton
+
+
+    private lateinit var db: FirebaseFirestore
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,16 +71,20 @@ class AdditionalInformationActivity : AppCompatActivity(){
         addInfoSettingAcountButton = findViewById(R.id.addInfoSettingAcountButton)
         addInfoSettingButton = findViewById(R.id.addInfoSettingButton)
 
+        userId = intent.getStringExtra("USER_ID") ?: ""
+
+        db = FirebaseFirestore.getInstance()
+
 
         // dodac otwieranie okna glownego
 
         addInfoSettingButton.setOnClickListener {
-            openSettingsWindowActivity()
+            openSettingsWindowActivity(userId)
 
         }
 
         addInfoSettingAcountButton.setOnClickListener {
-            openAccountWindowActivity()
+            openAccountWindowActivity(userId)
 
         }
 
@@ -151,13 +160,15 @@ class AdditionalInformationActivity : AppCompatActivity(){
         }
 
     }
-    private fun openSettingsWindowActivity() {
+    private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
-    private fun openAccountWindowActivity(){
+    private fun openAccountWindowActivity(userId: String){
         val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 }

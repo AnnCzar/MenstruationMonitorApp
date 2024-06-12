@@ -7,6 +7,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainWindowPregnancyActivity : AppCompatActivity(){
 //    private lateinit var daysLeftPregnency: EditText
@@ -18,14 +19,18 @@ class MainWindowPregnancyActivity : AppCompatActivity(){
     private lateinit var mainWindowPregnancyAcountButton: ImageButton
 
 
+    private lateinit var db: FirebaseFirestore
+    private lateinit var userId: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        userId = intent.getStringExtra("USER_ID") ?: ""
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
 
         // znalezienie elementów
 //        daysLeftPregnency = findViewById(R.id.daysLeftPregnancy)
-        medicineCheckbox = findViewById(R.id.medicineCheckbox)
+//        medicineCheckbox = findViewById(R.id.medicineCheckbox)
         toCalendarButtonPeriod = findViewById(R.id.toCalendarButtonPeriod)
         begginingPeriodButton = findViewById(R.id.begginingPeriodButton)
         begginingPregnancyButton = findViewById(R.id.begginingPregnancyButton)
@@ -34,28 +39,31 @@ class MainWindowPregnancyActivity : AppCompatActivity(){
 
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięica przycisku
         toCalendarButtonPeriod.setOnClickListener {
-            openCalendarActivity()
+            openCalendarActivity(userId)
         }
         mainWindowPregnancyAcountButton.setOnClickListener {
-            openAccountWindowActivity()
+            openAccountWindowActivity(userId)
         }
 
         mainWindowPregnancySettingButton.setOnClickListener {
-            openSettingsWindowActivity()
+            openSettingsWindowActivity(userId)
         }
 
     }
-    private fun openCalendarActivity() {
+    private fun openCalendarActivity(userId: String) {
         val intent = Intent(this, CalendarActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
-    private fun openSettingsWindowActivity() {
+    private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
-    private fun openAccountWindowActivity(){
+    private fun openAccountWindowActivity(userId: String){
         val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 

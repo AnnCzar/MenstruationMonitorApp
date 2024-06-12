@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DayPeriodActivity : AppCompatActivity(){
 
@@ -21,6 +22,9 @@ class DayPeriodActivity : AppCompatActivity(){
     private lateinit var buttonPlus: Button
     private lateinit var dayPeriodSettingsButton: ImageButton
     private lateinit var dayPeriodAcountButton: ImageButton
+
+    private lateinit var db: FirebaseFirestore
+    private lateinit var userId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.day_period)
@@ -35,17 +39,22 @@ class DayPeriodActivity : AppCompatActivity(){
         dayPeriodSettingsButton = findViewById(R.id.dayPeriodSettingsButton)
         dayPeriodAcountButton = findViewById(R.id.dayPeriodAcountButton)
 
+
+        userId = intent.getStringExtra("USER_ID") ?: ""
+
+        db = FirebaseFirestore.getInstance()
+
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięica przycisku
         additionalInfoPeriod.setOnClickListener {
-            openAdditionalInformationActivity()
+            openAdditionalInformationActivity(userId)
         }
 
         dayPeriodAcountButton.setOnClickListener {
-            openAccountWindowActivity()
+            openAccountWindowActivity(userId)
         }
 
         dayPeriodSettingsButton.setOnClickListener {
-            openSettingsWindowActivity()
+            openSettingsWindowActivity(userId)
         }
         buttonMinus.setOnClickListener {
 
@@ -57,17 +66,20 @@ class DayPeriodActivity : AppCompatActivity(){
     }
 
 
-    private fun openAdditionalInformationActivity() {
+    private fun openAdditionalInformationActivity(userId: String) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
-    private fun openSettingsWindowActivity() {
+    private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
-    private fun openAccountWindowActivity(){
+    private fun openAccountWindowActivity(userId: String){
         val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
