@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import database.FirestoreDatabaseOperations
@@ -23,6 +24,9 @@ class RegisterWindow1Activity : AppCompatActivity() {
     private lateinit var enterPasswordRegisterConfirm: EditText
     private lateinit var enterUsernameRegister: EditText
     private lateinit var buttonConfirmRegisterWindow1: Button
+
+
+    private lateinit var userId: String
 
     // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
     val db = Firebase.firestore

@@ -37,7 +37,7 @@
         android:id="@+id/text_end_menstruation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Koniec menstruacji"
+        android:text="Dzień menstruacji"
         android:textColor="#C69AA7"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

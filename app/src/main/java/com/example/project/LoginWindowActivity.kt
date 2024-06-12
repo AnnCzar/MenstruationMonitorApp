@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import database.collections.Cycles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -48,7 +49,13 @@ class LoginWindowActivity : AppCompatActivity() {
                         if (user != null) {
                             val storedPassword = user.getString("password")
                             if (storedPassword == password) {
-                                openMainWindowPeriodActivity(user.id)
+                                if (user.getBoolean("statusPregnancy") == false){
+                                    openMainWindowPeriodActivity(user.id)
+                                }
+                                else if (user.getBoolean("statusPregnancy") == true){
+                                    openMainWindowPregnancyActivity(user.id)
+                                }
+
                             } else {
                                 Toast.makeText(this@LoginWindowActivity, "Nieprawidłowe hasło", Toast.LENGTH_SHORT).show()
                             }
@@ -65,8 +72,17 @@ class LoginWindowActivity : AppCompatActivity() {
         }
     }
 
+
+
+
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+    private fun openMainWindowPregnancyActivity(userId: String) {
+        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }

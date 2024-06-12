@@ -65,7 +65,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
 
         toCalendarButtonPeriod.setOnClickListener {
-            openCalendarActivity()
+            openCalendarActivity(userId)
         }
 
         begginingPeriodButton.setOnClickListener {
@@ -79,15 +79,15 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
 
         begginingPregnancyButton.setOnClickListener {
-            openPregnancyBegginingActivity()
+            openPregnancyBegginingActivity(userId)
         }
 
         mainWindowPeriodAcountButton.setOnClickListener {
-            openAccountWindowActivity()
+            openAccountWindowActivity(userId)
         }
 
         mainWindowPeriodSettingButton.setOnClickListener {
-            openSettingsWindowActivity()
+            openSettingsWindowActivity(userId)
         }
     }
 
@@ -124,7 +124,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
     private fun updateEndDateInFirestore() {
-        val cycleRef = db.collection("cycles").document(userId)
+
+        val cycleRef = db.collection("users").document(userId).collection("cycles").document(userId)
 
         if (isPeriodStarted) {
             cycleRef
@@ -201,23 +202,27 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
-    private fun openPregnancyBegginingActivity() {
+    private fun openPregnancyBegginingActivity(userId: String) {
         val intent = Intent(this, PregnancyBegginingActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
-    private fun openCalendarActivity() {
+    private fun openCalendarActivity(userId: String) {
         val intent = Intent(this, CalendarActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
-    private fun openSettingsWindowActivity() {
+    private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
-    private fun openAccountWindowActivity() {
+    private fun openAccountWindowActivity(userId: String) {
         val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 }
