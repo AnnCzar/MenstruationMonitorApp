@@ -13,14 +13,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import android.content.Context
+import android.content.SharedPreferences
+
 
 class LoginWindowActivity : AppCompatActivity() {
     private lateinit var enterLogin: EditText
     private lateinit var enterPassword: EditText
     private lateinit var buttonConfirmLogin: Button
-
-    // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
-    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +36,10 @@ class LoginWindowActivity : AppCompatActivity() {
             val login = enterLogin.text.toString()
             val password = enterPassword.text.toString()
 
+
+            val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+            val userId = sharedPreferences.getString("USER_ID", null)
+
             if (login.isNotEmpty() && password.isNotEmpty()) {
                 GlobalScope.launch(Dispatchers.Main) {
                     try {
@@ -49,13 +53,17 @@ class LoginWindowActivity : AppCompatActivity() {
                         if (user != null) {
                             val storedPassword = user.getString("password")
                             if (storedPassword == password) {
-                                if (user.getBoolean("statusPregnancy") == false){
+                                // Save user ID to SharedPreferences
+                                val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+                                val editor = sharedPreferences.edit()
+                                editor.putString("USER_ID", user.id)
+                                editor.apply()
+
+                                if (user.getBoolean("statusPregnancy") == false) {
                                     openMainWindowPeriodActivity(user.id)
-                                }
-                                else if (user.getBoolean("statusPregnancy") == true){
+                                } else if (user.getBoolean("statusPregnancy") == true) {
                                     openMainWindowPregnancyActivity(user.id)
                                 }
-
                             } else {
                                 Toast.makeText(this@LoginWindowActivity, "Nieprawidłowe hasło", Toast.LENGTH_SHORT).show()
                             }
@@ -70,7 +78,11 @@ class LoginWindowActivity : AppCompatActivity() {
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
+
+    // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
+    val db = Firebase.firestore
 
 
 

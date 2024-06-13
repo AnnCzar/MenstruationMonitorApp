@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class DayPregnancyActivity : AppCompatActivity(){
@@ -18,6 +19,11 @@ class DayPregnancyActivity : AppCompatActivity(){
     private lateinit var additionalInfoPregnancy: Button
     private lateinit var dayPregnancySettingButton: ImageButton
     private lateinit var dayPregnancyAcountButton: ImageButton
+    private lateinit var homeButtonCalendar: ImageButton
+    private lateinit var medicineRecyclerView: RecyclerView
+    private lateinit var doctorRecyclerView: RecyclerView
+    private lateinit var medicineAdapter: MedicineAdapter
+    private lateinit var doctorAdapter: DoctorVisitsAdapter
 
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
@@ -33,10 +39,19 @@ class DayPregnancyActivity : AppCompatActivity(){
         additionalInfoPregnancy = findViewById(R.id.additionalInfoPregnancy)
         dayPregnancySettingButton = findViewById(R.id.dayPregnancySettingButton)
         dayPregnancyAcountButton = findViewById(R.id.dayPregnancyAcountButton)
+        homeButtonCalendar = findViewById(R.id.homeButtonCalendar)
+        medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
+        doctorRecyclerView = findViewById(R.id.doctorsRecyclerView)
 
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
+
+
+
+
+
+
 
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięica przycisku
         additionalInfoPregnancy.setOnClickListener {
@@ -49,6 +64,11 @@ class DayPregnancyActivity : AppCompatActivity(){
         dayPregnancyAcountButton.setOnClickListener {
             openAccountWindowActivity(userId)
         }
+
+
+
+
+
     }
     private fun openAdditionalInformationActivity(userId: String) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)
@@ -63,6 +83,12 @@ class DayPregnancyActivity : AppCompatActivity(){
 
     private fun openAccountWindowActivity(userId: String){
         val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+    private fun openHomeWindowActivity(userId: String){
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }

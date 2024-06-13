@@ -66,32 +66,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.246" />
 
-    <TextView
-        android:id="@+id/medicineCheckboxPeriodDay"
-        android:layout_width="253dp"
-        android:layout_height="150dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/medicineRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
         android:background="@drawable/rounded_edit_text"
-        android:hint="tu będzie checklista z lekami"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.259"
+        app:layout_constraintTop_toBottomOf="@id/medicineTextDayPeriod"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
-
-    <ListView
-        android:id="@+id/doctorsListPeriod"
-        android:layout_width="260dp"
-        android:layout_height="127dp"
-        android:background="@drawable/rounded_edit_text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.245"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintBottom_toTopOf="@id/doctorsTextDayPeriod"
+        app:layout_constraintVertical_bias="0.5"
+        tools:listitem="@layout/medicine_item" />
 
     <TextView
         android:id="@+id/doctorsTextDayPeriod"
@@ -103,10 +88,35 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/doctorsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/rounded_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
+        tools:listitem="@layout/doctor_item" />
+
+    <TextView
+        android:id="@+id/textViewGlassOfWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ilość spożytych płynów (250 ml)"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.274"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.784"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView"
@@ -168,22 +178,6 @@
         app:layout_constraintVertical_bias="0.889"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/textViewGlassOfWater"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ilość spożytych płynów (250 ml)"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.274"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.784"
-        tools:ignore="MissingConstraints" />
-
     <ImageButton
         android:id="@+id/dayPeriodAcountButton"
         android:layout_width="137dp"
@@ -211,7 +205,7 @@
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
     <ImageButton
-        android:id="@+id/imageButtonDayPeriod"
+        android:id="@+id/dayPeriodHomeButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#BA798C"
@@ -221,6 +215,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
