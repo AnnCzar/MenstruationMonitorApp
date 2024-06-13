@@ -25,6 +25,8 @@ class DayPregnancyActivity : AppCompatActivity(){
     private lateinit var medicineAdapter: MedicineAdapter
     private lateinit var doctorAdapter: DoctorVisitsAdapter
 
+
+
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
 
@@ -42,6 +44,8 @@ class DayPregnancyActivity : AppCompatActivity(){
         homeButtonCalendar = findViewById(R.id.homeButtonCalendar)
         medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
         doctorRecyclerView = findViewById(R.id.doctorsRecyclerView)
+
+
 
 
         userId = intent.getStringExtra("USER_ID") ?: ""

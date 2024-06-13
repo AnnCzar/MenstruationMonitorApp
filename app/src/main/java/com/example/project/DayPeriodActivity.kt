@@ -250,12 +250,19 @@ class DayPeriodActivity : AppCompatActivity() {
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var medicineAdapter: MedicineAdapter
     private lateinit var doctorAdapter: DoctorVisitsAdapter
+    private lateinit var drinksCountText: TextView
+    private lateinit var increaseDrinkButton: Button
+    private lateinit var decreaseDrinkButton: Button
+
+    private var drinksCount: Int = 0
 
     private val medicines = mutableListOf<Medicine>()
     private val doctors = mutableListOf<DoctorVisit>()
 
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
+    private lateinit var selectedDate: LocalDate
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -266,13 +273,15 @@ class DayPeriodActivity : AppCompatActivity() {
 
         // Get userId from Intent
         userId = intent.getStringExtra("USER_ID") ?: ""
-        var selectedDate = LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
+        selectedDate= LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
 
         // Initialize views
         cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
         additionalInfoPeriod = findViewById(R.id.additionalInfoPeriod)
-        buttonMinus = findViewById(R.id.buttonMinus)
-        buttonPlus = findViewById(R.id.buttonPlus)
+        drinksCountText = findViewById(R.id.drinksCountText)
+        increaseDrinkButton = findViewById(R.id.increaseDrinkButton)
+        decreaseDrinkButton = findViewById(R.id.decreaseDrinkButton)
+
         dayPeriodSettingsButton = findViewById(R.id.dayPeriodSettingsButton)
         dayPeriodAcountButton = findViewById(R.id.dayPeriodAcountButton)
         dateDayPeriod = findViewById(R.id.dateDayPeriod)
@@ -318,13 +327,29 @@ class DayPeriodActivity : AppCompatActivity() {
             openHomeWindowActivity(userId)
         }
 
-        buttonMinus.setOnClickListener {
-            // Handle minus button click
+        increaseDrinkButton.setOnClickListener {
+            drinksCount++
+            updateDrinkCount()
+            updateDrinkCountInFirestore()
         }
 
-        buttonPlus.setOnClickListener {
-            // Handle plus button click
+        decreaseDrinkButton.setOnClickListener {
+            if (drinksCount > 0) {
+                drinksCount--
+                updateDrinkCount()
+                updateDrinkCountInFirestore()
+            } else {
+                Toast.makeText(this, "Drinks count cannot be negative.", Toast.LENGTH_SHORT).show()
+            }
         }
+
+
+        fetchTodaysDrinkCount()
+
+
+    }
+    private fun updateDrinkCount() {
+        drinksCountText.text = drinksCount.toString()
     }
 
     private fun currentDate() {
@@ -356,7 +381,7 @@ class DayPeriodActivity : AppCompatActivity() {
     private fun fetchTodaysMedicineStatus() {
         val today = LocalDate.now().toString()
         db.collection("users").document(userId).collection("dailyInfo")
-            .document(today).collection("medicines")
+            .document(selectedDate.toString()).collection("medicines")
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -395,7 +420,7 @@ class DayPeriodActivity : AppCompatActivity() {
     private fun saveMedicineCheckStatus(medicine: Medicine) {
         db.collection("users").document(userId)
             .collection("dailyInfo")
-            .document(LocalDate.now().toString())
+            .document(selectedDate.toString())
             .collection("medicines")
             .document(medicine.id)
             .set(mapOf("checked" to medicine.isChecked))
@@ -410,7 +435,7 @@ class DayPeriodActivity : AppCompatActivity() {
     private fun saveDoctorCheckStatus(doctor: DoctorVisit) {
         db.collection("users").document(userId)
             .collection("dailyInfo")
-            .document(LocalDate.now().toString())
+            .document(selectedDate.toString())
             .collection("doctors")
             .document(doctor.id)
             .set(mapOf("checked" to doctor.isChecked))
@@ -421,6 +446,54 @@ class DayPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    private fun updateDrinkCountInFirestore() {
+        db.collection("users").document(userId)
+            .collection("dailyInfo")
+            .document(selectedDate.toString())
+            .update("drinksCount", drinksCount)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Drinks count updated in Firestore", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error updating drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
+    private fun fetchTodaysDrinkCount() {
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(selectedDate.toString())
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // Dokument istnieje, pobieramy liczbę napojów
+                    drinksCount = document.getLong("drinksCount")?.toInt() ?: 0
+                    updateDrinkCount()
+                } else {
+                    // Dokument nie istnieje, tworzymy nowy dokument z domyślną liczbą napojów = 0
+                    val defaultDailyInfo = hashMapOf(
+                        "drinksCount" to 0
+                        // Dodaj inne pola jeśli są potrzebne
+                    )
+                    db.collection("users").document(userId).collection("dailyInfo")
+                        .document(selectedDate.toString())
+                        .set(defaultDailyInfo)
+                        .addOnSuccessListener {
+                            // Utworzono nowy dokument
+                            drinksCount = 0
+                            updateDrinkCount()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Error creating daily info: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error fetching drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)
