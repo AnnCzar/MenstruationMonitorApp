@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 //import com.github.mikephil.charting.charts.LineChart
 //import com.github.mikephil.charting.components.XAxis
@@ -55,9 +56,30 @@ class AccountWindowActivity : AppCompatActivity() {
 //
 //        }
 
-//        homeButtonProfil.setOnClickListener {
-//            openMainWindowActivity(userId)
-//        }
+        homeButtonProfil.setOnClickListener {
+            val userRef = db.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { user ->
+                    if (user != null) {
+                        val statusPregnancy = user.getBoolean("statusPregnancy")
+                        if (statusPregnancy != null) {
+                            if (!statusPregnancy) {
+                                openMainWindowPeriodActivity(userId)
+                            } else {
+                                openMainWindowPregnancyActivity(userId)
+                            }
+                        } else {
+                            // Obsługa przypadku, gdy statusPregnancy nie został ustawiony lub jest null
+                        }
+                    } else {
+                        // Obsługa przypadku, gdy użytkownik nie istnieje
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // Obsługa błędów podczas pobierania danych użytkownika
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun initializeViews() {
@@ -174,10 +196,15 @@ class AccountWindowActivity : AppCompatActivity() {
 
     }
 
-//    private fun openMainWindowActivity(userId: String) {
-//        val intent = Intent(this, MainWindowActivity::class.java).apply {
-//            putExtra("USER_ID", userId)
-//        }
-//        startActivity(intent)
-//    }
+    private fun openMainWindowPeriodActivity(userId: String) {
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+    private fun openMainWindowPregnancyActivity(userId: String) {
+        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
 }

@@ -45,6 +45,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
+        createNotificationChannel()
 
 
 
@@ -200,6 +201,21 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private fun calculateOvulationDate(nextPeriodDate: LocalDate): LocalDate {
         return nextPeriodDate.minusDays(14)
     }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "MedicineReminderChannel"
+            val descriptionText = "Channel for Medicine Reminders"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("MEDICINE_REMINDER_CHANNEL", name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 
     private fun updateEndDateInFirestore() {
         db.collection("users").document(userId).collection("cycles")
