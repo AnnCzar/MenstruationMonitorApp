@@ -1,6 +1,9 @@
 package com.example.project
 
+import android.app.AlarmManager
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -12,6 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.os.Build
+
+import java.util.*
 
 class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var currentDateTextPeriod: TextView
@@ -25,6 +34,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var begginingPregnancyButton: Button
     private lateinit var mainWindowPeriodSettingButton: ImageButton
     private lateinit var mainWindowPeriodAcountButton: ImageButton
+    private lateinit var logoutButton: Button
 
     private lateinit var medicineRecyclerView: RecyclerView
     private lateinit var medicineAdapter: MedicineAdapter
@@ -35,6 +45,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
+
+
 
         userId = intent.getStringExtra("USER_ID") ?: ""
 
@@ -63,6 +75,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         mainWindowPeriodSettingButton = findViewById(R.id.mainWindowPeriodSettingButton)
         mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
+        logoutButton = findViewById(R.id.logoutButton)
+
+        logoutButton.setOnClickListener {
+            logout()
+        }
+
 
         toCalendarButtonPeriod.setOnClickListener {
             openCalendarActivity(userId)
@@ -71,14 +89,17 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         begginingPeriodButton.setOnClickListener {
             addCycleDataToFirestore()
             isPeriodStarted = true
-            endPeriodButton.visibility = Button.VISIBLE
+            updateButtonVisibility()
         }
 
         endPeriodButton.setOnClickListener {
             updateEndDateInFirestore()
+            isPeriodStarted = false
+            updateButtonVisibility()
         }
 
         begginingPregnancyButton.setOnClickListener {
+            updatePregnancyStatusToTrue(userId)
             openPregnancyBegginingActivity(userId)
         }
 
@@ -89,6 +110,64 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         mainWindowPeriodSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
+
+        // Fetch saved period status
+        fetchPeriodStatus()
+        currentDateTextPeriod.text = LocalDate.now().toString()
+        scheduleNotification()
+    }
+
+    private fun updateButtonVisibility() {
+        if (isPeriodStarted) {
+            begginingPeriodButton.visibility = Button.GONE
+            endPeriodButton.visibility = Button.VISIBLE
+        } else {
+            begginingPeriodButton.visibility = Button.VISIBLE
+            endPeriodButton.visibility = Button.GONE
+        }
+    }
+
+    private fun fetchPeriodStatus() {
+        db.collection("users").document(userId).collection("cycles")
+            .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val latestCycle = documents.first()
+                    val endDate = latestCycle.getString("endDate")
+                    if (endDate.isNullOrEmpty()) {
+                        isPeriodStarted = true
+                    } else {
+                        isPeriodStarted = false
+                    }
+                    updateButtonVisibility()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        // Fetch today's medicine status
+        fetchTodaysMedicineStatus()
+    }
+
+    private fun fetchTodaysMedicineStatus() {
+        val today = LocalDate.now().toString()
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(today).collection("medicines")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val medicineId = document.id
+                    val isChecked = document.getBoolean("checked") ?: false
+                    medicines.find { it.id == medicineId }?.isChecked = isChecked
+                }
+                medicineAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun addCycleDataToFirestore() {
@@ -96,7 +175,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         val currentDate = LocalDate.now()
 
         val nextPeriodDate = calculateNextPeriodDate(currentDate)
-
         val ovulationDate = calculateOvulationDate(nextPeriodDate)
 
         cycleData["userId"] = userId
@@ -124,27 +202,35 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
     private fun updateEndDateInFirestore() {
-
-        val cycleRef = db.collection("users").document(userId).collection("cycles").document(userId)
-
-        if (isPeriodStarted) {
-            cycleRef
-                .update("endDate", LocalDate.now().toString())
-                .addOnSuccessListener {
-                    Toast.makeText(this@MainWindowPeriodActivity, "Data zakończenia okresu zaktualizowana", Toast.LENGTH_SHORT).show()
+        db.collection("users").document(userId).collection("cycles")
+            .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val latestCycle = documents.first()
+                    val cycleRef = db.collection("users").document(userId)
+                        .collection("cycles").document(latestCycle.id)
+                    cycleRef
+                        .update("endDate", LocalDate.now().toString())
+                        .addOnSuccessListener {
+                            Toast.makeText(this@MainWindowPeriodActivity, "Data zakończenia okresu zaktualizowana", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        } else {
-            Toast.makeText(this@MainWindowPeriodActivity, "Najpierw rozpocznij okres", Toast.LENGTH_SHORT).show()
-        }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
             .addOnSuccessListener { result ->
+                medicines.clear()
                 for (document in result) {
                     val medicine = Medicine(
                         id = document.id,
@@ -201,6 +287,65 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    private fun updatePregnancyStatusToTrue(userId: String) {
+        val userRef = db.collection("users").document(userId)
+        userRef
+            .update("statusPregnancy", true)
+            .addOnSuccessListener {
+                Toast.makeText(this@MainWindowPeriodActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+//    private fun createNotificationChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val name = getString(R.string.channel_name)
+//            val descriptionText = getString(R.string.channel_description)
+//            val importance = NotificationManager.IMPORTANCE_DEFAULT
+//            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+//                description = descriptionText
+//            }
+//            val notificationManager: NotificationManager =
+//                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//    }
+private fun scheduleNotification() {
+    val intent = Intent(this, MedicineReminderReceiver::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(
+        this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val calendar = Calendar.getInstance().apply {
+        timeInMillis = System.currentTimeMillis()
+        set(Calendar.HOUR_OF_DAY, 9) // Set the time you want the reminder
+    }
+
+    alarmManager.setRepeating(
+        AlarmManager.RTC_WAKEUP,
+        calendar.timeInMillis,
+        AlarmManager.INTERVAL_DAY,
+        pendingIntent
+    )
+}
+
+    private fun logout() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("USER_ID")
+        editor.apply()
+
+        val intent = Intent(this, LoginWindowActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+
+
+
 
     private fun openPregnancyBegginingActivity(userId: String) {
         val intent = Intent(this, PregnancyBegginingActivity::class.java)

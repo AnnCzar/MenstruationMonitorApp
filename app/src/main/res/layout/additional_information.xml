@@ -14,14 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dodatkowe_informacje"
-        android:textColor="#C69AA7"
+        android:textColor="#8C6571"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.622"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168"
+        app:layout_constraintVertical_bias="0.087"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -128,97 +128,107 @@
         app:srcCompat="@drawable/happy_emoticon"
         tools:ignore="MissingConstraints" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="309dp"
-        android:layout_height="226dp"
+    <!--    <ScrollView-->
+<!--        android:id="@+id/scrollView2"-->
+<!--        android:layout_width="309dp"-->
+<!--        android:layout_height="226dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.45"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.489"-->
+<!--        tools:ignore="MissingConstraints">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_headache"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ból głowy" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_acne"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Trądzik" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_stomachahe"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ból brzucha" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_mastalgia"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ból piersi" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_dizziness"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Zawroty głowy" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_fever"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Gorączka" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_bachache"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ból pleców" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_bedabbling"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="plamienie" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_nerves"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Zdenerowanie" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_hunger"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Nasilony głód" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_diarrhoea"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Biegunka" />-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox_constipation"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Zaparcie" />-->
+
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSymptoms"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="336dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.489"
-        tools:ignore="MissingConstraints">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <CheckBox
-                android:id="@+id/checkBox_headache"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ból głowy" />
-
-            <CheckBox
-                android:id="@+id/checkBox_acne"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Trądzik" />
-
-            <CheckBox
-                android:id="@+id/checkBox_stomachahe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ból brzucha" />
-
-            <CheckBox
-                android:id="@+id/checkBox_mastalgia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ból piersi" />
-
-            <CheckBox
-                android:id="@+id/checkBox_dizziness"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Zawroty głowy" />
-
-            <CheckBox
-                android:id="@+id/checkBox_fever"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Gorączka" />
-
-            <CheckBox
-                android:id="@+id/checkBox_bachache"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ból pleców" />
-
-            <CheckBox
-                android:id="@+id/checkBox_bedabbling"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="plamienie" />
-
-            <CheckBox
-                android:id="@+id/checkBox_nerves"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Zdenerowanie" />
-
-            <CheckBox
-                android:id="@+id/checkBox_hunger"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nasilony głód" />
-
-            <CheckBox
-                android:id="@+id/checkBox_diarrhoea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Biegunka" />
-
-            <CheckBox
-                android:id="@+id/checkBox_constipation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Zaparcie" />
-
-        </LinearLayout>
-    </ScrollView>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButtonNeutral"
@@ -247,6 +257,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.228"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/addDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/og_lne_samopoczucie"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.167"
         tools:ignore="MissingConstraints" />
 
     <Button

@@ -42,6 +42,10 @@
             android:exported="true">
 
         </activity>
+        <activity android:name=".MainWindowPregnancyActivity"
+            android:exported="true">
+
+        </activity>
         <activity android:name=".CalendarActivity"
             android:exported="true">
 
@@ -62,8 +66,32 @@
             android:exported="true">
 
         </activity>
+        <activity android:name=".PregnancyBegginingActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".DoctorVisitsActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity android:name=".AddVisitActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".MyApp">
+    </activity>
+        <receiver android:name=".MedicineReminderReceiver"/>
+        <receiver android:name=".BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
 
     </application>
 
-</manifest>
+
+
+
+    </manifest>
