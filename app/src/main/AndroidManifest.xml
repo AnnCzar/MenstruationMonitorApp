@@ -59,6 +59,12 @@
             android:exported="true">
 
         </activity>
+
+        <activity android:name=".DayPregnancyActivity"
+            android:exported="true">
+
+        </activity>
+
         <activity android:name=".AdditionalInformationActivity"
             android:exported="true">
 

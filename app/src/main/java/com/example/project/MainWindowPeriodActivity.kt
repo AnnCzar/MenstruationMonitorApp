@@ -19,6 +19,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.os.Build
+import androidx.annotation.RequiresApi
 
 import java.util.*
 
@@ -42,6 +43,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
     private var isPeriodStarted = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
@@ -72,7 +74,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         endPeriodButton = findViewById(R.id.endPeriodButton)
         endPeriodButton.visibility = Button.GONE
 
-        begginingPregnancyButton = findViewById(R.id.begginingPregnancyButton)
+        begginingPregnancyButton = findViewById(R.id.endingPregnancyButton)
 
         mainWindowPeriodSettingButton = findViewById(R.id.mainWindowPeriodSettingButton)
         mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
@@ -128,6 +130,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPeriodStatus() {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -153,6 +156,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         fetchTodaysMedicineStatus()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTodaysMedicineStatus() {
         val today = LocalDate.now().toString()
         db.collection("users").document(userId).collection("dailyInfo")
@@ -171,6 +175,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addCycleDataToFirestore() {
         val cycleData = HashMap<String, Any>()
         val currentDate = LocalDate.now()
@@ -194,10 +199,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateNextPeriodDate(currentDate: LocalDate): LocalDate {
         return currentDate.plusDays(28)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateOvulationDate(nextPeriodDate: LocalDate): LocalDate {
         return nextPeriodDate.minusDays(14)
     }
@@ -217,6 +224,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateEndDateInFirestore() {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -262,6 +270,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleData() {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -289,6 +298,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine) {
         db.collection("users").document(userId)
             .collection("dailyInfo")
@@ -346,10 +356,6 @@ private fun scheduleNotification() {
         startActivity(intent)
         finish()
     }
-
-
-
-
 
     private fun openPregnancyBegginingActivity(userId: String) {
         val intent = Intent(this, PregnancyBegginingActivity::class.java)
