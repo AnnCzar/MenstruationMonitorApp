@@ -28,14 +28,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
-        android:text="Wyloguj się"
+        android:text="Wyloguj"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923" />
+        app:layout_constraintVertical_bias="0.922" />
 
     <Button
         android:id="@+id/toCalendarButtonPeriod"
@@ -80,7 +80,7 @@
         app:layout_constraintVertical_bias="0.853" />
 
     <Button
-        android:id="@+id/begginingPregnancyButton"
+        android:id="@+id/endingPregnancyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
@@ -206,10 +206,13 @@
         android:layout_width="255dp"
         android:layout_height="124dp"
         android:layout_marginTop="58dp"
-        app:layout_constraintTop_toBottomOf="@id/medicineTextMainPregnancy"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/toCalendarButtonPeriod"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/toCalendarButtonPeriod" />
+        app:layout_constraintHorizontal_bias="0.314"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/medicineTextMainPregnancy"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/medicineTextMainPregnancy"
         android:layout_width="wrap_content"

@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dayPregnancyLayout"
+    android:id="@+id/day_pregnancy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DayPregnancyActivity"
@@ -60,24 +60,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16" />
-
-    <TextView
-        android:id="@+id/medicineCheckboxPregnancyDay"
-        android:layout_width="246dp"
-        android:layout_height="109dp"
-        android:background="@drawable/rounded_edit_text"
-        android:hint="tu będzie checklista z lekami"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.29"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.175" />
 
     <TextView
         android:id="@+id/doctorsTextDayPregnancy"
@@ -92,7 +78,7 @@
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.618" />
+        app:layout_constraintVertical_bias="0.629" />
 
     <TextView
         android:id="@+id/medicineTextDayPregnancy"
@@ -107,19 +93,7 @@
         app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403" />
-
-    <ListView
-        android:id="@+id/doctorsListPregnancy"
-        android:layout_width="260dp"
-        android:layout_height="127dp"
-        android:background="@drawable/rounded_edit_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.317"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.768" />
+        app:layout_constraintVertical_bias="0.426" />
 
     <Button
         android:id="@+id/additionalInfoPregnancy"
@@ -162,7 +136,7 @@
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/homeButtonCalendar"
         android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#BA798C"
@@ -172,5 +146,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/medicineDayPregn"
+        android:layout_width="242dp"
+        android:layout_height="102dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.284"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.524" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/doctorsVisit"
+        android:layout_width="252dp"
+        android:layout_height="107dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.301"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.756" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

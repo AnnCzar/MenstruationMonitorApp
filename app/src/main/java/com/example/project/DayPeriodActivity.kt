@@ -1,11 +1,13 @@
 package com.example.project
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +44,7 @@ class DayPeriodActivity : AppCompatActivity() {
     private lateinit var selectedDate: LocalDate
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.day_period)
@@ -130,11 +133,13 @@ class DayPeriodActivity : AppCompatActivity() {
         drinksCountText.text = drinksCount.toString()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun currentDate() {
         val currentDate = LocalDate.now()
         cycleDayPeriod.text = currentDate.toString()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
@@ -156,6 +161,7 @@ class DayPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTodaysMedicineStatus() {
         val today = LocalDate.now().toString()
         db.collection("users").document(userId).collection("dailyInfo")
@@ -273,6 +279,7 @@ class DayPeriodActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)
         intent.putExtra("USER_ID", userId)

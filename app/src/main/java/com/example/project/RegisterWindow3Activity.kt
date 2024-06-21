@@ -24,7 +24,6 @@ class RegisterWindow3Activity : AppCompatActivity() {
     private lateinit var enterTimeMedicineRegister: EditText
     private lateinit var buttonConfirmRegisterWindow3: Button
     private lateinit var buttonSaveMedicineRegisterWindow3: Button
-
     val db = Firebase.firestore
 
     @RequiresApi(Build.VERSION_CODES.O)

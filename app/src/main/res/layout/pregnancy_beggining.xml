@@ -34,7 +34,7 @@
         android:id="@+id/insert_date_pregnancy_start"
         android:layout_width="306dp"
         android:layout_height="44dp"
-        android:hint="MM-DD-YYYY"
+        android:hint="YYYY-MM-DD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
