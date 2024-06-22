@@ -2,4 +2,7 @@
     <string name="app_name">project</string>
     <string name="dodatkowe_informacje">Dodatkowe informacje</string>
     <string name="og_lne_samopoczucie">Ogólne samopoczucie</string>
+    <string name="err_msg_enter_password">Please enter your password</string>
+    <string name="err_msg_enter_email">Please enter your email</string>
+    <string name="err_msg_enter_reppassword">Please confirm your password</string>
 </resources>

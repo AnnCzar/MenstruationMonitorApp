@@ -5,18 +5,12 @@ package com.example.project
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-//import com.github.mikephil.charting.charts.LineChart
-//import com.github.mikephil.charting.components.XAxis
-//import com.github.mikephil.charting.components.YAxis
-//import com.github.mikephil.charting.data.Entry
-//import com.github.mikephil.charting.data.LineData
-//import com.github.mikephil.charting.data.LineDataSet
-//import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 
@@ -90,6 +84,9 @@ class AccountWindowActivity : AppCompatActivity() {
         visitsButton = findViewById(R.id.visitsButton)
         medicationsButton = findViewById(R.id.medicationsButton)
 
+        medicationsButton.setOnClickListener {
+            openMedicineWindowActivity(userId)
+        }
 //        chartWeightTemperature = findViewById(R.id.chartWeightTemperature)
     }
 
@@ -99,88 +96,43 @@ class AccountWindowActivity : AppCompatActivity() {
                 if (document != null) {
                     val username = document.getString("login") ?: "N/A"
                     usernameTextView.text = username
+                    Log.d("Firestore", "User login: $username")
+
+                    val userWeight = document.getDouble("weight") ?: 0.0
+
+                    db.collection("users").document(userId)
+                        .collection("dailyInfo")
+                        .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (!documents.isEmpty) {
+                                val lastWeight = documents.documents[0].getDouble("weight") ?: 0.0
+                                lastWeightTextView.text = "Last weight: $lastWeight"
+                                Log.d("Firestore", "Last weight from dailyInfo: $lastWeight")
+                            } else {
+                                // Jeśli `dailyInfo` jest puste, użyj wagi z `users`
+                                lastWeightTextView.text = "Weight: $userWeight"
+                                Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            lastWeightTextView.text = "Weight: $userWeight"
+                            Log.e("Firestore", "Error fetching dailyInfo data, using user weight: $userWeight", e)
+                        }
                 } else {
                     usernameTextView.text = "No user data found"
+                    lastWeightTextView.text = "No weight data found"
+                    Log.d("Firestore", "No user data found")
                 }
             }
             .addOnFailureListener { e ->
                 usernameTextView.text = "Error: ${e.message}"
-            }
-
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val lastWeight = document.getString("weight") ?: "N/A"
-                    lastWeightTextView.text = lastWeight
-                }
-            }
-            .addOnFailureListener { e ->
                 lastWeightTextView.text = "Error: ${e.message}"
+                Log.e("Firestore", "Error fetching user data", e)
             }
     }
 
-//    private fun loadChartData() {
-//        val dates = mutableListOf<LocalDate>()
-////        val weights = mutableListOf<Entry>()
-////        val temperatures = mutableListOf<Entry>()
-//
-//        db.collection("users").document(userId)
-//            .collection("dailyInfo")
-//            .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
-//            .limit(7)
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                var index = 0
-//                for (document in documents) {
-//                    val date = document.getString("date")?.let { LocalDate.parse(it) }
-//                    val weight = document.getString("weight")?.toFloatOrNull() ?: 0f
-//                    val temperature = document.getString("temperature")?.toFloatOrNull() ?: 0f
-//
-//                    date?.let {
-//                        dates.add(it)
-////                        weights.add(Entry(index.toFloat(), weight))
-////                        temperatures.add(Entry(index.toFloat(), temperature))
-//                    }
-//                    index++
-//                }
-//
-//                val weightDataSet = LineDataSet(weights, "Weight").apply {
-//                    color = Color.BLUE
-//                    axisDependency = YAxis.AxisDependency.LEFT
-//                }
-//
-//                val temperatureDataSet = LineDataSet(temperatures, "Temperature").apply {
-//                    color = Color.RED
-//                    axisDependency = YAxis.AxisDependency.RIGHT
-//                }
-//
-//                val lineData = LineData(weightDataSet, temperatureDataSet)
-//                chartWeightTemperature.data = lineData
-//                chartWeightTemperature.invalidate()
-//
-//                val xAxis = chartWeightTemperature.xAxis
-//                xAxis.position = XAxis.XAxisPosition.BOTTOM
-//                xAxis.setDrawGridLines(false)
-//                xAxis.valueFormatter = object : ValueFormatter() {
-//                    override fun getFormattedValue(value: Float): String {
-//                        return dates.getOrNull(value.toInt())?.toString() ?: value.toString()
-//                    }
-//                }
-//
-//                val leftAxis = chartWeightTemperature.axisLeft
-//                leftAxis.setDrawGridLines(false)
-//
-//                val rightAxis = chartWeightTemperature.axisRight
-//                rightAxis.setDrawGridLines(false)
-//            }
-//            .addOnFailureListener { e ->
-//                // Handle error here
-//            }
-//    }
 
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
@@ -204,6 +156,12 @@ class AccountWindowActivity : AppCompatActivity() {
 
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+    private fun openMedicineWindowActivity(userId: String) {
+        val intent = Intent(this, MedicineActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
