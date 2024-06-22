@@ -207,6 +207,8 @@ class DoctorVisitsActivity : AppCompatActivity() {
             intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
+
+
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }

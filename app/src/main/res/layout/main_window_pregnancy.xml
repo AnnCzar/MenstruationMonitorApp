@@ -87,8 +87,8 @@
         android:layout_width="106dp"
         android:layout_height="57dp"
         android:background="@drawable/rounded_edit_text"
-        android:text="dni"
-        android:textColor="@android:color/transparent"
+        android:text=""
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.947"
@@ -153,13 +153,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicinePregnancy"
-        android:layout_width="256dp"
-        android:layout_height="136dp"
+        android:layout_width="253dp"
+        android:layout_height="121dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicineTextMainPregnancy"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.05"
+        tools:listitem="@layout/medicine_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

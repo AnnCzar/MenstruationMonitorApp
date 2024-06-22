@@ -97,7 +97,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPregnancyData() {
-        db.collection("pregnancies")
+        db.collection("users").document(userId).collection("pregnancies")
             .whereEqualTo("userId", userId)
             .get()
             .addOnSuccessListener { documents ->
