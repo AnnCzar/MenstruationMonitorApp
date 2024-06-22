@@ -54,9 +54,9 @@
         android:layout_width="113dp"
         android:layout_height="46dp"
         android:background="@drawable/rounded_edit_text"
-        android:text="dni"
+        android:text=""
         android:textAlignment="center"
-        android:textColor="@android:color/transparent"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +156,8 @@
         app:layout_constraintHorizontal_bias="0.284"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.524" />
+        app:layout_constraintVertical_bias="0.524"
+        tools:listitem="@layout/medicine_item" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctorsVisit"
@@ -167,6 +168,7 @@
         app:layout_constraintHorizontal_bias="0.301"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.756" />
+        app:layout_constraintVertical_bias="0.756"
+        tools:listitem="@layout/doctor_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

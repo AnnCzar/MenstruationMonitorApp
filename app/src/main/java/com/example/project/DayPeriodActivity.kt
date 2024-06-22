@@ -3,6 +3,7 @@ package com.example.project
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 class DayPeriodActivity : AppCompatActivity() {
 
@@ -43,7 +45,6 @@ class DayPeriodActivity : AppCompatActivity() {
     private lateinit var userId: String
     private lateinit var selectedDate: LocalDate
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +55,7 @@ class DayPeriodActivity : AppCompatActivity() {
 
         // Get userId from Intent
         userId = intent.getStringExtra("USER_ID") ?: ""
-        selectedDate= LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
+        selectedDate = LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
 
         // Initialize views
         cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
@@ -124,20 +125,103 @@ class DayPeriodActivity : AppCompatActivity() {
             }
         }
 
-
         fetchTodaysDrinkCount()
-
-
+        fetchTodaysCycleDay()
     }
+
     private fun updateDrinkCount() {
         drinksCountText.text = drinksCount.toString()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun currentDate() {
-        val currentDate = LocalDate.now()
-        cycleDayPeriod.text = currentDate.toString()
+    private fun fetchTodaysCycleDay() {
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { userDoc ->
+                if (userDoc.exists()) {
+                    if (userDoc.contains("lastPeriodDate")) {
+                        val lastPeriodDateValue = userDoc.get("lastPeriodDate")
+
+                        if (lastPeriodDateValue is String) {
+                            val lastPeriodDate = LocalDate.parse(lastPeriodDateValue, DateTimeFormatter.ISO_LOCAL_DATE)
+                            val cycleLength = userDoc.getLong("cycleLength")?.toInt()
+
+                            if (cycleLength != null) {
+                                val currentDate = LocalDate.now()
+                                val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                Log.d("CycleDay", "cycleDay calculated: $cycleDay")
+                                displayCycleDay(cycleDay)
+                            } else {
+                                Toast.makeText(this, "No valid cycleLength found", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            val lastPeriodDate = parseCustomDate(lastPeriodDateValue)
+
+                            if (lastPeriodDate != null) {
+                                val cycleLength = userDoc.getLong("cycleLength")?.toInt()
+
+                                if (cycleLength != null) {
+                                    val currentDate = LocalDate.now()
+                                    val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                    Log.d("CycleDay", "cycleDay calculated: $cycleDay")
+                                    displayCycleDay(cycleDay)
+                                } else {
+                                    Toast.makeText(this, "No valid cycleLength found", Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                Toast.makeText(this, "'lastPeriodDate' is not a valid date format in Firestore", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "'lastPeriodDate' field does not exist in Firestore", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "User document does not exist", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun parseCustomDate(dateValue: Any?): LocalDate? {
+        return try {
+            when (dateValue) {
+                is String -> LocalDate.parse(dateValue, DateTimeFormatter.ISO_LOCAL_DATE)
+                is Map<*, *> -> {
+                    val year = (dateValue["year"] as? Long)?.toInt() ?: return null
+                    val month = (dateValue["monthValue"] as? Long)?.toInt() ?: return null
+                    val day = (dateValue["dayOfMonth"] as? Long)?.toInt() ?: return null
+                    LocalDate.of(year, month, day)
+                }
+                else -> null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateCycleDay(lastPeriodDate: LocalDate, currentDate: LocalDate, cycleLength: Int): Int {
+        val daysPassed = ChronoUnit.DAYS.between(lastPeriodDate, currentDate)
+        var cycleDay = ((daysPassed % cycleLength) + cycleLength) % cycleLength + 1
+
+        if (cycleDay <= 0) {
+            cycleDay += cycleLength
+        }
+
+        return cycleDay.toInt()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayCycleDay(cycleDay: Int) {
+        Log.d("UI", "Updating UI with cycleDay: $cycleDay")
+        runOnUiThread {
+            cycleDayPeriod.text = "$cycleDay"
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {
@@ -180,8 +264,12 @@ class DayPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctors() {
-        db.collection("users").document(userId).collection("doctors")
+        val currentDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+
+        db.collection("users").document(userId).collection("doctorsvisits")
+            .whereEqualTo("visitDate", currentDate)
             .get()
             .addOnSuccessListener { result ->
                 doctors.clear()
@@ -244,7 +332,6 @@ class DayPeriodActivity : AppCompatActivity() {
             }
     }
 
-
     private fun fetchTodaysDrinkCount() {
         db.collection("users").document(userId).collection("dailyInfo")
             .document(selectedDate.toString())
@@ -258,6 +345,7 @@ class DayPeriodActivity : AppCompatActivity() {
                     // Dokument nie istnieje, tworzymy nowy dokument z domyślną liczbą napojów = 0
                     val defaultDailyInfo = hashMapOf(
                         "drinksCount" to 0
+                        // Dodaj inne pola jeśli są potrzebne
                         // Dodaj inne pola jeśli są potrzebne
                     )
                     db.collection("users").document(userId).collection("dailyInfo")
@@ -277,7 +365,6 @@ class DayPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error fetching drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
@@ -305,4 +392,3 @@ class DayPeriodActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
-

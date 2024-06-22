@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -13,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import database.collections.Pregnancy
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import java.time.format.DateTimeFormatter
 
 class DayPregnancyActivity : AppCompatActivity() {
@@ -69,7 +72,7 @@ class DayPregnancyActivity : AppCompatActivity() {
         doctorsVisit.adapter = doctorAdapter
 
         userId = intent.getStringExtra("USER_ID") ?: ""
-        selectedDate= LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
+        selectedDate = LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
         db = FirebaseFirestore.getInstance()
 
         dateDayPregnancy.text = LocalDate.now().toString()
@@ -87,8 +90,7 @@ class DayPregnancyActivity : AppCompatActivity() {
             openHomeWindowActivity(userId)
         }
 
-        fetchMedicines()
-        fetchDoctors()
+        fetchPregnancyData()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -115,6 +117,38 @@ class DayPregnancyActivity : AppCompatActivity() {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchPregnancyData() {
+        db.collection("users").document(userId).collection("pregnancies")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val pregnancy = document.toObject(Pregnancy::class.java)
+                    val startDate = pregnancy.startDatePregnancy
+
+                    if (startDate != null) {
+                        val formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy")
+                        val startDateLocalDate = LocalDate.parse(startDate.toString(), formatter)
+                        val currentWeek = calculateCurrentWeek(startDateLocalDate, selectedDate)
+                        cycleDayPregnancy.text = currentWeek.toString()
+                        fetchMedicines()
+                        return@addOnSuccessListener
+                    }
+                }
+                cycleDayPregnancy.text = "N/A"
+            }
+            .addOnFailureListener { exception ->
+                Log.e("DayPregnancyActivity", "Error getting pregnancy documents: ", exception)
+                cycleDayPregnancy.text = "Error"
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateCurrentWeek(startDate: LocalDate, selectedDate: LocalDate): Long {
+        return ChronoUnit.WEEKS.between(startDate, selectedDate) + 1 
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

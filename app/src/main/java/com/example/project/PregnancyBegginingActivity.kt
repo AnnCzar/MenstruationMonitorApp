@@ -53,7 +53,7 @@ class PregnancyBegginingActivity : AppCompatActivity() {
                 "userId" to userId
             )
 
-            db.collection("pregnancies")
+            db.collection("users").document(userId).collection("pregnancies")
                 .add(pregnancyData)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Pregnancy start date saved", Toast.LENGTH_SHORT).show()
