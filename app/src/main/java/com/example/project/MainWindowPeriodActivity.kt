@@ -19,6 +19,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.os.Build
+import androidx.annotation.RequiresApi
+import database.collections.Users
+import java.time.ZoneId
 
 import java.util.*
 
@@ -42,6 +45,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
     private var isPeriodStarted = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
@@ -62,7 +66,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         medicineRecyclerView.adapter = medicineAdapter
 
         fetchMedicines()
-        fetchLatestCycleData() // Fetch the latest cycle data on activity creation
+        fetchLatestCycleData()
 
         currentDateTextPeriod = findViewById(R.id.currentDateTextPeriod)
         daysLeftPeriod = findViewById(R.id.daysLeftPeriod)
@@ -72,7 +76,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         endPeriodButton = findViewById(R.id.endPeriodButton)
         endPeriodButton.visibility = Button.GONE
 
-        begginingPregnancyButton = findViewById(R.id.begginingPregnancyButton)
+        begginingPregnancyButton = findViewById(R.id.endingPregnancyButton)
 
         mainWindowPeriodSettingButton = findViewById(R.id.mainWindowPeriodSettingButton)
         mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
@@ -128,6 +132,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPeriodStatus() {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -153,6 +158,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         fetchTodaysMedicineStatus()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTodaysMedicineStatus() {
         val today = LocalDate.now().toString()
         db.collection("users").document(userId).collection("dailyInfo")
@@ -171,6 +177,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addCycleDataToFirestore() {
         val cycleData = HashMap<String, Any>()
         val currentDate = LocalDate.now()
@@ -194,10 +201,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateNextPeriodDate(currentDate: LocalDate): LocalDate {
         return currentDate.plusDays(28)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateOvulationDate(nextPeriodDate: LocalDate): LocalDate {
         return nextPeriodDate.minusDays(14)
     }
@@ -217,6 +226,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateEndDateInFirestore() {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -262,33 +272,133 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun fetchLatestCycleData() {
+//        db.collection("users").document(userId).collection("cycles")
+//            .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+//            .limit(1)
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                if (documents.isEmpty) {
+//                    Toast.makeText(this, "Brak danych cyklu", Toast.LENGTH_SHORT).show()
+//                    return@addOnSuccessListener
+//                }
+//
+//                val latestCycle = documents.first()
+//                val nextPeriodDate = LocalDate.parse(latestCycle.getString("nextPeriodDate"))
+//                val nextOvulationDate = LocalDate.parse(latestCycle.getString("nextOvulationDate"))
+//                val currentDate = LocalDate.now()
+//
+//                val daysUntilNextPeriod = ChronoUnit.DAYS.between(currentDate, nextPeriodDate)
+//                val daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, nextOvulationDate)
+//
+//                daysLeftPeriod.text = daysUntilNextPeriod.toString()
+//                daysLeftOwulation.text = daysUntilNextOvulation.toString()
+//            }
+//            .addOnFailureListener { e ->
+//                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
+//    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleData() {
+        val userDocRef = db.collection("users").document(userId)
+
+        userDocRef.get()
+            .addOnSuccessListener { userDoc ->
+                if (userDoc.exists()) {
+                    val lastPeriodDateValue = userDoc.get("lastPeriodDate")
+                    val cycleLength = userDoc.getLong("cycleLength")?.toInt()
+                    val periodLength = userDoc.getLong("periodLength")?.toInt()
+
+                    if (cycleLength == null || periodLength == null) {
+                        showToast("Brak pełnych danych użytkownika")
+                        return@addOnSuccessListener
+                    }
+
+                    val lastPeriodDate = parseCustomDate(lastPeriodDateValue)
+
+                    if (lastPeriodDate == null) {
+                        showToast("Nieprawidłowy format daty: $lastPeriodDateValue")
+                        return@addOnSuccessListener
+                    }
+
+                    fetchLatestCycleDocument(lastPeriodDate, cycleLength)
+                } else {
+                    showToast("Nie znaleziono danych użytkownika")
+                }
+            }
+            .addOnFailureListener { e ->
+                showToast("Błąd: ${e.message}")
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun parseCustomDate(dateValue: Any?): LocalDate? {
+        return try {
+            if (dateValue is Map<*, *>) {
+                val year = (dateValue["year"] as? Long)?.toInt() ?: return null
+                val month = (dateValue["monthValue"] as? Long)?.toInt() ?: return null
+                val day = (dateValue["dayOfMonth"] as? Long)?.toInt() ?: return null
+                LocalDate.of(year, month, day)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchLatestCycleDocument(lastPeriodDate: LocalDate, cycleLength: Int) {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
             .limit(1)
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-                    Toast.makeText(this, "Brak danych cyklu", Toast.LENGTH_SHORT).show()
-                    return@addOnSuccessListener
+                    calculateAndDisplayDates(lastPeriodDate, cycleLength)
+                } else {
+                    val latestCycle = documents.first()
+                    val nextPeriodDate = LocalDate.parse(latestCycle.getString("nextPeriodDate"))
+                    val nextOvulationDate = LocalDate.parse(latestCycle.getString("nextOvulationDate"))
+                    displayDates(nextPeriodDate, nextOvulationDate, cycleLength)
                 }
-
-                val latestCycle = documents.first()
-                val nextPeriodDate = LocalDate.parse(latestCycle.getString("nextPeriodDate"))
-                val nextOvulationDate = LocalDate.parse(latestCycle.getString("nextOvulationDate"))
-                val currentDate = LocalDate.now()
-
-                val daysUntilNextPeriod = ChronoUnit.DAYS.between(currentDate, nextPeriodDate)
-                val daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, nextOvulationDate)
-
-                daysLeftPeriod.text = daysUntilNextPeriod.toString()
-                daysLeftOwulation.text = daysUntilNextOvulation.toString()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                showToast("Błąd: ${e.message}")
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateAndDisplayDates(lastPeriodDate: LocalDate, cycleLength: Int) {
+        val nextPeriodDate = lastPeriodDate.plusDays(cycleLength.toLong())
+        val nextOvulationDate = lastPeriodDate.plusDays((cycleLength / 2).toLong())
+        displayDates(nextPeriodDate, nextOvulationDate, cycleLength)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayDates(nextPeriodDate: LocalDate, nextOvulationDate: LocalDate, cycleLength: Int) {
+        val currentDate = LocalDate.now()
+        var daysUntilNextPeriod = ChronoUnit.DAYS.between(currentDate, nextPeriodDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, nextOvulationDate)
+
+        if (daysUntilNextOvulation < 0) {
+            val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, adjustedOvulationDate)
+        }
+
+        daysLeftPeriod.text = daysUntilNextPeriod.toString()
+        daysLeftOwulation.text = daysUntilNextOvulation.toString()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine) {
         db.collection("users").document(userId)
             .collection("dailyInfo")
@@ -346,10 +456,6 @@ private fun scheduleNotification() {
         startActivity(intent)
         finish()
     }
-
-
-
-
 
     private fun openPregnancyBegginingActivity(userId: String) {
         val intent = Intent(this, PregnancyBegginingActivity::class.java)

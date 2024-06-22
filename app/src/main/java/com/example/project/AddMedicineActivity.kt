@@ -1,6 +1,5 @@
 package com.example.project
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -18,7 +17,8 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
-class RegisterWindow3Activity : AppCompatActivity() {
+class AddMedicineActivity : AppCompatActivity(){
+
     private lateinit var enterMedicineName: EditText
     private lateinit var enterDoseMedicineRegister: EditText
     private lateinit var enterTimeMedicineRegister: EditText
@@ -73,10 +73,10 @@ class RegisterWindow3Activity : AppCompatActivity() {
                     db.collection("users").document(userId!!)
                         .collection("medicines").add(medicineDetails)
                         .addOnSuccessListener {
-                            Toast.makeText(this@RegisterWindow3Activity, "Lek zapisany", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddMedicineActivity, "Lek zapisany", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { e ->
-                            Toast.makeText(this@RegisterWindow3Activity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddMedicineActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                 }
             } else {
@@ -84,7 +84,6 @@ class RegisterWindow3Activity : AppCompatActivity() {
             }
         }
 
-        // Listener for confirming registration
         buttonConfirmRegisterWindow3.setOnClickListener {
             saveAllUserData(userId!!, email!!, password!!, username!!, lastPeriodDate, cycleLength, periodLength, weight)
         }
@@ -109,18 +108,11 @@ class RegisterWindow3Activity : AppCompatActivity() {
             db.collection("users").document(userId)
                 .set(user)
                 .addOnSuccessListener {
-                    Toast.makeText(this@RegisterWindow3Activity, "Dane użytkownika zapisane", Toast.LENGTH_SHORT).show()
-                    openMainWindowPeriodActivity(userId)
+                    Toast.makeText(this@AddMedicineActivity, "Dane użytkownika zapisane", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this@RegisterWindow3Activity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddMedicineActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-    }
-
-    private fun openMainWindowPeriodActivity(userId: String?) {
-        val intent = Intent(this, MainWindowPeriodActivity::class.java)
-        intent.putExtra("USER_ID", userId) // Przekazanie ID użytkownika do nowej aktywności
-        startActivity(intent)
     }
 }
