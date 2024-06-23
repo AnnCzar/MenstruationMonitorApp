@@ -2,4 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <style name="CalendarTitleTextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CalendarTextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="CustomCalendarMonth">
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
 </resources>

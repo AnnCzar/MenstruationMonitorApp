@@ -1,6 +1,6 @@
 package com.example.project
 
-import com.example.project.MainWindowPregnancyActivity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -31,9 +31,32 @@ class PregnancyBegginingActivity : AppCompatActivity() {
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
 
+        insert_date_pregnancy_start.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         accept_pregnancy_beg_button.setOnClickListener {
             savePregnancyStartDate()
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                insert_date_pregnancy_start.setText(sdf.format(selectedDate.time))
+            },
+            year, month, day
+        )
+        datePickerDialog.show()
     }
 
     private fun savePregnancyStartDate() {
@@ -66,7 +89,6 @@ class PregnancyBegginingActivity : AppCompatActivity() {
             Toast.makeText(this, "Invalid date format. Use yyyy-MM-dd", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
