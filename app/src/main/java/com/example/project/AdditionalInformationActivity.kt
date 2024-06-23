@@ -66,18 +66,18 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
     private fun configureRecyclerView() {
         val symptoms = listOf(
-            Symptom("Headache", false),
-            Symptom("Acne", false),
-            Symptom("Stomachache", false),
-            Symptom("Breast pain", false),
-            Symptom("Dizziness", false),
-            Symptom("Fever", false),
-            Symptom("Back pain", false),
-            Symptom("Swelling", false),
-            Symptom("Nervousness", false),
-            Symptom("Hunger", false),
-            Symptom("Diarrhea", false),
-            Symptom("Constipation", false)
+            Symptom("Ból głowy", false),
+            Symptom("Trądzik", false),
+            Symptom("Ból brzucha", false),
+            Symptom("Ból piersi", false),
+            Symptom("Zawroty głowy", false),
+            Symptom("Gorączka", false),
+            Symptom("Ból pleców", false),
+            Symptom("Obrzęki", false),
+            Symptom("Podenerwowanie", false),
+            Symptom("Głód", false),
+            Symptom("Biegunka", false),
+            Symptom("Zaparcie", false)
         )
 
         symptomsAdapter = SymptomsAdapter(symptoms) { symptom, isChecked ->
