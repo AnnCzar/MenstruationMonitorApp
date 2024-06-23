@@ -33,36 +33,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.18" />
 
-    <TextView
-        android:id="@+id/text_end_menstruation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Koniec menstruacji"
-        android:textColor="#C69AA7"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.734" />
+<!--    <TextView-->
+<!--        android:id="@+id/text_end_menstruation"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Dzień menstruacji"-->
+<!--        android:textColor="#C69AA7"-->
+<!--        android:textSize="24sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.145"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.734" />-->
 
 
-    <TextView
-        android:id="@+id/daysToEndOfMenstruaction"
-        android:layout_width="113dp"
-        android:layout_height="46dp"
-        android:background="@drawable/round_shape"
-        android:ems="10"
-        android:text="dni"
-        android:textAlignment="center"
-        android:textColor="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.802" />
+<!--    <TextView-->
+<!--        android:id="@+id/daysToEndOfMenstruaction"-->
+<!--        android:layout_width="113dp"-->
+<!--        android:layout_height="46dp"-->
+<!--        android:background="@drawable/round_shape"-->
+<!--        android:ems="10"-->
+<!--        android:text="dni"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@android:color/transparent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.1"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.802" />-->
 
     <ImageButton
         android:id="@+id/calendarAcountButton"

@@ -8,9 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import database.FirestoreDatabaseOperations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 
 class RegisterWindow2Activity : AppCompatActivity() {
     private lateinit var enterLastPeriod: EditText
@@ -38,6 +42,9 @@ class RegisterWindow2Activity : AppCompatActivity() {
 
         // Pobranie userId z intent
         val userId = intent.getStringExtra("USER_ID")
+        val email = intent.getStringExtra("EMAIL")
+        val password = intent.getStringExtra("PASSWORD")
+        val username = intent.getStringExtra("USERNAME")
 
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmRegisterWindow2.setOnClickListener {
@@ -73,8 +80,20 @@ class RegisterWindow2Activity : AppCompatActivity() {
         }
     }
 
-    private fun openRegisterWindow3Activity() {
-        val intent = Intent(this, RegisterWindow3Activity::class.java)
+    private fun openRegisterWindow3Activity(
+        userId: String, email: String, password:String, username: String,
+        lastPeriod: String, cycleLength: String, periodLength: String, weight: String
+    ) {
+        val intent = Intent(this, RegisterWindow3Activity::class.java).apply {
+            putExtra("USER_ID", userId)
+            putExtra("EMAIL", email)
+            putExtra("PASSWORD", password)
+            putExtra("USERNAME", username)
+            putExtra("LAST_PERIOD", lastPeriod)
+            putExtra("CYCLE_LENGTH", cycleLength.toInt())
+            putExtra("PERIOD_LENGTH", periodLength.toInt())
+            putExtra("WEIGHT", weight.toDouble())
+        }
         startActivity(intent)
     }
 }
