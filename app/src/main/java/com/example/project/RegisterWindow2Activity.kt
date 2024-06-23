@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -8,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RegisterWindow2Activity : AppCompatActivity() {
     private lateinit var enterLastPeriod: EditText
@@ -36,6 +39,11 @@ class RegisterWindow2Activity : AppCompatActivity() {
         val password = intent.getStringExtra("PASSWORD")
         val username = intent.getStringExtra("USERNAME")
 
+        // Date Picker for Last Period
+        enterLastPeriod.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmRegisterWindow2.setOnClickListener {
             val lastPeriod = enterLastPeriod.text.toString()
@@ -52,8 +60,27 @@ class RegisterWindow2Activity : AppCompatActivity() {
         }
     }
 
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                enterLastPeriod.setText(sdf.format(selectedDate.time))
+            },
+            year, month, day
+        )
+        datePickerDialog.show()
+    }
+
     private fun openRegisterWindow3Activity(
-        userId: String, email: String, password:String, username: String,
+        userId: String, email: String, password: String, username: String,
         lastPeriod: String, cycleLength: String, periodLength: String, weight: String
     ) {
         val intent = Intent(this, RegisterWindow3Activity::class.java).apply {

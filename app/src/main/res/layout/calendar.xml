@@ -8,16 +8,27 @@
     tools:context=".CalendarActivity"
     android:background="@drawable/tlo">
 
+
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@style/CustomCalendarMonth"
+        android:dateTextAppearance="@style/CalendarTextAppearance"
+        android:focusedMonthDateColor="@android:color/black"
+        android:unfocusedMonthDateColor="@android:color/black"
+        android:weekDayTextAppearance="@style/CalendarTextAppearance"
+        android:weekNumberColor="@android:color/black"
+        android:weekSeparatorLineColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.413" />
+        app:layout_constraintVertical_bias="0.424"
+        tools:focusedMonthDateColor="@android:color/black" />
+
+
 
     <TextView
         android:id="@+id/text_calendar"

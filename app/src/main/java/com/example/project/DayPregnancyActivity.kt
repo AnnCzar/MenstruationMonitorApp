@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -39,6 +40,7 @@ class DayPregnancyActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var selectedDate: LocalDate
+    private lateinit var fetusImageView: ImageView
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
@@ -55,6 +57,7 @@ class DayPregnancyActivity : AppCompatActivity() {
         homeButtonDayPregnancy = findViewById(R.id.homeButtonCalendar)
         medicineDayPregn = findViewById(R.id.medicineDayPregn)
         doctorsVisit = findViewById(R.id.doctorsVisit)
+        fetusImageView = findViewById(R.id.fetusImageView)
 
         // Set layout managers for RecyclerViews
         medicineDayPregn.layoutManager = LinearLayoutManager(this)
@@ -134,6 +137,7 @@ class DayPregnancyActivity : AppCompatActivity() {
                         val startDateLocalDate = LocalDate.parse(startDate.toString(), formatter)
                         val currentWeek = calculateCurrentWeek(startDateLocalDate, selectedDate)
                         cycleDayPregnancy.text = currentWeek.toString()
+                        setFetusImage(currentWeek.toInt())
                         fetchMedicines()
                         fetchDoctorVisits()
                         return@addOnSuccessListener
@@ -151,6 +155,53 @@ class DayPregnancyActivity : AppCompatActivity() {
     private fun calculateCurrentWeek(startDate: LocalDate, selectedDate: LocalDate): Long {
         return ChronoUnit.WEEKS.between(startDate, selectedDate) + 1 
     }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setFetusImage(week: Int) {
+        val imageResId = when {
+            week >= 41 -> R.drawable.fetus_week_41
+            week == 5 -> R.drawable.fetus_week_5
+            week == 6 -> R.drawable.fetus_week_6
+            week == 7 -> R.drawable.fetus_week_7
+            week == 8 -> R.drawable.fetus_week_8
+            week == 9 -> R.drawable.fetus_week_9
+            week == 10 -> R.drawable.fetus_week_10
+            week == 11 -> R.drawable.fetus_week_11
+            week == 12 -> R.drawable.fetus_week_12
+            week == 13 -> R.drawable.fetus_week_13
+            week == 14 -> R.drawable.fetus_week_14
+            week == 15 -> R.drawable.fetus_week_15
+            week == 16 -> R.drawable.fetus_week_16
+            week == 17 -> R.drawable.fetus_week_17
+            week == 18 -> R.drawable.fetus_week_18
+            week == 19 -> R.drawable.fetus_week_19
+            week == 20 -> R.drawable.fetus_week_20
+            week == 21 -> R.drawable.fetus_week_21
+            week == 22 -> R.drawable.fetus_week_22
+            week == 23 -> R.drawable.fetus_week_23
+            week == 24 -> R.drawable.fetus_week_24
+            week == 25 -> R.drawable.fetus_week_25
+            week == 26 -> R.drawable.fetus_week_26
+            week == 27 -> R.drawable.fetus_week_27
+            week == 28 -> R.drawable.fetus_week_28
+            week == 29 -> R.drawable.fetus_week_29
+            week == 30 -> R.drawable.fetus_week_30
+            week == 31 -> R.drawable.fetus_week_31
+            week == 32 -> R.drawable.fetus_week_32
+            week == 33 -> R.drawable.fetus_week_33
+            week == 34 -> R.drawable.fetus_week_34
+            week == 35 -> R.drawable.fetus_week_35
+            week == 36 -> R.drawable.fetus_week_36
+            week == 37 -> R.drawable.fetus_week_37
+            week == 38 -> R.drawable.fetus_week_38
+            week == 39 -> R.drawable.fetus_week_39
+            week == 40 -> R.drawable.fetus_week_40
+            else -> R.drawable.fetus_default_image
+        }
+        fetusImageView.setImageResource(imageResId)
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {

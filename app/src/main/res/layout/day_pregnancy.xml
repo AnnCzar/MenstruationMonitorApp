@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.084" />
 
+
     <TextView
         android:id="@+id/pregnancyWeekText"
         android:layout_width="wrap_content"
@@ -30,10 +31,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.177" />
+        app:layout_constraintVertical_bias="0.171" />
 
     <TextView
         android:id="@+id/fetusSizeText"
@@ -44,17 +45,29 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.233"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.238" />
+        app:layout_constraintVertical_bias="0.297" />
+
+    <ImageView
+        android:id="@+id/fetusImageView"
+        android:layout_width="160dp"
+        android:layout_height="142dp"
+        android:layout_gravity="center"
+        android:src="@drawable/fetus_default_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.301" />
 
     <TextView
         android:id="@+id/cycleDayPregnancy"
         android:layout_width="113dp"
         android:layout_height="46dp"
         android:background="@drawable/rounded_edit_text"
-        android:text=""
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="20sp"

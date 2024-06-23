@@ -1,9 +1,6 @@
-
 package com.example.project
 
-
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -12,16 +9,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
-import java.time.LocalDate
 
 class AccountWindowActivity : AppCompatActivity() {
     private lateinit var accountWidnowSettingButton: ImageButton
-    private lateinit var homeButtonProfil : ImageButton
+    private lateinit var homeButtonProfil: ImageButton
     private lateinit var usernameTextView: TextView
     private lateinit var lastWeightTextView: TextView
     private lateinit var visitsButton: Button
     private lateinit var medicationsButton: Button
-//    private lateinit var chartWeightTemperature: LineChart
 
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
@@ -32,12 +27,10 @@ class AccountWindowActivity : AppCompatActivity() {
 
         initializeViews()
 
-
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
 
         loadUserInfo()
-//        loadChartData()
 
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
@@ -45,10 +38,6 @@ class AccountWindowActivity : AppCompatActivity() {
         visitsButton.setOnClickListener {
             openVisitsWindow(userId)
         }
-
-//        medicationsButton.setOnClickListener {
-//
-//        }
 
         homeButtonProfil.setOnClickListener {
             val userRef = db.collection("users").document(userId)
@@ -62,15 +51,10 @@ class AccountWindowActivity : AppCompatActivity() {
                             } else {
                                 openMainWindowPregnancyActivity(userId)
                             }
-                        } else {
-                            // Obsługa przypadku, gdy statusPregnancy nie został ustawiony lub jest null
                         }
-                    } else {
-                        // Obsługa przypadku, gdy użytkownik nie istnieje
                     }
                 }
                 .addOnFailureListener { e ->
-                    // Obsługa błędów podczas pobierania danych użytkownika
                     Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
@@ -87,7 +71,6 @@ class AccountWindowActivity : AppCompatActivity() {
         medicationsButton.setOnClickListener {
             openMedicineWindowActivity(userId)
         }
-//        chartWeightTemperature = findViewById(R.id.chartWeightTemperature)
     }
 
     private fun loadUserInfo() {
@@ -107,11 +90,26 @@ class AccountWindowActivity : AppCompatActivity() {
                         .get()
                         .addOnSuccessListener { documents ->
                             if (!documents.isEmpty) {
-                                val lastWeight = documents.documents[0].getDouble("weight") ?: 0.0
-                                lastWeightTextView.text = "Last weight: $lastWeight"
-                                Log.d("Firestore", "Last weight from dailyInfo: $lastWeight")
+                                val latestDateDocument = documents.documents[0]
+                                latestDateDocument.reference.collection("dailyInfo")
+                                    .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                                    .limit(1)
+                                    .get()
+                                    .addOnSuccessListener { dateDocuments ->
+                                        if (!dateDocuments.isEmpty) {
+                                            val lastWeight = dateDocuments.documents[0].getDouble("weight") ?: 0.0
+                                            lastWeightTextView.text = "Last weight: $lastWeight"
+                                            Log.d("Firestore", "Last weight from dailyInfo: $lastWeight")
+                                        } else {
+                                            lastWeightTextView.text = "Weight: $userWeight"
+                                            Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
+                                        }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        lastWeightTextView.text = "Weight: $userWeight"
+                                        Log.e("Firestore", "Error fetching dailyInfo date data, using user weight: $userWeight", e)
+                                    }
                             } else {
-                                // Jeśli `dailyInfo` jest puste, użyj wagi z `users`
                                 lastWeightTextView.text = "Weight: $userWeight"
                                 Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
                             }
@@ -133,19 +131,17 @@ class AccountWindowActivity : AppCompatActivity() {
             }
     }
 
-
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
         }
         startActivity(intent)
     }
-    private fun openVisitsWindow(userId: String) {
 
+    private fun openVisitsWindow(userId: String) {
         val intent = Intent(this, DoctorVisitsActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
-
     }
 
     private fun openMainWindowPeriodActivity(userId: String) {
