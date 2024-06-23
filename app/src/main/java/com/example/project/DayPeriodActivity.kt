@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -31,7 +34,34 @@ class DayPeriodActivity : AppCompatActivity() {
     private lateinit var medicineRecyclerView: RecyclerView
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var medicineAdapter: MedicineAdapter
-    private lateinit var doctorAdapter: DoctorVisitsAdapter
+    private lateinit var doctorAdapter: DoctorVisitAdapter// Adapter for RecyclerView
+    class DoctorVisitAdapter(
+        private val visits: List<DoctorVisit>,
+        private val onVisitClick: (DoctorVisit) -> Unit
+    ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+            return DoctorVisitViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: DoctorVisitViewHolder, position: Int) {
+            val visit = visits[position]
+            holder.bind(visit)
+            holder.itemView.setOnClickListener { onVisitClick(visit) }
+        }
+
+        override fun getItemCount(): Int = visits.size
+
+        class DoctorVisitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            private val textView: TextView = itemView.findViewById(android.R.id.text1)
+
+            fun bind(visit: DoctorVisit) {
+                textView.text = "${visit.doctorName} - ${visit.visitDate}"
+            }
+        }
+    }
+
     private lateinit var drinksCountText: TextView
     private lateinit var increaseDrinkButton: Button
     private lateinit var decreaseDrinkButton: Button
@@ -79,7 +109,7 @@ class DayPeriodActivity : AppCompatActivity() {
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
             saveMedicineCheckStatus(medicine)
         }
-        doctorAdapter = DoctorVisitsAdapter(doctors) { doctor ->
+        doctorAdapter = DoctorVisitAdapter(doctors) { doctor ->
             saveDoctorCheckStatus(doctor)
         }
 

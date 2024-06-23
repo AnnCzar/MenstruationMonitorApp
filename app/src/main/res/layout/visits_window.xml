@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tlo"
-    tools:context=".DoctorVisitsActivity"
-    android:textAlignment="center">
+    tools:context=".DoctorVisitsActivity">
 
     <TextView
         android:id="@+id/visitsText"
@@ -24,7 +23,7 @@
         app:layout_constraintVertical_bias="0.12" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/visitsRecyclerView"
+        android:id="@+id/visitRV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -33,7 +32,11 @@
         app:layout_constraintBottom_toTopOf="@+id/addVisitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visitsText" />
+        app:layout_constraintTop_toBottomOf="@+id/visitsText"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_doctor_visit" />
+
+
 
     <Button
         android:id="@+id/addVisitButton"

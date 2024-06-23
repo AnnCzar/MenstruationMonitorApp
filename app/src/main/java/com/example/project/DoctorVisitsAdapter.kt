@@ -1,34 +1,37 @@
-package com.example.project
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project.DoctorVisit
+import com.example.project.R
 
-class DoctorVisitsAdapter(private val doctors: List<DoctorVisit>, private val onDoctorCheckChange: (DoctorVisit) -> Unit) : RecyclerView.Adapter<DoctorVisitsAdapter.DoctorViewHolder>() {
+// Adapter for RecyclerView
+class DoctorVisitAdapter(
+    private val visits: List<DoctorVisit>,
+    private val onVisitClick: (DoctorVisit) -> Unit
+) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
 
-    class DoctorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val doctorVisitName: TextView = itemView.findViewById(R.id.doctorvisit)
-        val doctorCheckbox: CheckBox = itemView.findViewById(R.id.doctorCheckbox)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_doctor_visit, parent, false)
+        return DoctorVisitViewHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.doctor_item, parent, false)
-        return DoctorViewHolder(view)
+    override fun onBindViewHolder(holder: DoctorVisitViewHolder, position: Int) {
+        val visit = visits[position]
+        holder.bind(visit)
+        holder.itemView.setOnClickListener { onVisitClick(visit) }
     }
 
-    override fun onBindViewHolder(holder: DoctorViewHolder, position: Int) {
-        val doctor = doctors[position]
-        holder.doctorCheckbox.text = doctor.doctorName
-        holder.doctorCheckbox.isChecked = doctor.isChecked
-        holder.doctorCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            doctor.isChecked = isChecked
-            onDoctorCheckChange(doctor)
-            // Update doctor visit status in the database
+    override fun getItemCount(): Int = visits.size
+
+    class DoctorVisitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val doctorNameTextView: TextView = itemView.findViewById(R.id.doctorNameTextView)
+        private val visitDateTextView: TextView = itemView.findViewById(R.id.visitDateTextView)
+
+        fun bind(visit: DoctorVisit) {
+            doctorNameTextView.text = visit.doctorName
+            visitDateTextView.text = visit.visitDate
         }
     }
-
-    override fun getItemCount() = doctors.size
 }
