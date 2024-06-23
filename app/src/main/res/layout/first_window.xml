@@ -12,7 +12,7 @@
         android:id="@+id/text_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nazwa aplikacji!"
+        android:text="MenstruationMonitorApp"
         android:textColor="#C69AA7"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"

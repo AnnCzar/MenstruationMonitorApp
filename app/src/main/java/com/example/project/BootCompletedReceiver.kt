@@ -34,7 +34,7 @@ class BootCompletedReceiver : BroadcastReceiver() {
 
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 22)
-            set(Calendar.MINUTE, 55)
+            set(Calendar.MINUTE, 45)
             set(Calendar.SECOND, 0)
             if (before(Calendar.getInstance())) {
                 add(Calendar.DATE, 1)
