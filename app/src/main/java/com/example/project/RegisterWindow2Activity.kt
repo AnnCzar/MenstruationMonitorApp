@@ -8,13 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import database.FirestoreDatabaseOperations
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Locale
-
 
 class RegisterWindow2Activity : AppCompatActivity() {
     private lateinit var enterLastPeriod: EditText
@@ -25,9 +18,6 @@ class RegisterWindow2Activity : AppCompatActivity() {
 
     // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
     val db = Firebase.firestore
-
-    // Obiekt do obsługi operacji na bazie danych Firestore
-    private val dbOperations = FirestoreDatabaseOperations(db)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,30 +39,12 @@ class RegisterWindow2Activity : AppCompatActivity() {
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmRegisterWindow2.setOnClickListener {
             val lastPeriod = enterLastPeriod.text.toString()
-            val cycleLength = cycleLen.text.toString().toInt()
-            val periodLength = periodLen.text.toString().toInt()
-            val weight = weightRegister.text.toString().toDouble()
+            val cycleLength = cycleLen.text.toString()
+            val periodLength = periodLen.text.toString()
+            val weight = weightRegister.text.toString()
 
-            if (lastPeriod.isNotEmpty() && cycleLength.toString().isNotEmpty() && periodLength.toString().isNotEmpty() && weight.toString().isNotEmpty()) {
-                // Konwersja lastPeriod do Date
-                val lastPeriodDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(lastPeriod)
-
-                // Pobierz aktualnego użytkownika z Firestore
-                GlobalScope.launch(Dispatchers.Main) {
-                    val user = dbOperations.getUser(userId!!)
-                    if (user != null) {
-                        // Aktualizacja danych użytkownika
-                        user.lastPeriodDate = lastPeriodDate
-                        user.cycleLength = cycleLength
-                        user.periodLength = periodLength
-                        user.weight = weight
-                        // Zaktualizuj użytkownika w bazie danych Firestore
-                        dbOperations.updateUser(userId, user)
-                        openRegisterWindow3Activity()
-                    } else {
-                        Toast.makeText(this@RegisterWindow2Activity, "Błąd: Użytkownik nie znaleziony", Toast.LENGTH_SHORT).show()
-                    }
-                }
+            if (lastPeriod.isNotEmpty() && cycleLength.toInt() > 0 && periodLength.toInt() > 0 && weight.toInt() > 0) {
+                openRegisterWindow3Activity(userId!!, email!!, password!!, username!!, lastPeriod, cycleLength, periodLength, weight)
             } else {
                 // Wyświetlenie komunikatu o błędzie
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
