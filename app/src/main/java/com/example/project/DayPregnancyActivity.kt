@@ -135,6 +135,7 @@ class DayPregnancyActivity : AppCompatActivity() {
                         val currentWeek = calculateCurrentWeek(startDateLocalDate, selectedDate)
                         cycleDayPregnancy.text = currentWeek.toString()
                         fetchMedicines()
+                        fetchDoctorVisits()
                         return@addOnSuccessListener
                     }
                 }
@@ -192,19 +193,41 @@ class DayPregnancyActivity : AppCompatActivity() {
             }
     }
 
-    private fun fetchDoctors() {
-        db.collection("users").document(userId).collection("doctors")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchDoctorVisits() {
+        db.collection("users").document(userId).collection("doctorVisits")
+            .whereEqualTo("visitDate", selectedDate.toString()) // Dodano warunek filtrowania po dacie
             .get()
             .addOnSuccessListener { result ->
+                Log.d("DoctorVisitsActivity", "Liczba dokumentów: ${result.documents.size}")
                 doctors.clear()
                 for (document in result) {
                     val doctor = DoctorVisit(
                         id = document.id,
-                        doctorName = document.getString("Doctor_name") ?: "",
+                        doctorName = document.getString("doctorName") ?: "",
                         visitDate = document.getString("visitDate") ?: "",
-                        isChecked = document.getBoolean("isChecked") ?: false
+                        isChecked = document.getBoolean("checked") ?: false
                     )
                     doctors.add(doctor)
+                }
+                doctorAdapter.notifyDataSetChanged() // Aktualizacja adaptera po zmianie danych
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchTodaysDoctorVisitsStatus() {
+        val today = LocalDate.now().toString()
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(today).collection("doctorVisits")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val visitId = document.id
+                    val isChecked = document.getBoolean("checked") ?: false
+                    medicines.find { it.id == visitId }?.isChecked = isChecked
                 }
                 doctorAdapter.notifyDataSetChanged()
             }

@@ -51,7 +51,7 @@ public class DoctorVisitsActivity : AppCompatActivity() {
         }
         visitRV.adapter = visitAdapter
 
-        fetchDoctorVisits()
+        onResume()
 
         addVisitButton.setOnClickListener {
             val intent = Intent(this@DoctorVisitsActivity, AddVisitActivity::class.java)
@@ -87,6 +87,11 @@ public class DoctorVisitsActivity : AppCompatActivity() {
                 }
         }
     }
+    override fun onResume() {
+        super.onResume()
+        doctorsList.clear()
+        fetchDoctorVisits()
+    }
 
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
@@ -97,6 +102,7 @@ public class DoctorVisitsActivity : AppCompatActivity() {
 
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
+            .whereEqualTo("checked", false)
             .get()
             .addOnSuccessListener { result ->
                 // Logowanie lub debugowanie, aby upewnić się, że result nie jest pusty
