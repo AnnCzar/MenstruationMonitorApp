@@ -31,7 +31,7 @@ class DayPregnancyActivity : AppCompatActivity() {
     private lateinit var homeButtonDayPregnancy: ImageButton
 
     private lateinit var medicineAdapter: MedicineAdapter
-    private lateinit var doctorAdapter: DoctorVisitsAdapter
+    private lateinit var doctorAdapter: DayPeriodActivity.DoctorVisitAdapter
 
     private val medicines = mutableListOf<Medicine>()
     private val doctors = mutableListOf<DoctorVisit>()
@@ -64,7 +64,7 @@ class DayPregnancyActivity : AppCompatActivity() {
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
             saveMedicineCheckStatus(medicine)
         }
-        doctorAdapter = DoctorVisitsAdapter(doctors) { doctor ->
+        doctorAdapter = DayPeriodActivity.DoctorVisitAdapter(doctors) { doctor ->
             saveDoctorCheckStatus(doctor)
         }
 
