@@ -14,14 +14,18 @@
         android:text=""
         android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/doctorCheckbox"
+<!--    <CheckBox-->
+<!--        android:id="@+id/doctorCheckbox"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/doctorvisit"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+    <Button
+        android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@+id/doctorvisit"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
+        android:text="Usuń" />
 </LinearLayout>
