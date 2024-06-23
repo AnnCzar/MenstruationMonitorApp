@@ -1,11 +1,14 @@
 package com.example.project
 
+import android.app.AlarmManager
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import java.util.Calendar
 
 class BootCompletedReceiver : BroadcastReceiver() {
 
@@ -13,14 +16,46 @@ class BootCompletedReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            // Wywołanie powiadomienia
-            showNotification(context, "Przypomnienie o lekach", "Nie zapomnij o swojej dawce dziś!")
+            // Ustawienie codziennego alarmu o 12:00
+            setDailyAlarm(context)
 
             // Uruchomienie głównej aktywności
             val mainActivityIntent = Intent(context, MainWindowPeriodActivity::class.java)
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(mainActivityIntent)
         }
+    }
+
+    private fun setDailyAlarm(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(context, NotificationReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 22)
+            set(Calendar.MINUTE, 55)
+            set(Calendar.SECOND, 0)
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DATE, 1)
+            }
+        }
+
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            alarmIntent
+        )
+    }
+}
+
+class NotificationReceiver : BroadcastReceiver() {
+
+    private val notificationId = 123 // Unikalny identyfikator powiadomienia
+
+    override fun onReceive(context: Context, intent: Intent) {
+        showNotification(context, "Przypomnienie o lekach", "Nie zapomnij o swojej dawce dziś!")
     }
 
     private fun showNotification(context: Context, title: String, message: String) {
