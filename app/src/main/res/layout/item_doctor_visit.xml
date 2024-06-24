@@ -12,15 +12,16 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/visitDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="#888888"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:textColor="@color/black"/>
 
 </LinearLayout>
 

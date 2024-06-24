@@ -222,13 +222,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSymptoms"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="336dp"
+        android:layout_width="415dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="31dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSymptoms"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/imageButtonNeutral"
@@ -296,8 +298,6 @@
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
@@ -306,10 +306,9 @@
         android:id="@+id/addInfoSettingButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
+        android:layout_marginStart="4dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -321,8 +320,8 @@
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addInfoSettingAcountButton"
+        app:layout_constraintStart_toEndOf="@+id/addInfoSettingButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
