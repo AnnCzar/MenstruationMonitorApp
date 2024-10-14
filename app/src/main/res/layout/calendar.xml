@@ -11,40 +11,24 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/CustomCalendarMonth"
+        android:layout_width="380dp"
+        android:layout_height="356dp"
         android:dateTextAppearance="@style/CalendarTextAppearance"
         android:focusedMonthDateColor="@android:color/black"
+        android:theme="@style/CustomCalendarMonth"
         android:unfocusedMonthDateColor="@android:color/black"
         android:weekDayTextAppearance="@style/CalendarTextAppearance"
         android:weekNumberColor="@android:color/black"
         android:weekSeparatorLineColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.424"
+        app:layout_constraintVertical_bias="0.6"
         tools:focusedMonthDateColor="@android:color/black" />
 
-
-
-    <TextView
-        android:id="@+id/text_calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kalendarz"
-        android:textColor="#C69AA7"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18" />
-
-<!--    <TextView-->
+    <!--    <TextView-->
 <!--        android:id="@+id/text_end_menstruation"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
@@ -75,11 +59,26 @@
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        app:layout_constraintVertical_bias="0.802" />-->
 
+    <TextView
+        android:id="@+id/text_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kalendarz"
+        android:textColor="#C69AA7"
+        android:textSize="36sp"
+        android:fontFamily="@font/mbi"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.245" />
+
     <ImageButton
         android:id="@+id/calendarAcountButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -92,7 +91,7 @@
         android:id="@+id/calendarSettingButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -105,7 +104,7 @@
         android:id="@+id/homeButtonCalendar"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
