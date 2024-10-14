@@ -3,7 +3,6 @@ package com.example.project
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -19,9 +18,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.os.Build
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import database.collections.Users
-import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 import java.util.*
 
@@ -34,10 +36,41 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var endPeriodButton: Button
     private lateinit var toCalendarButtonPeriod: Button
     private lateinit var begginingPeriodButton: Button
-    private lateinit var begginingPregnancyButton: Button
     private lateinit var mainWindowPeriodSettingButton: ImageButton
     private lateinit var mainWindowPeriodAcountButton: ImageButton
-    private lateinit var logoutButton: Button
+    private lateinit var selectedDate: LocalDate
+    private lateinit var additionalInfoPeriod: Button
+    private lateinit var selectedDate1: LocalDate
+    private lateinit var cycleDayPeriod: TextView
+    private lateinit var doctorRecyclerView: RecyclerView
+    private lateinit var doctorAdapter: DoctorVisitAdapter// Adapter for RecyclerView
+    class DoctorVisitAdapter(
+        private val visits: List<DoctorVisit>,
+        private val onVisitClick: (DoctorVisit) -> Unit
+    ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+            return DoctorVisitViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: DoctorVisitViewHolder, position: Int) {
+            val visit = visits[position]
+            holder.bind(visit)
+            holder.itemView.setOnClickListener { onVisitClick(visit) }
+        }
+
+        override fun getItemCount(): Int = visits.size
+
+        class DoctorVisitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            private val textView: TextView = itemView.findViewById(android.R.id.text1)
+
+            fun bind(visit: DoctorVisit) {
+                textView.text = "${visit.doctorName} - ${visit.visitDate}"
+            }
+        }
+    }
+    private val doctors = mutableListOf<DoctorVisit>()
 
     private lateinit var medicineRecyclerView: RecyclerView
     private lateinit var medicineAdapter: MedicineAdapter
@@ -45,51 +78,62 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
     private var isPeriodStarted = false
 
+
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
         createNotificationChannel()
 
-
-
         userId = intent.getStringExtra("USER_ID") ?: ""
 
         db = FirebaseFirestore.getInstance()
-
-        medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
-        medicineRecyclerView.layoutManager = LinearLayoutManager(this)
-
+        checkDate();
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
             saveMedicineCheckStatus(medicine)
         }
+
+        medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
+        medicineRecyclerView.layoutManager = LinearLayoutManager(this)
         medicineRecyclerView.adapter = medicineAdapter
-
-        fetchMedicines()
-        fetchLatestCycleData()
-
+        doctorRecyclerView = findViewById(R.id.doctorsRecyclerView)
+        doctorRecyclerView.layoutManager = LinearLayoutManager(this)
         currentDateTextPeriod = findViewById(R.id.currentDateTextPeriod)
         daysLeftPeriod = findViewById(R.id.daysLeftPeriod)
         daysLeftOwulation = findViewById(R.id.daysLeftOwulation)
         toCalendarButtonPeriod = findViewById(R.id.toCalendarButtonPeriod)
         begginingPeriodButton = findViewById(R.id.begginingPeriodButton)
         endPeriodButton = findViewById(R.id.endPeriodButton)
-        endPeriodButton.visibility = Button.GONE
-
-        begginingPregnancyButton = findViewById(R.id.endingPregnancyButton)
-
+        additionalInfoPeriod = findViewById(R.id.additionalInfoPeriod)
+        cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
         mainWindowPeriodSettingButton = findViewById(R.id.mainWindowPeriodSettingButton)
         mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
-        logoutButton = findViewById(R.id.logoutButton)
 
-        logoutButton.setOnClickListener {
-            logout()
+
+        currentDateTextPeriod.text = selectedDate.toString()
+
+
+        doctorAdapter = DoctorVisitAdapter(doctors) { doctor ->
+            saveDoctorCheckStatus(doctor)
         }
+        doctorRecyclerView.adapter = doctorAdapter
+
+        fetchMedicines()
+        fetchLatestCycleData()
+        fetchDoctorVisits()
+
+        endPeriodButton.visibility = Button.GONE
 
 
         toCalendarButtonPeriod.setOnClickListener {
             openCalendarActivity(userId)
         }
+        additionalInfoPeriod.setOnClickListener {
+            openAdditionalInformationActivity(userId, selectedDate)
+        }
+
 
         begginingPeriodButton.setOnClickListener {
             addCycleDataToFirestore()
@@ -102,11 +146,10 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             isPeriodStarted = false
             updateButtonVisibility()
         }
-
-        begginingPregnancyButton.setOnClickListener {
-            updatePregnancyStatusToTrue(userId)
-            openPregnancyBegginingActivity(userId)
+        additionalInfoPeriod.setOnClickListener {
+            openAdditionalInformationActivity(userId, selectedDate)
         }
+
 
         mainWindowPeriodAcountButton.setOnClickListener {
             openAccountWindowActivity(userId)
@@ -118,8 +161,144 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         // Fetch saved period status
         fetchPeriodStatus()
-        currentDateTextPeriod.text = LocalDate.now().toString()
+        fetchTodaysCycleDay()
+
+
         scheduleNotification()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchDoctorVisits() {
+        db.collection("users").document(userId).collection("doctorVisits")
+            .whereEqualTo("visitDate", selectedDate.toString()) // Dodano warunek filtrowania po dacie
+            .get()
+            .addOnSuccessListener { result ->
+                Log.d("DoctorVisitsActivity", "Liczba dokumentów: ${result.documents.size}")
+                doctors.clear()
+                for (document in result) {
+                    val doctor = DoctorVisit(
+                        id = document.id,
+                        doctorName = document.getString("doctorName") ?: "",
+                        visitDate = document.getString("visitDate") ?: "",
+                        isChecked = document.getBoolean("checked") ?: false
+                    )
+                    doctors.add(doctor)
+                }
+                doctorAdapter.notifyDataSetChanged() // Aktualizacja adaptera po zmianie danych
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun saveDoctorCheckStatus(doctor: DoctorVisit) {
+        db.collection("users").document(userId)
+            .collection("dailyInfo")
+            .document(selectedDate.toString())
+            .collection("doctors")
+            .document(doctor.id)
+            .set(mapOf("checked" to doctor.isChecked))
+            .addOnSuccessListener {
+                Toast.makeText(this, "Doctor status updated", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchTodaysDoctorVisitsStatus() {
+        val today = LocalDate.now().toString()
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(today).collection("doctorVisits")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val visitId = document.id
+                    val isChecked = document.getBoolean("checked") ?: false
+                    medicines.find { it.id == visitId }?.isChecked = isChecked
+                }
+                doctorAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun checkDate() {
+        val dateString = intent?.getStringExtra("SELECTED_DATE")
+
+        selectedDate = if (dateString.isNullOrEmpty()) {
+            // If the date string is null or empty, set it to the current date
+            LocalDate.now()
+        } else {
+            // If a valid date string exists, parse it
+            LocalDate.parse(dateString)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchTodaysCycleDay() {
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { userDoc ->
+                if (userDoc.exists()) {
+                    if (userDoc.contains("lastPeriodDate")) {
+                        val lastPeriodDateValue = userDoc.get("lastPeriodDate")
+
+                        if (lastPeriodDateValue is String) {
+                            val lastPeriodDate = LocalDate.parse(lastPeriodDateValue, DateTimeFormatter.ISO_LOCAL_DATE)
+                            val cycleLength = userDoc.getLong("cycleLength")?.toInt()
+
+                            if (cycleLength != null) {
+                                val currentDate = selectedDate
+                                val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                Log.d("CycleDay", "cycleDay calculated: $cycleDay")
+                                displayCycleDay(cycleDay)
+                            } else {
+                                Toast.makeText(this, "No valid cycleLength found", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            val lastPeriodDate = parseCustomDate(lastPeriodDateValue)
+
+                            if (lastPeriodDate != null) {
+                                val cycleLength = userDoc.getLong("cycleLength")?.toInt()
+
+                                if (cycleLength != null) {
+                                    val currentDate = LocalDate.now()
+                                    val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                    Log.d("CycleDay", "cycleDay calculated: $cycleDay")
+                                    displayCycleDay(cycleDay)
+                                } else {
+                                    Toast.makeText(this, "No valid cycleLength found", Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                Toast.makeText(this, "'lastPeriodDate' is not a valid date format in Firestore", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "'lastPeriodDate' field does not exist in Firestore", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "User document does not exist", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateCycleDay(lastPeriodDate: LocalDate, currentDate: LocalDate, cycleLength: Int): Int {
+        val daysPassed = ChronoUnit.DAYS.between(lastPeriodDate, currentDate)
+        var cycleDay = ((daysPassed % cycleLength) + cycleLength) % cycleLength + 1
+
+        if (cycleDay <= 0) {
+            cycleDay += cycleLength
+        }
+
+        return cycleDay.toInt()
     }
 
     private fun updateButtonVisibility() {
@@ -131,6 +310,14 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             endPeriodButton.visibility = Button.GONE
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayCycleDay(cycleDay: Int) {
+        Log.d("UI", "Updating UI with cycleDay: $cycleDay")
+        runOnUiThread {
+            cycleDayPeriod.text = "$cycleDay"
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPeriodStatus() {
@@ -156,6 +343,15 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         // Fetch today's medicine status
         fetchTodaysMedicineStatus()
+    }
+
+    // tutaj wyjebac selected date
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
+        val intent = Intent(this, AdditionalInformationActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        startActivity(intent)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -413,17 +609,17 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-    private fun updatePregnancyStatusToTrue(userId: String) {
-        val userRef = db.collection("users").document(userId)
-        userRef
-            .update("statusPregnancy", true)
-            .addOnSuccessListener {
-                Toast.makeText(this@MainWindowPeriodActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
+//    private fun updatePregnancyStatusToTrue(userId: String) {
+//        val userRef = db.collection("users").document(userId)
+//        userRef
+//            .update("statusPregnancy", true)
+//            .addOnSuccessListener {
+//                Toast.makeText(this@MainWindowPeriodActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
+//            }
+//            .addOnFailureListener { e ->
+//                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
+//    }
 
 
 private fun scheduleNotification() {
@@ -446,22 +642,22 @@ private fun scheduleNotification() {
     )
 }
 
-    private fun logout() {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.remove("USER_ID")
-        editor.apply()
-
-        val intent = Intent(this, LoginWindowActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun openPregnancyBegginingActivity(userId: String) {
-        val intent = Intent(this, PregnancyBegginingActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
+//    private fun logout() {
+//        val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.remove("USER_ID")
+//        editor.apply()
+//
+//        val intent = Intent(this, LoginWindowActivity::class.java)
+//        startActivity(intent)
+//        finish()
+//    }
+//
+//    private fun openPregnancyBegginingActivity(userId: String) {
+//        val intent = Intent(this, PregnancyBegginingActivity::class.java)
+//        intent.putExtra("USER_ID", userId)
+//        startActivity(intent)
+//    }
 
     private fun openCalendarActivity(userId: String) {
         val intent = Intent(this, CalendarActivity::class.java)
@@ -480,4 +676,5 @@ private fun scheduleNotification() {
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
+
 }
