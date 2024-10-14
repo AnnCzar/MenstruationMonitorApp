@@ -1,6 +1,8 @@
 package com.example.project
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -17,6 +19,8 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var lastWeightTextView: TextView
     private lateinit var visitsButton: Button
     private lateinit var medicationsButton: Button
+    private lateinit var begginingPregnancyButton: Button
+    private lateinit var logoutButton: Button
 
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
@@ -38,6 +42,17 @@ class AccountWindowActivity : AppCompatActivity() {
         visitsButton.setOnClickListener {
             openVisitsWindow(userId)
         }
+        begginingPregnancyButton = findViewById(R.id.endingPregnancyButton)
+        logoutButton = findViewById(R.id.logoutButton)
+
+        logoutButton.setOnClickListener {
+            logout()
+        }
+        begginingPregnancyButton.setOnClickListener {
+            updatePregnancyStatusToTrue(userId)
+            openPregnancyBegginingActivity(userId)
+        }
+
 
         homeButtonProfil.setOnClickListener {
             val userRef = db.collection("users").document(userId)
@@ -59,6 +74,36 @@ class AccountWindowActivity : AppCompatActivity() {
                 }
         }
     }
+
+    private fun logout() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("USER_ID")
+        editor.apply()
+
+        val intent = Intent(this, LoginWindowActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openPregnancyBegginingActivity(userId: String) {
+        val intent = Intent(this, PregnancyBegginingActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+    private fun updatePregnancyStatusToTrue(userId: String) {
+        val userRef = db.collection("users").document(userId)
+        userRef
+            .update("statusPregnancy", true)
+            .addOnSuccessListener {
+                Toast.makeText(this@AccountWindowActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this@AccountWindowActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
 
     private fun initializeViews() {
         accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)

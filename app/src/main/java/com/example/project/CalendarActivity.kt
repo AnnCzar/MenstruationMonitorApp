@@ -62,7 +62,7 @@ class CalendarActivity : AppCompatActivity() {
                     val intent = if (pregnancyStatus) {
                         Intent(this, DayPregnancyActivity::class.java)
                     } else {
-                        Intent(this, DayPeriodActivity::class.java)
+                        Intent(this, MainWindowPeriodActivity::class.java)
                     }
                     intent.putExtra("USER_ID", userId)
                     intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_LOCAL_DATE))
