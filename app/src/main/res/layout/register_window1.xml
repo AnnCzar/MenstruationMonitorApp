@@ -13,15 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Zarejestruj się"
-        android:textAlignment="center"
+        android:fontFamily="@font/mbi"
         android:textColor="#C69AA7"
-        android:textSize="32sp"
+        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183" />
+        app:layout_constraintVertical_bias="0.226" />
 
     <EditText
         android:id="@+id/enterEmailRegister"
@@ -30,15 +29,15 @@
         android:background="@drawable/round_shape"
         android:ems="10"
         android:hint="E-mail"
-        android:textColorHint="@color/black"
         android:inputType="textEmailAddress"
         android:textAlignment="center"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.401"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.301" />
+        app:layout_constraintVertical_bias="0.33" />
 
     <EditText
         android:id="@+id/enterPasswordRegister"
@@ -46,15 +45,15 @@
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
         android:hint="Hasło"
-        android:textColorHint="@color/black"
         android:inputType="textPassword"
         android:textAlignment="center"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.401"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.406" />
+        app:layout_constraintVertical_bias="0.444" />
 
     <EditText
         android:id="@+id/enterPasswordRegisterConfirm"
@@ -62,46 +61,46 @@
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
         android:hint="Potwierdź hasło"
-        android:textColorHint="@color/black"
         android:inputType="textPassword"
         android:textAlignment="center"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.401"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.558" />
 
     <EditText
         android:id="@+id/enterUsernameRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:background="@drawable/rounded_edit_text"
-        android:ems="10"
+        android:background="@drawable/round_shape"
         android:hint="Nazwa użytkownika"
-        android:textColorHint="@color/black"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:textAlignment="center"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.401"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintVertical_bias="0.663" />
 
     <Button
         android:id="@+id/buttonConfirmRegisterWindow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FDF4F7"
-        android:text="Przejdź dalej"
-        android:textColor="#C69AA7"
-        android:textStyle="italic"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
+        android:text="Potwierdź"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.726"
+        app:layout_constraintVertical_bias="0.777"
         tools:ignore="MissingConstraints" />
 
 

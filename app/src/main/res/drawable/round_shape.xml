@@ -4,4 +4,7 @@
     android:shape="rectangle">
     <corners android:radius="30dp" /> <!-- You can adjust the radius as per your preference -->
     <solid android:color="@color/white" /> <!-- Change the color if needed -->
+    <stroke
+        android:width="2dp"
+        android:color="#E7B8C3"/> <!-- Border color and width -->
 </shape>

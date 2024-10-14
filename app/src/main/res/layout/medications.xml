@@ -11,42 +11,47 @@
         android:id="@+id/allMedications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/mbi"
         android:text="Leki"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.091" />
+        app:layout_constraintVertical_bias="0.213" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineRV"
-        android:layout_width="295dp"
-        android:layout_height="461dp"
+        android:layout_width="275dp"
+        android:layout_height="326dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.535"
         tools:listitem="@layout/medicine_item" />
 
     <Button
         android:id="@+id/addMedication"
-        android:layout_width="119dp"
-        android:layout_height="45dp"
-        android:backgroundTint="#A16476"
+        android:layout_width="122dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="Dodaj lek"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintVertical_bias="0.827" />
 
     <ImageButton
         android:id="@+id/homeMedications"
         android:layout_width="206.5dp"
         android:layout_height="59dp"
-        android:backgroundTint="#A16476"
+        android:backgroundTint="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -59,7 +64,7 @@
         android:id="@+id/settingsMedications"
         android:layout_width="206.5dp"
         android:layout_height="59dp"
-        android:backgroundTint="#A16476"
+        android:backgroundTint="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
