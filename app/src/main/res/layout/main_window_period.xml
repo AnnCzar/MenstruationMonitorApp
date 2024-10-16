@@ -23,6 +23,7 @@
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        app:layout_constraintVertical_bias="0.345" />-->
 
+
     <ImageButton
         android:id="@+id/logoutButton"
         android:layout_width="55dp"
@@ -53,10 +54,39 @@
         app:srcCompat="@drawable/calendar"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/begginingPeriodButton"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/doctorsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_edit_text"
+        app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
+        tools:listitem="@layout/doctor_item" />
+
+    <TextView
+        android:id="@+id/doctorsTextDayPeriod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Wizyty u lekarza"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.445"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.622" />
+
+    <Button
+        android:id="@+id/toCalendarButtonPeriod"
+        android:layout_width="121dp"
+        android:layout_height="48dp"
         android:backgroundTint="#D1A1AF"
         android:text="Początek menstruacji"
         android:textSize="19dp"
@@ -67,6 +97,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.834" />
+
 
     <Button
         android:id="@+id/endPeriodButton"
@@ -83,8 +114,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.764" />
 
+
     <Button
-        android:id="@+id/endingPregnancyButton"
+        android:id="@+id/begginingPeriodButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
@@ -114,10 +146,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.2" />
 
+
+
+    <!--    <TextView-->
+<!--        android:id="@+id/medicineCheckbox"-->
+<!--        android:layout_width="255dp"-->
+<!--        android:layout_height="124dp"-->
+<!--        android:layout_marginTop="58dp"-->
+<!--        android:background="@drawable/rounded_edit_text"-->
+<!--        android:hint="tu będzie checklista z lekami"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.429"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/medicineTextMainPregnancy"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
+
+
     <TextView
         android:id="@+id/daysLeftOwulation"
-        android:layout_width="100dp"
-        android:layout_height="54dp"
+        android:layout_width="101dp"
+        android:layout_height="34dp"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:gravity="center"
@@ -128,11 +179,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.635" />
 
 
-    <!--    <TextView-->
+<!--    <TextView-->
 <!--        android:id="@+id/medicineCheckbox"-->
 <!--        android:layout_width="255dp"-->
 <!--        android:layout_height="124dp"-->
@@ -157,7 +206,8 @@
         android:gravity="center"
         android:text="dni"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"
@@ -165,11 +215,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.443" />
 
+
     <TextView
-        android:id="@+id/daysLeftOvulationText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dni pozostałe\ndo owulacji:"
+        android:id="@+id/daysLeftPeriod"
+        android:layout_width="99dp"
+        android:layout_height="33dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:gravity="center"
+        android:text="dni"
         android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textSize="19dp"
@@ -181,11 +235,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.536" />
 
+
     <TextView
         android:id="@+id/daysLeftPeriodText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dni pozostałe\ndo menstruacji:"
+        android:layout_width="306dp"
+        android:layout_height="28dp"
+        android:text="Dni pozostałe do menstruacji:"
         android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textSize="19dp"
@@ -196,7 +251,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35" />
-
+  
     <TextView
         android:id="@+id/currentDateTextPeriod"
         android:layout_width="223dp"
@@ -236,6 +291,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.34" />
+
 
     <ImageButton
         android:id="@+id/mainWindowPeriodAcountButton"
