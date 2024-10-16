@@ -10,18 +10,18 @@
 
     <TextView
         android:id="@+id/loginText"
-        android:layout_width="231dp"
-        android:layout_height="82dp"
+        android:layout_width="225dp"
+        android:layout_height="54dp"
+        android:fontFamily="@font/mbi"
         android:text="Zaloguj się"
         android:textAlignment="center"
         android:textColor="#C69AA7"
-
-        android:textSize="32sp"
+        android:textSize="38sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.274" />
+        app:layout_constraintVertical_bias="0.354" />
 
     <EditText
         android:id="@+id/enterLogin"
@@ -30,6 +30,7 @@
         android:background="@drawable/round_shape"
         android:ems="10"
         android:hint="Email"
+        android:fontFamily="@font/ml"
         android:inputType="text"
         android:textAlignment="center"
         android:textColorHint="@color/black"
@@ -48,6 +49,7 @@
         android:background="@drawable/round_shape"
         android:ems="10"
         android:hint="Hasło"
+        android:fontFamily="@font/ml"
         android:inputType="textPassword"
         android:textColorHint="@color/black"
         android:textAlignment="center"
@@ -60,11 +62,12 @@
 
     <Button
         android:id="@+id/buttonConfirmLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="136dp"
+        android:layout_height="69dp"
         android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="Potwierdz"
-        android:textStyle="italic"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
