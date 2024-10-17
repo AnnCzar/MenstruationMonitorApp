@@ -17,10 +17,10 @@
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069" />
+        app:layout_constraintVertical_bias="0.142" />
 
     <TextView
         android:id="@+id/cycleDayText"
@@ -28,13 +28,14 @@
         android:layout_height="wrap_content"
         android:text="Dzień cyklu:"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:fontFamily="@font/mbi"
+        android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintHorizontal_bias="0.796"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.164" />
+        app:layout_constraintVertical_bias="0.068" />
 
     <TextView
         android:id="@+id/cycleDayPeriod"
@@ -47,77 +48,81 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintHorizontal_bias="0.719"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.165"
+        app:layout_constraintVertical_bias="0.141"
         tools:textColor="@color/black" />
 
     <TextView
         android:id="@+id/medicineTextDayPeriod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="Przyjmowane leki"
-        android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.246" />
+        app:layout_constraintVertical_bias="0.248" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_width="279dp"
+        android:layout_height="137dp"
         android:background="@drawable/rounded_edit_text"
-        app:layout_constraintTop_toBottomOf="@id/medicineTextDayPeriod"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/doctorsTextDayPeriod"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.121"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/medicineTextDayPeriod"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/medicine_item" />
 
     <TextView
         android:id="@+id/doctorsTextDayPeriod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="Wizyty u lekarza"
-        android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctorsRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_width="283dp"
+        android:layout_height="97dp"
         android:background="@drawable/rounded_edit_text"
-        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/doctor_item" />
 
     <TextView
         android:id="@+id/textViewGlassOfWater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="Ilość spożytych płynów (250 ml)"
-        android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="20sp"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.274"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.784"
+        app:layout_constraintVertical_bias="0.695"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -125,43 +130,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:fontFamily="@font/ml"
         android:text="0"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83"
+        app:layout_constraintVertical_bias="0.765"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/additionalInfoPeriod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="209dp"
+        android:layout_height="65dp"
         android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="Wprowadź dodatkowe informacje"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.246"
+        app:layout_constraintHorizontal_bias="0.108"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.735" />
+        app:layout_constraintVertical_bias="0.884" />
 
     <Button
         android:id="@+id/increaseDrinkButton"
         android:layout_width="61dp"
         android:layout_height="54dp"
-
+        android:fontFamily="@font/ml"
+        android:textStyle="bold"
         android:backgroundTint="#D1A1AF"
         android:text="+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.422"
+        app:layout_constraintHorizontal_bias="0.671"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintVertical_bias="0.775" />
 
     <Button
         android:id="@+id/decreaseDrinkButton"
@@ -169,19 +176,21 @@
         android:layout_height="54dp"
         android:backgroundTint="#D1A1AF"
         android:text="-"
+        android:fontFamily="@font/ml"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.105"
+        app:layout_constraintHorizontal_bias="0.311"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889"
+        app:layout_constraintVertical_bias="0.775"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/dayPeriodAcountButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -194,7 +203,7 @@
         android:id="@+id/dayPeriodSettingsButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -207,7 +216,7 @@
         android:id="@+id/dayPeriodHomeButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
