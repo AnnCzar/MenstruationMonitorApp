@@ -1,70 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addVisitWindow"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tlo"
-    android:textAlignment="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:textAlignment="center">
 
     <TextView
         android:id="@+id/addVisitTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="411dp"
+        android:layout_height="51dp"
+        android:fontFamily="@font/mbi"
         android:text="Dodaj wizytę"
         android:textAlignment="center"
-        android:textColor="#A16476"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/doctorNameEditText"
+        android:textColor="#C69AA7"
+        android:textSize="33dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.364" />
 
     <EditText
         android:id="@+id/visitDateEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Data wizyty (RRRR-MM-DD)"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:fontFamily="@font/ml"
+        android:hint="Data wizyty (yyyy-mm-dd)"
         android:inputType="text"
-        android:textColor="#C69AA7"
-        android:textColorHint="#C69AA7"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doctorNameEditText" />
+        android:textAlignment="center"
+        android:textColorHint="@color/black"
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="367dp" />
 
     <EditText
         android:id="@+id/doctorNameEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
-        android:hint="Nazwa doktora"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:fontFamily="@font/ml"
+        android:hint="Lekarz"
         android:inputType="text"
-        android:textColor="#C69AA7"
-        android:textColorHint="#C69AA7"
+        android:textAlignment="center"
+        android:textColorHint="@color/black"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addVisitTitle" />
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="303dp" />
 
     <Button
         android:id="@+id/addVisitConfirmButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="592dp"
-        android:background="#DA8AA2"
-        android:text="Dodaj wizytę"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
+        android:text="Potwierdź"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="132dp"
+        tools:layout_editor_absoluteY="431dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

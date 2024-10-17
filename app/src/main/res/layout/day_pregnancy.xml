@@ -8,42 +8,45 @@
     tools:context=".DayPregnancyActivity"
     android:background="@drawable/tlo">
 
+
     <TextView
         android:id="@+id/dateDayPregnancy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Tu bedzie data"
         android:textColor="@color/black"
+        android:fontFamily="@font/ml"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintHorizontal_bias="0.881"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.084" />
-
+        app:layout_constraintVertical_bias="0.072" />
 
     <TextView
         android:id="@+id/pregnancyWeekText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tydzień ciąży:"
+        android:fontFamily="@font/ml"
+        android:text="Tydzień ciąży"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintHorizontal_bias="0.251"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.171" />
+        app:layout_constraintVertical_bias="0.191" />
 
     <TextView
         android:id="@+id/fetusSizeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="Płód jest wielkości:"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
@@ -59,10 +62,10 @@
         android:src="@drawable/fetus_default_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintHorizontal_bias="0.976"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.301" />
+        app:layout_constraintVertical_bias="0.28" />
 
     <TextView
         android:id="@+id/cycleDayPregnancy"
@@ -74,22 +77,22 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.919"
+        app:layout_constraintHorizontal_bias="0.822"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.175" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <TextView
         android:id="@+id/doctorsTextDayPregnancy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="Wizyty u lekarza"
-        android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.629" />
@@ -98,13 +101,13 @@
         android:id="@+id/medicineTextDayPregnancy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="Przyjmowane leki"
-        android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.213"
+        app:layout_constraintHorizontal_bias="0.128"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.426" />
@@ -114,20 +117,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="Wprowadź dodatkowe\ninformacje"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.216"
+        app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881" />
+        app:layout_constraintVertical_bias="0.878" />
 
     <ImageButton
         android:id="@+id/dayPregnancyAcountButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -140,7 +144,7 @@
         android:id="@+id/dayPregnancySettingButton"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -153,7 +157,7 @@
         android:id="@+id/homeButtonCalendar"
         android:layout_width="137dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -167,7 +171,7 @@
         android:layout_height="102dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.284"
+        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.524"
@@ -179,7 +183,7 @@
         android:layout_height="107dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.301"
+        app:layout_constraintHorizontal_bias="0.182"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.756"

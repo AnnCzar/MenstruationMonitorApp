@@ -30,10 +30,10 @@
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintHorizontal_bias="0.965"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882"
+        app:layout_constraintVertical_bias="0.781"
         app:srcCompat="@drawable/calendar"
         tools:ignore="MissingConstraints" />
 
@@ -44,13 +44,13 @@
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Koniec menstruacji"
-        android:textSize="19dp"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904" />
+        app:layout_constraintVertical_bias="0.9" />
 
     <Button
         android:id="@+id/begginingPeriodButton"
@@ -59,29 +59,13 @@
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Początek menstruacji"
-        android:textSize="19dp"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904" />
-
-    <TextView
-        android:id="@+id/modeTextPregnancy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/mbi"
-        android:text="Tryb miesiączkowy"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
+        app:layout_constraintVertical_bias="0.9" />
 
 
     <!--    <TextView-->
@@ -100,6 +84,23 @@
     <!--        app:layout_constraintTop_toTopOf="@+id/medicineTextMainPregnancy"-->
     <!--        app:layout_constraintVertical_bias="0.0" />-->
 
+
+    <TextView
+        android:id="@+id/modeTextPregnancy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mbi"
+        android:text="Tryb miesiączkowy"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
+
     <TextView
         android:id="@+id/daysLeftOwulation"
         android:layout_width="84dp"
@@ -115,12 +116,12 @@
         app:layout_constraintHorizontal_bias="0.948"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.296" />
+        app:layout_constraintVertical_bias="0.295" />
 
     <TextView
         android:id="@+id/daysLeftPeriod"
-        android:layout_width="87dp"
-        android:layout_height="44dp"
+        android:layout_width="84dp"
+        android:layout_height="41dp"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:gravity="center"
@@ -129,18 +130,15 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.205" />
-
-
-
+        app:layout_constraintVertical_bias="0.451" />
 
     <TextView
         android:id="@+id/cycleDayPeriod"
-        android:layout_width="90dp"
-        android:layout_height="38dp"
+        android:layout_width="84dp"
+        android:layout_height="41dp"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:gravity="center"
@@ -150,10 +148,10 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.965"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37"
+        app:layout_constraintVertical_bias="0.375"
         tools:textColor="@color/black" />
 
     <TextView
@@ -166,10 +164,10 @@
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.353" />
+        app:layout_constraintVertical_bias="0.31" />
 
     <Button
         android:id="@+id/additionalInfoPeriod"
@@ -188,19 +186,18 @@
         app:layout_constraintVertical_bias="0.818" />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctorsRecyclerView"
-        android:layout_width="370dp"
-        android:layout_height="84dp"
+        android:layout_width="224dp"
+        android:layout_height="80dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/rounded_edit_text"
         app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.893"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
-        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_bias="0.324"
         tools:listitem="@layout/doctor_item" />
 
     <TextView
@@ -211,16 +208,13 @@
         android:text="Wizyty u lekarza"
         android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="22sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.689"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.602" />
-
-
-
+        app:layout_constraintVertical_bias="0.531" />
 
     <TextView
         android:id="@+id/daysLeftOvulationText"
@@ -233,10 +227,10 @@
         android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.299" />
+        app:layout_constraintVertical_bias="0.388" />
 
     <TextView
         android:id="@+id/daysLeftPeriodText"
@@ -249,10 +243,10 @@
         android:textSize="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintHorizontal_bias="0.097"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.221" />
+        app:layout_constraintVertical_bias="0.465" />
 
     <TextView
         android:id="@+id/currentDateTextPeriod"
@@ -266,32 +260,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.243" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineRecyclerView"
-        android:layout_width="379dp"
+        android:layout_width="151dp"
         android:layout_height="82dp"
         app:layout_constraintBottom_toTopOf="@id/toCalendarButtonPeriod"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicineTextMainPregnancy"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/medicineTextMainPregnancy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="153dp"
+        android:layout_height="55dp"
         android:fontFamily="@font/ml"
         android:text="Przyjmowane leki"
         android:textColor="#C69AA7"
-        android:textSize="22dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43" />
+        app:layout_constraintVertical_bias="0.553" />
 
     <ImageButton
         android:id="@+id/mainWindowPeriodAcountButton"

@@ -26,6 +26,9 @@
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Usuń" />
+        android:layout_height="35dp"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
+        android:text="Usuń"
+        android:textSize="12dp" />
 </LinearLayout>
