@@ -9,19 +9,21 @@
     tools:context=".AccountWindowActivity"
     android:textAlignment="center">
 
-    <Button
+    <ImageButton
         android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="52dp"
+        android:background="@null"
         android:backgroundTint="#D1A1AF"
         android:text="Wyloguj"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.844"
+        app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.717" />
+        app:layout_constraintVertical_bias="0.06"
+        app:srcCompat="@drawable/log_out"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/endingPregnancyButton"
