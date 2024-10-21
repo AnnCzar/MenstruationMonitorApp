@@ -2,58 +2,59 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/period_ending"
+    tools:context=".PeriodEndingActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstWindowActivity"
     android:background="@drawable/tlo">
 
     <TextView
-        android:id="@+id/text_app_name"
+        android:id="@+id/period_end_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/mbi"
-        android:text="Menstruation\n Monitor App"
+        android:text="Wprowadź koniec menstruacji"
+        android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="40sp"
+        android:textSize="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.354" />
+        app:layout_constraintVertical_bias="0.364" />
+
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/insert_date_period_end"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_shape"
+        android:ems="10"
+        android:hint="yyyy-mm-dd"
+        android:fontFamily="@font/ml"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColorHint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.553" />
 
     <Button
-        android:id="@+id/button_signin"
-        android:layout_width="229dp"
-        android:layout_height="60dp"
+        android:id="@+id/accept_period_end_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
-        android:text="zaloguj"
-        android:textAlignment="center"
-        android:textSize="22dp"
+        android:text="Potwierdź"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576"
-        tools:ignore="MissingConstraints,NotSibling" />
-
-    <Button
-        android:id="@+id/button_register"
-        android:layout_width="229dp"
-        android:layout_height="60dp"
-        android:backgroundTint="#FFF"
-        android:fontFamily="@font/ml"
-        android:text="zarejestruj"
-        android:textAlignment="center"
-        android:textColor="#D1A1AF"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.678"
-        tools:ignore="DuplicateIds,MissingConstraints" />
-
+        app:layout_constraintVertical_bias="0.651" />
 </androidx.constraintlayout.widget.ConstraintLayout>

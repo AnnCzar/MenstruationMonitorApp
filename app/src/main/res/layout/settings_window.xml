@@ -26,21 +26,21 @@
 
     <ImageButton
         android:id="@+id/settingWindowAcountButton"
-        android:layout_width="206.5dp"
-        android:layout_height="58dp"
+        android:layout_width="215dp"
+        android:layout_height="49dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/homeButtonSetting"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
 
     <ImageButton
         android:id="@+id/homeButtonSetting"
-        android:layout_width="206.5dp"
-        android:layout_height="58dp"
+        android:layout_width="216dp"
+        android:layout_height="49dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

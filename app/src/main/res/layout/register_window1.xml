@@ -77,7 +77,6 @@
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
         android:hint="Nazwa użytkownika"
-        android:inputType="textPassword"
         android:textAlignment="center"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"

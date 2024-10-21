@@ -35,8 +35,8 @@
 
     <Button
         android:id="@+id/addMedication"
-        android:layout_width="122dp"
-        android:layout_height="50dp"
+        android:layout_width="129dp"
+        android:layout_height="68dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Dodaj lek"
@@ -45,24 +45,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.827" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <ImageButton
         android:id="@+id/homeMedications"
-        android:layout_width="206.5dp"
-        android:layout_height="59dp"
+        android:layout_width="215dp"
+        android:layout_height="58dp"
         android:backgroundTint="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/settingsMedications"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 
     <ImageButton
         android:id="@+id/settingsMedications"
-        android:layout_width="206.5dp"
+        android:layout_width="215dp"
         android:layout_height="59dp"
         android:backgroundTint="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +70,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
