@@ -28,72 +28,73 @@
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
         android:ems="10"
-        android:hint="E-mail"
         android:fontFamily="@font/ml"
+        android:hint="E-mail"
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.401"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33" />
+        app:layout_constraintTop_toBottomOf="@+id/medicineRegisterText"
+        app:layout_constraintVertical_bias="0.044" />
 
     <EditText
         android:id="@+id/enterPasswordRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
-        android:hint="Hasło"
         android:fontFamily="@font/ml"
+        android:hint="Hasło"
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.401"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintTop_toBottomOf="@+id/enterEmailRegister"
+        app:layout_constraintVertical_bias="0.025" />
 
     <EditText
         android:id="@+id/enterPasswordRegisterConfirm"
         android:layout_width="294dp"
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
+        android:fontFamily="@font/ml"
         android:hint="Potwierdź hasło"
         android:inputType="textPassword"
-        android:fontFamily="@font/ml"
         android:textAlignment="center"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.401"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.558" />
+        app:layout_constraintTop_toBottomOf="@+id/enterPasswordRegister"
+        app:layout_constraintVertical_bias="0.024" />
 
     <EditText
         android:id="@+id/enterUsernameRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
+        android:fontFamily="@font/ml"
         android:hint="Nazwa użytkownika"
         android:textAlignment="center"
-        android:fontFamily="@font/ml"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.401"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.663" />
+        app:layout_constraintTop_toBottomOf="@+id/enterPasswordRegisterConfirm"
+        app:layout_constraintVertical_bias="0.049" />
 
     <Button
         android:id="@+id/buttonConfirmRegisterWindow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Przejdź dalej"
@@ -102,8 +103,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.777"
+        app:layout_constraintTop_toBottomOf="@+id/enterUsernameRegister"
+        app:layout_constraintVertical_bias="0.052"
         tools:ignore="MissingConstraints" />
 
 

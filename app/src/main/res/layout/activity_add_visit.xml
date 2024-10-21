@@ -29,6 +29,7 @@
         android:id="@+id/visitDateEditText"
         android:layout_width="306dp"
         android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:fontFamily="@font/ml"
@@ -36,13 +37,15 @@
         android:inputType="text"
         android:textAlignment="center"
         android:textColorHint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/doctorNameEditText"
         tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="367dp" />
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/doctorNameEditText"
         android:layout_width="306dp"
         android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:fontFamily="@font/ml"
@@ -51,18 +54,21 @@
         android:textAlignment="center"
         android:textColorHint="@color/black"
         android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/addVisitTitle"
         tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="303dp" />
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/addVisitConfirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Potwierdź"
         android:textSize="16dp"
-        tools:layout_editor_absoluteX="132dp"
-        tools:layout_editor_absoluteY="431dp" />
+        app:layout_constraintTop_toBottomOf="@+id/visitDateEditText"
+        tools:layout_editor_absoluteX="129dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

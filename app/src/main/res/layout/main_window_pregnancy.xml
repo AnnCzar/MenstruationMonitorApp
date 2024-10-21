@@ -21,10 +21,9 @@
         android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.17" />
+        app:layout_constraintTop_toBottomOf="@+id/logoutButtonPregnancy"
+        app:layout_constraintVertical_bias="0.043" />
 
     <TextView
         android:id="@+id/dateTextPregnancy"
@@ -52,10 +51,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81"
+        app:layout_constraintTop_toBottomOf="@+id/medicinePregnancy"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/calendar"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/endingPregnancyButton"
@@ -68,8 +67,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.898" />
+        app:layout_constraintTop_toBottomOf="@+id/toCalendarButtonPregn"
+        app:layout_constraintVertical_bias="0.092" />
 
     <TextView
         android:id="@+id/medicineTextMainPregnancy"
@@ -81,10 +80,10 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397" />
+        app:layout_constraintTop_toBottomOf="@+id/daysLeftPregnancy"
+        app:layout_constraintVertical_bias="0.02" />
 
     <TextView
         android:id="@+id/daysLeftPregnancy"
@@ -98,10 +97,10 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.893"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.314" />
+        app:layout_constraintHorizontal_bias="0.355"
+        app:layout_constraintStart_toEndOf="@+id/daysLeftPregnancyText"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextPregnancy"
+        app:layout_constraintVertical_bias="0.016" />
 
     <TextView
         android:id="@+id/daysLeftPregnancyText"
@@ -116,8 +115,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.133"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.312" />
+        app:layout_constraintTop_toBottomOf="@+id/dateTextPregnancy"
+        app:layout_constraintVertical_bias="0.025" />
 
     <ImageButton
         android:id="@+id/mainWindowPregnancyAcountButton"
@@ -136,12 +135,13 @@
         android:id="@+id/mainWindowPregnancySettingButton"
         android:layout_width="210dp"
         android:layout_height="58dp"
+        android:layout_marginTop="12dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endingPregnancyButton"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
@@ -165,12 +165,13 @@
         android:id="@+id/medicinePregnancy"
         android:layout_width="231dp"
         android:layout_height="218dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.548"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicineTextMainPregnancy"
-        app:layout_constraintVertical_bias="0.046"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/medicine_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
