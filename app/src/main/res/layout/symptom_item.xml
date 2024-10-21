@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:padding="8dp"
     android:orientation="horizontal"
+    android:background="@drawable/round_shape"
     android:gravity="center_vertical">
+
 
     <CheckBox
         android:id="@+id/symptomCheckbox"

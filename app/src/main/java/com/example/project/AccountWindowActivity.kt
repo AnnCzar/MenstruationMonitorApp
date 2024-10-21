@@ -20,7 +20,7 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var visitsButton: Button
     private lateinit var medicationsButton: Button
     private lateinit var begginingPregnancyButton: Button
-    private lateinit var logoutButton: Button
+    private lateinit var logoutButton: ImageButton
 
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
