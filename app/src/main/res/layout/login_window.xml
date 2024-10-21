@@ -28,6 +28,7 @@
         android:layout_width="286dp"
         android:layout_height="53dp"
         android:background="@drawable/round_shape"
+        android:textColor="@android:color/black"
         android:ems="10"
         android:hint="Email"
         android:fontFamily="@font/ml"
@@ -47,6 +48,7 @@
         android:layout_width="294dp"
         android:layout_height="56dp"
         android:background="@drawable/round_shape"
+        android:textColor="@android:color/black"
         android:ems="10"
         android:hint="Hasło"
         android:fontFamily="@font/ml"
@@ -62,8 +64,8 @@
 
     <Button
         android:id="@+id/buttonConfirmLogin"
-        android:layout_width="136dp"
-        android:layout_height="69dp"
+        android:layout_width="181dp"
+        android:layout_height="67dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Potwierdz"

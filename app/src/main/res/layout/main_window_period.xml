@@ -67,22 +67,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.904" />
 
-    <TextView
-        android:id="@+id/modeTextPregnancy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/mbi"
-        android:text="Tryb miesiączkowy"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
-
 
     <!--    <TextView-->
     <!--        android:id="@+id/medicineCheckbox"-->
@@ -99,6 +83,22 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="@+id/medicineTextMainPregnancy"-->
     <!--        app:layout_constraintVertical_bias="0.0" />-->
+
+    <TextView
+        android:id="@+id/modeTextPregnancy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mbi"
+        android:text="Tryb miesiączkowy"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
 
     <TextView
         android:id="@+id/daysLeftOwulation"
@@ -295,8 +295,8 @@
 
     <ImageButton
         android:id="@+id/mainWindowPeriodAcountButton"
-        android:layout_width="205dp"
-        android:layout_height="45dp"
+        android:layout_width="215dp"
+        android:layout_height="58dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -308,12 +308,12 @@
 
     <ImageButton
         android:id="@+id/mainWindowPeriodSettingButton"
-        android:layout_width="210dp"
-        android:layout_height="45dp"
+        android:layout_width="215dp"
+        android:layout_height="58dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/mainWindowPeriodAcountButton"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"

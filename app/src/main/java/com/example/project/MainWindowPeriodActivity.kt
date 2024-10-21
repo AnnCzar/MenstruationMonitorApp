@@ -40,7 +40,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var mainWindowPeriodAcountButton: ImageButton
     private lateinit var selectedDate: LocalDate
     private lateinit var additionalInfoPeriod: Button
-    private lateinit var selectedDate1: LocalDate
     private lateinit var cycleDayPeriod: TextView
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var doctorAdapter: DoctorVisitAdapter// Adapter for RecyclerView
@@ -94,6 +93,17 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
             saveMedicineCheckStatus(medicine)
         }
+
+        val dateString = intent?.getStringExtra("SELECTED_DATE")
+        selectedDate = if (!dateString.isNullOrEmpty()) {
+            LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
+        } else {
+            LocalDate.now()
+        }
+
+        fetchTodaysCycleDay()
+        fetchUserCycleLength()
+
 
         medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
         medicineRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -170,6 +180,24 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         scheduleNotification()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchUserCycleLength() {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val cycleLength = document.getLong("cycleLength")?.toInt()
+                    if (cycleLength != null) {
+                        fetchLatestCycleDocument(selectedDate, cycleLength)
+                    }
+                } else {
+                    showToast("User document not found.")
+                }
+            }
+            .addOnFailureListener { e ->
+                showToast("Błąd: ${e.message}")
+            }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
@@ -194,6 +222,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun saveDoctorCheckStatus(doctor: DoctorVisit) {
         db.collection("users").document(userId)
@@ -256,12 +285,9 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkDate() {
         val dateString = intent?.getStringExtra("SELECTED_DATE")
-
         selectedDate = if (dateString.isNullOrEmpty()) {
-            // If the date string is null or empty, set it to the current date
             LocalDate.now()
         } else {
-            // If a valid date string exists, parse it
             LocalDate.parse(dateString)
         }
     }
@@ -280,8 +306,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                             val cycleLength = userDoc.getLong("cycleLength")?.toInt()
 
                             if (cycleLength != null) {
-                                val currentDate = selectedDate
-                                val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                val cycleDay = calculateCycleDay(lastPeriodDate, selectedDate, cycleLength)
                                 Log.d("CycleDay", "cycleDay calculated: $cycleDay")
                                 displayCycleDay(cycleDay)
                             } else {
@@ -294,8 +319,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                                 val cycleLength = userDoc.getLong("cycleLength")?.toInt()
 
                                 if (cycleLength != null) {
-                                    val currentDate = LocalDate.now()
-                                    val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                    val cycleDay = calculateCycleDay(lastPeriodDate, selectedDate, cycleLength)
                                     Log.d("CycleDay", "cycleDay calculated: $cycleDay")
                                     displayCycleDay(cycleDay)
                                 } else {
@@ -316,6 +340,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateCycleDay(lastPeriodDate: LocalDate, currentDate: LocalDate, cycleLength: Int): Int {
         val daysPassed = ChronoUnit.DAYS.between(lastPeriodDate, currentDate)
@@ -345,7 +371,13 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayDaysLeftOvulation(daysLeft: Int) {
+        Log.d("UI", "Updating UI with cycleDay: $daysLeft")
+        runOnUiThread {
+            daysLeftOwulation.text = "$daysLeft"
+        }
 
+    }
 
     // tutaj wyjebac selected date
     @RequiresApi(Build.VERSION_CODES.O)
@@ -390,7 +422,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
-
 
 
     private fun fetchMedicines() {
@@ -493,18 +524,20 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayDates(nextPeriodDate: LocalDate, nextOvulationDate: LocalDate, cycleLength: Int) {
-        val currentDate = LocalDate.now()
-        var daysUntilNextPeriod = ChronoUnit.DAYS.between(currentDate, nextPeriodDate)
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, nextOvulationDate)
+        var daysUntilNextPeriod = ChronoUnit.DAYS.between(selectedDate, nextPeriodDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
 
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, adjustedOvulationDate)
         }
 
-        daysLeftPeriod.text = daysUntilNextPeriod.toString()
-        daysLeftOwulation.text = daysUntilNextOvulation.toString()
+        runOnUiThread {
+            daysLeftPeriod.text = daysUntilNextPeriod.toString()
+            daysLeftOwulation.text = daysUntilNextOvulation.toString()
+        }
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
