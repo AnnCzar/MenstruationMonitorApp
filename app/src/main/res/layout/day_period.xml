@@ -48,10 +48,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintHorizontal_bias="0.744"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.141"
+        app:layout_constraintTop_toTopOf="@+id/cycleDayText"
+        app:layout_constraintVertical_bias="0.086"
         tools:textColor="@color/black" />
 
     <TextView
@@ -66,8 +66,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.248" />
+        app:layout_constraintTop_toBottomOf="@+id/dateDayPeriod"
+        app:layout_constraintVertical_bias="0.067" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineRecyclerView"
@@ -104,10 +104,10 @@
         android:background="@drawable/rounded_edit_text"
         app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/medicineRecyclerView"
+        app:layout_constraintVertical_bias="0.258"
         tools:listitem="@layout/doctor_item" />
 
     <TextView
@@ -121,23 +121,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695"
+        app:layout_constraintTop_toBottomOf="@+id/doctorsTextDayPeriod"
+        app:layout_constraintVertical_bias="0.353"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/drinksCountText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="17dp"
+        android:layout_height="26dp"
         android:layout_centerInParent="true"
         android:fontFamily="@font/ml"
         android:text="0"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.765"
+        app:layout_constraintEnd_toStartOf="@+id/increaseDrinkButton"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toEndOf="@+id/decreaseDrinkButton"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGlassOfWater"
+        app:layout_constraintVertical_bias="0.097"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -150,40 +151,40 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.884" />
+        app:layout_constraintTop_toBottomOf="@+id/decreaseDrinkButton"
+        app:layout_constraintVertical_bias="0.114" />
 
     <Button
         android:id="@+id/increaseDrinkButton"
         android:layout_width="61dp"
         android:layout_height="54dp"
-        android:fontFamily="@font/ml"
-        android:textStyle="bold"
         android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="+"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.671"
+        app:layout_constraintHorizontal_bias="0.682"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.775" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewGlassOfWater"
+        app:layout_constraintVertical_bias="0.055" />
 
     <Button
         android:id="@+id/decreaseDrinkButton"
         android:layout_width="61dp"
         android:layout_height="54dp"
         android:backgroundTint="#D1A1AF"
-        android:text="-"
         android:fontFamily="@font/ml"
+        android:text="-"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.311"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.775"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGlassOfWater"
+        app:layout_constraintVertical_bias="0.055"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
@@ -208,7 +209,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/additionalInfoPeriod"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 

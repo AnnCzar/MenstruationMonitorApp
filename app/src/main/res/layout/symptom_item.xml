@@ -11,7 +11,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/ml"
         android:text="Sample Symptom"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:buttonTint="@color/black"/>
 
 </LinearLayout>
