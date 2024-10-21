@@ -9,13 +9,14 @@
 
     <application
         android:allowBackup="true"
+        android:theme="@style/AppTheme"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Project"
+
         tools:targetApi="31">
         <activity
             android:name=".FirstWindowActivity"
@@ -90,7 +91,15 @@
         <activity android:name=".PregnancyBegginingActivity"
             android:exported="true">
         </activity>
+
+        <activity android:name=".PeriodEndingActivity"
+            android:exported="true">
+        </activity>
         <activity android:name=".DoctorVisitsActivity"
+            android:exported="true">
+
+        </activity>
+        <activity android:name=".PeriodBegginingActivity"
             android:exported="true">
 
         </activity>

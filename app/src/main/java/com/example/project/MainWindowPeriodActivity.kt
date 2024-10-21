@@ -34,13 +34,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var endPeriodButton: Button
-    private lateinit var toCalendarButtonPeriod: Button
+    private lateinit var toCalendarButtonPeriod: ImageButton
     private lateinit var begginingPeriodButton: Button
     private lateinit var mainWindowPeriodSettingButton: ImageButton
     private lateinit var mainWindowPeriodAcountButton: ImageButton
     private lateinit var selectedDate: LocalDate
     private lateinit var additionalInfoPeriod: Button
-    private lateinit var selectedDate1: LocalDate
     private lateinit var cycleDayPeriod: TextView
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var doctorAdapter: DoctorVisitAdapter// Adapter for RecyclerView
@@ -95,6 +94,17 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             saveMedicineCheckStatus(medicine)
         }
 
+        val dateString = intent?.getStringExtra("SELECTED_DATE")
+        selectedDate = if (!dateString.isNullOrEmpty()) {
+            LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
+        } else {
+            LocalDate.now()
+        }
+
+        fetchTodaysCycleDay()
+        fetchUserCycleLength()
+
+
         medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
         medicineRecyclerView.layoutManager = LinearLayoutManager(this)
         medicineRecyclerView.adapter = medicineAdapter
@@ -124,7 +134,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         fetchLatestCycleData()
         fetchDoctorVisits()
 
-        endPeriodButton.visibility = Button.GONE
+
+//        endPeriodButton.visibility = Button.GONE
 
 
         toCalendarButtonPeriod.setOnClickListener {
@@ -136,15 +147,17 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
 
         begginingPeriodButton.setOnClickListener {
-            addCycleDataToFirestore()
+//            addCycleDataToFirestore()
+            openPeriodBeggining(userId)
             isPeriodStarted = true
             updateButtonVisibility()
         }
-
         endPeriodButton.setOnClickListener {
-            updateEndDateInFirestore()
+//            updateEndDateInFirestore()
+            openPeriodEnding(userId)
             isPeriodStarted = false
             updateButtonVisibility()
+
         }
         additionalInfoPeriod.setOnClickListener {
             openAdditionalInformationActivity(userId, selectedDate)
@@ -166,6 +179,25 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         scheduleNotification()
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchUserCycleLength() {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val cycleLength = document.getLong("cycleLength")?.toInt()
+                    if (cycleLength != null) {
+                        fetchLatestCycleDocument(selectedDate, cycleLength)
+                    }
+                } else {
+                    showToast("User document not found.")
+                }
+            }
+            .addOnFailureListener { e ->
+                showToast("Błąd: ${e.message}")
+            }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
@@ -190,6 +222,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
     private fun saveDoctorCheckStatus(doctor: DoctorVisit) {
         db.collection("users").document(userId)
             .collection("dailyInfo")
@@ -204,7 +238,29 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchPeriodStatus() {
+        db.collection("users").document(userId).collection("cycles")
+            .orderBy("startDate")
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val latestCycle = documents.first()
+                    val endDate = latestCycle.getString("endDate")
+                    if (endDate.isNullOrEmpty()) {
+                        isPeriodStarted = true
+                    } else {
+                        isPeriodStarted = false
+                    }
+                    updateButtonVisibility()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
 
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTodaysDoctorVisitsStatus() {
         val today = LocalDate.now().toString()
@@ -229,12 +285,9 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkDate() {
         val dateString = intent?.getStringExtra("SELECTED_DATE")
-
         selectedDate = if (dateString.isNullOrEmpty()) {
-            // If the date string is null or empty, set it to the current date
             LocalDate.now()
         } else {
-            // If a valid date string exists, parse it
             LocalDate.parse(dateString)
         }
     }
@@ -253,8 +306,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                             val cycleLength = userDoc.getLong("cycleLength")?.toInt()
 
                             if (cycleLength != null) {
-                                val currentDate = selectedDate
-                                val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                val cycleDay = calculateCycleDay(lastPeriodDate, selectedDate, cycleLength)
                                 Log.d("CycleDay", "cycleDay calculated: $cycleDay")
                                 displayCycleDay(cycleDay)
                             } else {
@@ -267,8 +319,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                                 val cycleLength = userDoc.getLong("cycleLength")?.toInt()
 
                                 if (cycleLength != null) {
-                                    val currentDate = LocalDate.now()
-                                    val cycleDay = calculateCycleDay(lastPeriodDate, currentDate, cycleLength)
+                                    val cycleDay = calculateCycleDay(lastPeriodDate, selectedDate, cycleLength)
                                     Log.d("CycleDay", "cycleDay calculated: $cycleDay")
                                     displayCycleDay(cycleDay)
                                 } else {
@@ -289,6 +340,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateCycleDay(lastPeriodDate: LocalDate, currentDate: LocalDate, cycleLength: Int): Int {
         val daysPassed = ChronoUnit.DAYS.between(lastPeriodDate, currentDate)
@@ -318,31 +371,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayDaysLeftOvulation(daysLeft: Int) {
+        Log.d("UI", "Updating UI with cycleDay: $daysLeft")
+        runOnUiThread {
+            daysLeftOwulation.text = "$daysLeft"
+        }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun fetchPeriodStatus() {
-        db.collection("users").document(userId).collection("cycles")
-            .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val latestCycle = documents.first()
-                    val endDate = latestCycle.getString("endDate")
-                    if (endDate.isNullOrEmpty()) {
-                        isPeriodStarted = true
-                    } else {
-                        isPeriodStarted = false
-                    }
-                    updateButtonVisibility()
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-
-        // Fetch today's medicine status
-        fetchTodaysMedicineStatus()
     }
 
     // tutaj wyjebac selected date
@@ -373,39 +407,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun addCycleDataToFirestore() {
-        val cycleData = HashMap<String, Any>()
-        val currentDate = LocalDate.now()
 
-        val nextPeriodDate = calculateNextPeriodDate(currentDate)
-        val ovulationDate = calculateOvulationDate(nextPeriodDate)
-
-        cycleData["userId"] = userId
-        cycleData["startDate"] = currentDate.toString()
-        cycleData["nextPeriodDate"] = nextPeriodDate.toString()
-        cycleData["nextOvulationDate"] = ovulationDate.toString()
-
-        db.collection("users").document(userId)
-            .collection("cycles").document()
-            .set(cycleData)
-            .addOnSuccessListener {
-                Toast.makeText(this@MainWindowPeriodActivity, "Dane cyklu dodane do Firestore", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun calculateNextPeriodDate(currentDate: LocalDate): LocalDate {
-        return currentDate.plusDays(28)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun calculateOvulationDate(nextPeriodDate: LocalDate): LocalDate {
-        return nextPeriodDate.minusDays(14)
-    }
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "MedicineReminderChannel"
@@ -421,32 +423,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateEndDateInFirestore() {
-        db.collection("users").document(userId).collection("cycles")
-            .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val latestCycle = documents.first()
-                    val cycleRef = db.collection("users").document(userId)
-                        .collection("cycles").document(latestCycle.id)
-                    cycleRef
-                        .update("endDate", LocalDate.now().toString())
-                        .addOnSuccessListener {
-                            Toast.makeText(this@MainWindowPeriodActivity, "Data zakończenia okresu zaktualizowana", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
@@ -468,33 +444,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun fetchLatestCycleData() {
-//        db.collection("users").document(userId).collection("cycles")
-//            .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
-//            .limit(1)
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                if (documents.isEmpty) {
-//                    Toast.makeText(this, "Brak danych cyklu", Toast.LENGTH_SHORT).show()
-//                    return@addOnSuccessListener
-//                }
-//
-//                val latestCycle = documents.first()
-//                val nextPeriodDate = LocalDate.parse(latestCycle.getString("nextPeriodDate"))
-//                val nextOvulationDate = LocalDate.parse(latestCycle.getString("nextOvulationDate"))
-//                val currentDate = LocalDate.now()
-//
-//                val daysUntilNextPeriod = ChronoUnit.DAYS.between(currentDate, nextPeriodDate)
-//                val daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, nextOvulationDate)
-//
-//                daysLeftPeriod.text = daysUntilNextPeriod.toString()
-//                daysLeftOwulation.text = daysUntilNextOvulation.toString()
-//            }
-//            .addOnFailureListener { e ->
-//                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-//            }
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleData() {
@@ -575,18 +524,20 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayDates(nextPeriodDate: LocalDate, nextOvulationDate: LocalDate, cycleLength: Int) {
-        val currentDate = LocalDate.now()
-        var daysUntilNextPeriod = ChronoUnit.DAYS.between(currentDate, nextPeriodDate)
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, nextOvulationDate)
+        var daysUntilNextPeriod = ChronoUnit.DAYS.between(selectedDate, nextPeriodDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
 
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(currentDate, adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, adjustedOvulationDate)
         }
 
-        daysLeftPeriod.text = daysUntilNextPeriod.toString()
-        daysLeftOwulation.text = daysUntilNextOvulation.toString()
+        runOnUiThread {
+            daysLeftPeriod.text = daysUntilNextPeriod.toString()
+            daysLeftOwulation.text = daysUntilNextOvulation.toString()
+        }
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -676,5 +627,18 @@ private fun scheduleNotification() {
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
+    private fun openPeriodEnding(userId: String){
+        val intent = Intent(this, PeriodEndingActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+
+    private fun openPeriodBeggining(userId: String) {
+        val intent = Intent(this, PeriodBegginingActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
 
 }

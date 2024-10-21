@@ -9,19 +9,21 @@
     tools:context=".AccountWindowActivity"
     android:textAlignment="center">
 
-    <Button
+    <ImageButton
         android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="52dp"
+        android:background="@null"
         android:backgroundTint="#D1A1AF"
         android:text="Wyloguj"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.844"
+        app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.717" />
+        app:layout_constraintVertical_bias="0.06"
+        app:srcCompat="@drawable/log_out"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/endingPregnancyButton"
@@ -32,10 +34,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.717" />
+        app:layout_constraintVertical_bias="0.773" />
 
     <TextView
         android:id="@+id/accountText"
@@ -59,9 +60,11 @@
         android:textColor="#C69AA7"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24"
-        tools:layout_editor_absoluteX="39dp" />
+        app:layout_constraintVertical_bias="0.24" />
 
     <TextView
         android:id="@+id/usernameTextView"
@@ -77,18 +80,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.24" />
 
-    <TextView
-        android:id="@+id/lastWeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ostatnia waga:"
-        android:textColor="#C69AA7"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.296"
-        tools:layout_editor_absoluteX="39dp" />
-
     <!--    <com.github.mikephil.charting.charts.LineChart-->
 <!--        android:id="@+id/chartWeightTemperature"-->
 <!--        android:layout_width="0dp"-->
@@ -101,6 +92,20 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        app:layout_constraintVertical_bias="0.553" />-->
+
+    <TextView
+        android:id="@+id/lastWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ostatnia waga:"
+        android:textColor="#C69AA7"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.133"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.297" />
 
     <TextView
         android:id="@+id/lastWeightTextView"
@@ -118,35 +123,35 @@
 
     <Button
         android:id="@+id/medicationsButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="584dp"
-        android:layout_marginEnd="16dp"
-        android:text="Leki"
+        android:layout_width="131dp"
+        android:layout_height="55dp"
         android:backgroundTint="#A16476"
+        android:text="Leki"
         android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/visitsButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.893" />
 
     <Button
         android:id="@+id/visitsButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="584dp"
-        android:layout_marginEnd="8dp"
-        android:text="Wizyty u lekarza"
+        android:layout_width="131dp"
+        android:layout_height="55dp"
         android:backgroundTint="#A16476"
+        android:text="Wizyty u lekarza"
         android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/medicationsButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.893" />
 
     <ImageButton
         android:id="@+id/accountWidnowSettingButton"
-        android:layout_width="206.5dp"
+        android:layout_width="210dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -159,13 +164,13 @@
 
     <ImageButton
         android:id="@+id/homeButtonProfil"
-        android:layout_width="206.5dp"
+        android:layout_width="220dp"
         android:layout_height="58dp"
         android:background="#BA798C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/accountWidnowSettingButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
