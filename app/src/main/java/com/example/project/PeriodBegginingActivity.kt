@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -47,7 +48,11 @@ class PeriodBegginingActivity : AppCompatActivity() {
 
         accept_period_beg_button.setOnClickListener {
             addCycleDataToFirestore()
-            openMainWindowPeriod(userId)
+            val cyclePrediction = CyclePrediction(db)
+
+            cyclePrediction.predictNextMenstruation(userId)  // nowa data na nastepną menstraucaje zapsiana do bazy
+
+//            openMainWindowPeriod(userId)
 
         }
     }
@@ -127,6 +132,8 @@ class PeriodBegginingActivity : AppCompatActivity() {
                     .set(cycleData)
                     .addOnSuccessListener {
                         Toast.makeText(this@PeriodBegginingActivity, "Dane cyklu dodane do Firestore", Toast.LENGTH_SHORT).show()
+
+                        openMainWindowPeriod(userId)
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(this@PeriodBegginingActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()

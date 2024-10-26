@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -14,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class PeriodEndingActivity : AppCompatActivity(){
@@ -37,15 +37,21 @@ class PeriodEndingActivity : AppCompatActivity(){
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
 
+
         insert_date_period_end.setOnClickListener {
             showDatePickerDialog()
         }
 
         accept_period_end_button.setOnClickListener {
             savePeriodEndDate()
+            val cyclePrediction = CyclePrediction(db)
+            cyclePrediction.calculateMedianCycleLength(userId){
+                    medianCycles -> Log.d("aaa", medianCycles.toString())
+
+            }
+            cyclePrediction.predictNextMenstruation(userId)  // nowa data na nastepną menstraucaje zapsiana do bazy
+
         }
-
-
     }
 
 
@@ -98,6 +104,7 @@ class PeriodEndingActivity : AppCompatActivity(){
                 .addOnFailureListener { e ->
                     Toast.makeText(this@PeriodEndingActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+
         }
 
     private fun openMainWindowPregnancyActivity(userId: String) {

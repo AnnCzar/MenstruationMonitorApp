@@ -17,42 +17,106 @@
         android:text="Dodatkowe\n informacje"
         android:textColor="#C69AA7"
         android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/enterWeight"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintHorizontal_bias="0.861"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.087"
+        app:layout_constraintVertical_bias="0.555"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/textViewSymptoms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Symptomy"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        android:fontFamily="@font/ml"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.413"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="158dp" />
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/scrollView2"-->
+    <!--        android:layout_width="309dp"-->
+    <!--        android:layout_height="226dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.45"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.489"-->
+    <!--        tools:ignore="MissingConstraints">-->
 
-    <ImageButton
-        android:id="@+id/imageButtonSad"
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:orientation="vertical">-->
 
-        android:layout_width="38dp"
-        android:layout_height="37dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.465"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.841"
-        app:srcCompat="@drawable/sad_emoticon"
-        tools:ignore="MissingConstraints" />
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_headache"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Ból głowy" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_acne"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Trądzik" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_stomachahe"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Ból brzucha" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_mastalgia"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Ból piersi" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_dizziness"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Zawroty głowy" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_fever"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Gorączka" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_bachache"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Ból pleców" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_bedabbling"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="plamienie" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_nerves"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Zdenerowanie" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_hunger"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Nasilony głód" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_diarrhoea"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Biegunka" />-->
+
+    <!--            <CheckBox-->
+    <!--                android:id="@+id/checkBox_constipation"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Zaparcie" />-->
+
+    <!--        </LinearLayout>-->
+    <!--    </ScrollView>-->
+
 
     <EditText
         android:id="@+id/enterWeight"
@@ -61,111 +125,31 @@
         android:background="@drawable/round_shape"
         android:ems="10"
         android:fontFamily="@font/ml"
-        android:textColor="@android:color/black"
         android:hint="Waga"
         android:inputType="text"
-        android:textColorHint="@color/black"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintEnd_toStartOf="@+id/addInfoEnterTemperature"
+        app:layout_constraintHorizontal_bias="0.431"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311"
+        app:layout_constraintTop_toBottomOf="@+id/addDate"
+        app:layout_constraintVertical_bias="0.018"
         tools:ignore="MissingConstraints" />
 
-    <!--    <ScrollView-->
-<!--        android:id="@+id/scrollView2"-->
-<!--        android:layout_width="309dp"-->
-<!--        android:layout_height="226dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.45"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.489"-->
-<!--        tools:ignore="MissingConstraints">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_headache"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ból głowy" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_acne"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Trądzik" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_stomachahe"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ból brzucha" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_mastalgia"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ból piersi" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_dizziness"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Zawroty głowy" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_fever"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Gorączka" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_bachache"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ból pleców" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_bedabbling"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="plamienie" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_nerves"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Zdenerowanie" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_hunger"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Nasilony głód" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_diarrhoea"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Biegunka" />-->
-
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox_constipation"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Zaparcie" />-->
-
-<!--        </LinearLayout>-->
-<!--    </ScrollView>-->
-
+    <TextView
+        android:id="@+id/addDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="data"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textAdditionalInfo"
+        app:layout_constraintHorizontal_bias="0.564"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.17"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/addInfoEnterTemperature"
@@ -177,40 +161,41 @@
         android:hint="Temperatura"
         android:inputType="text"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintHorizontal_bias="0.883"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.31"
-        tools:ignore="MissingConstraints" />
-
-    <ImageButton
-        android:id="@+id/imageButtonHappy"
-        android:layout_width="38dp"
-        android:layout_height="37dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.841"
-        app:srcCompat="@drawable/neutral_emoticon"
+        app:layout_constraintTop_toBottomOf="@+id/textAdditionalInfo"
+        app:layout_constraintVertical_bias="0.048"
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSymptoms"
-        android:layout_width="366dp"
-        android:layout_height="145dp"
-        android:layout_marginTop="31dp"
+        android:layout_width="352dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="348dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.423"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSymptoms"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.08" />
+
+    <TextView
+        android:id="@+id/textViewSymptoms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="132dp"
+        android:fontFamily="@font/ml"
+        android:text="Symptomy"
+        android:textColor="#C69AA7"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/addInfoEnterTemperature"
+        app:layout_constraintTop_toBottomOf="@+id/enterWeight"
+        app:layout_constraintVertical_bias="0.017"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/imageButtonNeutral"
@@ -219,58 +204,158 @@
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.318"
+        app:layout_constraintHorizontal_bias="0.331"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.841"
+        app:layout_constraintVertical_bias="0.572"
         app:srcCompat="@drawable/happy_emoticon"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/imageButtonHappy"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/neutral_emoticon"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="397dp" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSad"
+
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/homeButtonaddInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.667"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.624"
+        app:srcCompat="@drawable/sad_emoticon"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/textViewMucus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
+        android:text="Rodzaj śluzu"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonNeutral"
+        app:layout_constraintVertical_bias="0.381"
+        tools:ignore="MissingConstraints" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="300dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMucus"
+        app:layout_constraintVertical_bias="0.089" />
+
+    <TextView
+        android:id="@+id/textViewGlassOfWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
+        android:text="Ilość spożytych płynów (250 ml)"
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.625"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/increaseDrinkButton"
+        android:layout_width="54dp"
+        android:layout_height="42dp"
+
+        android:backgroundTint="#D1A1AF"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.652"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.702" />
+
+    <Button
+        android:id="@+id/decreaseDrinkButton"
+        android:layout_width="54dp"
+        android:layout_height="42dp"
+        android:backgroundTint="#D1A1AF"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.702"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/drinksCountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="0"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.706"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textMood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ml"
         android:text="@string/og_lne_samopoczucie"
         android:textColor="#C69AA7"
-        android:textSize="20sp"
-        android:fontFamily="@font/ml"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.758"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/addDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="data"
-        android:textColor="#C69AA7"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.237"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.184"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSymptoms"
+        app:layout_constraintVertical_bias="0.04"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/buttonSaveAddInfo"
-        android:layout_width="114dp"
-        android:layout_height="57dp"
+        android:layout_width="95dp"
+        android:layout_height="45dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Zapisz"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.781"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.155"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
@@ -286,13 +371,13 @@
 
     <ImageButton
         android:id="@+id/addInfoSettingButton"
-        android:layout_width="150dp"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:layout_marginStart="4dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSaveAddInfo"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
@@ -303,9 +388,8 @@
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addInfoSettingAcountButton"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/addInfoSettingButton"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonHappy"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 

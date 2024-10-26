@@ -24,8 +24,7 @@ class DayPeriodActivity : AppCompatActivity() {
 
     private lateinit var cycleDayPeriod: TextView
     private lateinit var additionalInfoPeriod: Button
-    private lateinit var buttonMinus: Button
-    private lateinit var buttonPlus: Button
+
     private lateinit var dayPeriodSettingsButton: ImageButton
     private lateinit var dayPeriodAcountButton: ImageButton
     private lateinit var dateDayPeriod: TextView
@@ -139,23 +138,7 @@ class DayPeriodActivity : AppCompatActivity() {
             openHomeWindowActivity(userId)
         }
 
-        increaseDrinkButton.setOnClickListener {
-            drinksCount++
-            updateDrinkCount()
-            updateDrinkCountInFirestore()
-        }
 
-        decreaseDrinkButton.setOnClickListener {
-            if (drinksCount > 0) {
-                drinksCount--
-                updateDrinkCount()
-                updateDrinkCountInFirestore()
-            } else {
-                Toast.makeText(this, "Drinks count cannot be negative.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        fetchTodaysDrinkCount()
         fetchTodaysCycleDay()
     }
 
@@ -303,11 +286,14 @@ class DayPeriodActivity : AppCompatActivity() {
                 Log.d("DoctorVisitsActivity", "Liczba dokumentów: ${result.documents.size}")
                 doctors.clear()
                 for (document in result) {
+
                     val doctor = DoctorVisit(
                         id = document.id,
                         doctorName = document.getString("doctorName") ?: "",
                         visitDate = document.getString("visitDate") ?: "",
-                        isChecked = document.getBoolean("checked") ?: false
+                        time = document.getString("time") ?: "",
+                        isChecked = document.getBoolean("checked") ?: false,
+                        extraInfo = document.getString("extraInfo") ?: "",
                     )
                     doctors.add(doctor)
                 }
@@ -367,52 +353,9 @@ class DayPeriodActivity : AppCompatActivity() {
             }
     }
 
-    private fun updateDrinkCountInFirestore() {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(selectedDate.toString())
-            .update("drinksCount", drinksCount)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Drinks count updated in Firestore", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error updating drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 
-    private fun fetchTodaysDrinkCount() {
-        db.collection("users").document(userId).collection("dailyInfo")
-            .document(selectedDate.toString())
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // Dokument istnieje, pobieramy liczbę napojów
-                    drinksCount = document.getLong("drinksCount")?.toInt() ?: 0
-                    updateDrinkCount()
-                } else {
-                    // Dokument nie istnieje, tworzymy nowy dokument z domyślną liczbą napojów = 0
-                    val defaultDailyInfo = hashMapOf(
-                        "drinksCount" to 0
-                        // Dodaj inne pola jeśli są potrzebne
-                        // Dodaj inne pola jeśli są potrzebne
-                    )
-                    db.collection("users").document(userId).collection("dailyInfo")
-                        .document(selectedDate.toString())
-                        .set(defaultDailyInfo)
-                        .addOnSuccessListener {
-                            // Utworzono nowy dokument
-                            drinksCount = 0
-                            updateDrinkCount()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error creating daily info: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error fetching drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {

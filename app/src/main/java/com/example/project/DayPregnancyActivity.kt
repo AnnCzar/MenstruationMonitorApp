@@ -257,7 +257,9 @@ class DayPregnancyActivity : AppCompatActivity() {
                         id = document.id,
                         doctorName = document.getString("doctorName") ?: "",
                         visitDate = document.getString("visitDate") ?: "",
-                        isChecked = document.getBoolean("checked") ?: false
+                        time = document.getString("time") ?: "",
+                        isChecked = document.getBoolean("checked") ?: false,
+                        extraInfo = document.getString("extraInfo") ?: "",
                     )
                     doctors.add(doctor)
                 }
