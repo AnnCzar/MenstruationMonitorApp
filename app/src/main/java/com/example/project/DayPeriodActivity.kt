@@ -77,7 +77,7 @@ class DayPeriodActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.day_period)
+        setContentView(R.layout.day_period_deprecated)
 
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance()

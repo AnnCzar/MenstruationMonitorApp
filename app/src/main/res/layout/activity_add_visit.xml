@@ -65,16 +65,16 @@
         android:id="@+id/extrInformationEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="424dp"
+        android:layout_marginTop="360dp"
         android:fontFamily="@font/ml"
-        android:textAlignment="center"
         android:hint="Dodatkowe informacje"
         android:inputType="text"
+        android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textColorHint="#C69AA7"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addVisitTitle" />
 
@@ -86,8 +86,8 @@
         android:timePickerMode="spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.684"
-        tools:layout_editor_absoluteX="36dp" />
+        app:layout_constraintVertical_bias="0.579"
+        tools:layout_editor_absoluteX="41dp" />
 
     <Button
         android:id="@+id/addVisitConfirmButton"
@@ -117,6 +117,6 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.462" />
+        app:layout_constraintVertical_bias="0.413" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
