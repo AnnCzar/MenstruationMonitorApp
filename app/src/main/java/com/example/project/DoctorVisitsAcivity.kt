@@ -11,15 +11,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+//
+// do okna wizyt jak wjedzie sie przez profil
 
-
-public class DoctorVisitsActivity : AppCompatActivity() {
+class DoctorVisitsActivity : AppCompatActivity() {
 
     private lateinit var visitRV: RecyclerView
     private lateinit var visitAdapter: DoctorVisitAdapter
@@ -46,9 +43,12 @@ public class DoctorVisitsActivity : AppCompatActivity() {
 
         userId = intent.getStringExtra("USER_ID") ?: ""
 
-        visitAdapter = DoctorVisitAdapter(doctorsList) { visit ->
-            saveVisitCheckStatus(visit)
-        }
+        visitAdapter = DoctorVisitAdapter(doctorsList, onEditClick = { visit ->
+            editVisit(visit)
+        }, onDeleteClick = { visit ->
+            deleteVisit(visit)
+        })
+
         visitRV.adapter = visitAdapter
 
         onResume()
@@ -75,11 +75,7 @@ public class DoctorVisitsActivity : AppCompatActivity() {
                             } else {
                                 openMainWindowPregnancyActivity(userId)
                             }
-                        } else {
-                            // Handle case where statusPregnancy is not set or is null
                         }
-                    } else {
-                        // Handle case where user does not exist
                     }
                 }
                 .addOnFailureListener { e ->
@@ -87,6 +83,15 @@ public class DoctorVisitsActivity : AppCompatActivity() {
                 }
         }
     }
+
+    private fun openMainWindowPregnancyActivity(userId: String) {
+
+    }
+
+    private fun openMainWindowPeriodActivity(userId: String) {
+
+    }
+
     override fun onResume() {
         super.onResume()
         doctorsList.clear()
@@ -105,24 +110,18 @@ public class DoctorVisitsActivity : AppCompatActivity() {
             .whereEqualTo("checked", false)
             .get()
             .addOnSuccessListener { result ->
-                // Logowanie lub debugowanie, aby upewnić się, że result nie jest pusty
-                Log.d("DoctorVisitsActivity", "Liczba dokumentów: ${result.documents.size}")
-
-                // Wyczyść doctorsList przed dodaniem nowych elementów
                 doctorsList.clear()
-
-                // Wypełnij doctorsList danymi pobranymi z Firestore
                 for (document in result) {
                     val doctor = DoctorVisit(
                         id = document.id,
                         doctorName = document.getString("doctorName") ?: "",
                         visitDate = document.getString("visitDate") ?: "",
-                        isChecked = document.getBoolean("checked") ?: false
+                        time = document.getString("time") ?: "",
+                        isChecked = document.getBoolean("checked") ?: false,
+                        extraInfo = document.getString("extraInfo") ?: "",
                     )
                     doctorsList.add(doctor)
                 }
-
-                // Powiadom adapter o zmianie danych
                 visitAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
@@ -130,30 +129,25 @@ public class DoctorVisitsActivity : AppCompatActivity() {
             }
     }
 
+    private fun editVisit(visit: DoctorVisit) {
+        Toast.makeText(this, "Nie ma edycji", Toast.LENGTH_SHORT).show() 
+        val intent = Intent(this, ModifyVisitActivity::class.java)
+        intent.putExtra("VISIT_ID", visit.id)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveVisitCheckStatus(visit: DoctorVisit) {
-        db.collection("users").document(userId)
-            .collection("doctorVisits")
+    private fun deleteVisit(visit: DoctorVisit) {
+        db.collection("users").document(userId).collection("doctorVisits")
             .document(visit.id)
-            .set(mapOf("checked" to visit.isChecked))
+            .delete()
             .addOnSuccessListener {
-                Toast.makeText(this, "Visit status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Wizyta została usunięta", Toast.LENGTH_SHORT).show()
+                doctorsList.remove(visit)
+                visitAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-    }
-
-    private fun openMainWindowPeriodActivity(userId: String) {
-        val intent = Intent(this, MainWindowPeriodActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
-    private fun openMainWindowPregnancyActivity(userId: String) {
-        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
     }
 }
