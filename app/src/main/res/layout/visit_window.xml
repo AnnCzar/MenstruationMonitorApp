@@ -7,12 +7,15 @@
         android:id="@+id/addVisitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="Add Visit" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/visitsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fontFamily="@font/ml"
         android:layout_marginTop="8dp" />
 
 </LinearLayout>

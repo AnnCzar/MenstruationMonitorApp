@@ -25,16 +25,14 @@
         app:layout_constraintVertical_bias="0.364" />
 
 
-
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/insert_date_pregnancy_start"
         android:layout_width="306dp"
         android:layout_height="48dp"
         android:background="@drawable/round_shape"
         android:ems="10"
-        android:hint="yyyy-mm-dd"
         android:fontFamily="@font/ml"
+        android:hint="YYYY-MM-DD"
         android:inputType="text"
         android:textAlignment="center"
         android:textColorHint="@color/black"
@@ -42,8 +40,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.553" />
+        app:layout_constraintTop_toBottomOf="@+id/pregnancy_beg_text"
+        app:layout_constraintVertical_bias="0.113" />
 
     <Button
         android:id="@+id/accept_pregnancy_beg_button"
@@ -55,8 +53,7 @@
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651" />
+        app:layout_constraintTop_toBottomOf="@+id/insert_date_pregnancy_start"
+        app:layout_constraintVertical_bias="0.155" />
 </androidx.constraintlayout.widget.ConstraintLayout>
