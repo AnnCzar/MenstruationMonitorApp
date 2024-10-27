@@ -93,6 +93,7 @@ class CalendarActivity : AppCompatActivity() {
                             val eventDecorator = EventDecorator(calendar)
                             eventDecorator.markPeriodDays(periodStart, periodEnd)
                             eventDecorator.markOvulation(ovulationDay)
+                            eventDecorator.markFertilityDays(ovulationDate)
                         } else {
                             Toast.makeText(this, "Incomplete cycle data for one of the documents.", Toast.LENGTH_SHORT).show()
                         }
@@ -132,6 +133,8 @@ class CalendarActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error fetching doctor visits: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 
 
 

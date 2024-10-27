@@ -201,13 +201,14 @@
         android:id="@+id/imageButtonNeutral"
         android:layout_width="40dp"
         android:layout_height="37dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="7dp"
         android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewGlassOfWater"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.331"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572"
+        app:layout_constraintTop_toBottomOf="@+id/textMood"
         app:srcCompat="@drawable/happy_emoticon"
         tools:ignore="MissingConstraints" />
 
@@ -215,29 +216,33 @@
         android:id="@+id/imageButtonHappy"
         android:layout_width="38dp"
         android:layout_height="37dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="7dp"
         android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/textViewGlassOfWater"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMood"
         app:srcCompat="@drawable/neutral_emoticon"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="397dp" />
+        tools:ignore="MissingConstraints" />
+
 
     <ImageButton
         android:id="@+id/imageButtonSad"
 
         android:layout_width="38dp"
         android:layout_height="37dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="7dp"
         android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/homeButtonaddInfo"
+        app:layout_constraintBottom_toTopOf="@+id/textViewGlassOfWater"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.667"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.624"
+        app:layout_constraintTop_toBottomOf="@+id/textMood"
         app:srcCompat="@drawable/sad_emoticon"
         tools:ignore="MissingConstraints" />
-
 
     <TextView
         android:id="@+id/textViewMucus"

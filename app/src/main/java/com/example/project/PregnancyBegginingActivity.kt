@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,6 +53,7 @@ class PregnancyBegginingActivity : AppCompatActivity() {
                 val selectedDate = Calendar.getInstance()
                 selectedDate.set(selectedYear, selectedMonth, selectedDay)
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                // Formatowanie wybranej daty do pola tekstowego
                 insert_date_pregnancy_start.setText(sdf.format(selectedDate.time))
             },
             year, month, day
@@ -60,9 +62,14 @@ class PregnancyBegginingActivity : AppCompatActivity() {
     }
 
     private fun savePregnancyStartDate() {
-        val dateStr = insert_date_pregnancy_start.text.toString()
+        val dateStr = insert_date_pregnancy_start.text.toString().trim()
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val startDate: Date? = sdf.parse(dateStr)
+        sdf.isLenient = false
+        val startDate: Date? = try {
+            sdf.parse(dateStr)
+        } catch (e: ParseException) {
+            null
+        }
 
         if (startDate != null) {
             val calendar = Calendar.getInstance()

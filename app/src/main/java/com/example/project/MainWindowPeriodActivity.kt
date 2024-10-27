@@ -139,6 +139,29 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         begginingPeriodButton.visibility = Button.GONE
 
 
+        val userRef = db.collection("users").document(userId)
+
+        userRef.collection("cycles").get()
+            .addOnSuccessListener { querySnapshot ->
+                 val hasCycles = !querySnapshot.isEmpty
+                if (!hasCycles) {
+                    begginingPeriodButton.visibility = Button.VISIBLE
+                } else {
+                    begginingPeriodButton.visibility = Button.GONE
+                }
+
+
+            }
+            .addOnFailureListener { e ->
+                println("Error fetching cycles collection: $e")
+            }
+
+
+
+
+
+
+
         toCalendarButtonPeriod.setOnClickListener {
             openCalendarActivity(userId)
         }
