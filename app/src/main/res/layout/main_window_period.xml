@@ -189,18 +189,17 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/doctorsRecyclerView"
-        android:layout_width="322dp"
-        android:layout_height="71dp"
+        android:layout_width="339dp"
+        android:layout_height="78dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/round_shape"
         app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.595"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
-        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_bias="0.488"
         tools:listitem="@layout/doctor_item" />
-
 
     <TextView
         android:id="@+id/doctorsTextDayPeriod"
@@ -267,13 +266,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineRecyclerView"
-        android:layout_width="320dp"
-        android:layout_height="69dp"
+        android:layout_width="339dp"
+        android:layout_height="78dp"
+        android:background="@drawable/round_shape"
         app:layout_constraintBottom_toTopOf="@id/toCalendarButtonPeriod"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.582"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicineTextMainPregnancy"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintVertical_bias="0.037" />
 
     <TextView
         android:id="@+id/medicineTextMainPregnancy"

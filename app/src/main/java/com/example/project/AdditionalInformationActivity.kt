@@ -62,7 +62,38 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
         loadAdditionalInformation(selectedDate)
         addDate.text = selectedDate.toString()
+
+        homeButtonaddInfo.setOnClickListener {
+            val userRef = db.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { user ->
+                    if (user != null) {
+                        val statusPregnancy = user.getBoolean("statusPregnancy")
+                        if (statusPregnancy != null) {
+                            if (!statusPregnancy) {
+                                openMainWindowPeriodActivity(userId)
+                            } else {
+                                openMainWindowPregnancyActivity(userId)
+                            }
+                        } else {
+                        }
+                    } else {
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        addInfoSettingAcountButton.setOnClickListener {
+            openAccountWindowActivity(userId)
+        }
+
+        addInfoSettingButton.setOnClickListener {
+            openSettingsWindowActivity(userId)
+        }
     }
+
 
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
@@ -76,8 +107,8 @@ class AdditionalInformationActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewSymptoms)
 
         buttonSaveAddInfo = findViewById(R.id.buttonSaveAddInfo)
-//        addInfoSettingAcountButton = findViewById(R.id.addInfoSettingAcountButton)
-//        addInfoSettingButton = findViewById(R.id.addInfoSettingButton)
+        addInfoSettingAcountButton = findViewById(R.id.addInfoSettingAcountButton)
+        addInfoSettingButton = findViewById(R.id.addInfoSettingButton)
         addDate = findViewById(R.id.addDate)
         drinksCountText = findViewById(R.id.drinksCountText)
         increaseDrinkButton = findViewById(R.id.increaseDrinkButton)
@@ -374,8 +405,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -387,6 +416,17 @@ class AdditionalInformationActivity : AppCompatActivity() {
         val intent = Intent (this, AccountWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
         }
+        startActivity(intent)
+    }
+    private fun openMainWindowPeriodActivity(userId: String) {
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+    private fun openMainWindowPregnancyActivity(userId: String) {
+        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 }

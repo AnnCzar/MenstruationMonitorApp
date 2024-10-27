@@ -75,7 +75,9 @@ class DoctorVisitsActivity : AppCompatActivity() {
                             } else {
                                 openMainWindowPregnancyActivity(userId)
                             }
+                        } else {
                         }
+                    } else {
                     }
                 }
                 .addOnFailureListener { e ->
@@ -84,12 +86,16 @@ class DoctorVisitsActivity : AppCompatActivity() {
         }
     }
 
-    private fun openMainWindowPregnancyActivity(userId: String) {
-
+    private fun openMainWindowPeriodActivity(userId: String) {
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
     }
 
-    private fun openMainWindowPeriodActivity(userId: String) {
-
+    private fun openMainWindowPregnancyActivity(userId: String) {
+        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
     }
 
     override fun onResume() {
