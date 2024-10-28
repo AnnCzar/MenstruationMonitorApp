@@ -1,66 +1,113 @@
-//package com.example.project
-//
-//import android.os.Build
-//import androidx.annotation.RequiresApi
-//import com.google.firebase.firestore.FirebaseFirestore
-//import java.time.LocalDate
-//
-//class FertilityPrediction(private val db: FirebaseFirestore) {
-//
-//    // Funkcja przewiduje owulację na podstawie danych o temperaturze i śluzie
-//    fun predictOvulation(userId: String, onComplete: (String) -> Unit) {
-//        db.collection("users")
-//            .document(userId)
-//            .collection("fertilityData")
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                var temperatureRise = false
-//                var fertileMucus = false
-//
-//                for (doc in documents) {
-//                    val temperature = doc.getDouble("temperature")
-//                    val mucusType = doc.getString("mucusType")
-//
-//                    // Sprawdza, czy występuje wzrost temperatury powyżej normy
-//                    if (temperature != null && temperature > 37.0) {
-//                        temperatureRise = true
-//                    }
-//
-//                    // Sprawdza, czy śluz jest płodny (przezroczysty i rozciągliwy)
-//                    if (mucusType == "clear_stretchy") {
-//                        fertileMucus = true
-//                    }
-//                }
-//
-//                if (temperatureRise && fertileMucus) {
-//                    onComplete("Wykryto dni płodne. Prawdopodobna owulacja.")
-//                } else {
-//                    onComplete("Brak oznak płodności.")
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                onComplete("Błąd przy przewidywaniu owulacji: $e")
-//            }
-//    }
-//
-//    // Funkcja zapisuje codzienne dane o temperaturze i śluzie
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun saveFertilityData(userId: String, temperature: Double, mucusType: String) {
-//        val fertilityData = hashMapOf(
-//            "temperature" to temperature,
-//            "mucusType" to mucusType,
-//            "date" to LocalDate.now()
-//        )
-//
-//        db.collection("users")
-//            .document(userId)
-//            .collection("fertilityData")
-//            .add(fertilityData)
-//            .addOnSuccessListener {
-//                println("Dane o płodności zostały zapisane pomyślnie!")
-//            }
-//            .addOnFailureListener { e ->
-//                println("Błąd przy zapisywaniu danych o płodności: $e")
-//            }
-//    }
-//}
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
+import kotlin.math.floor
+
+class FertilityPrediction(private val db: FirebaseFirestore) {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun predictOvulationAndFertileDays(
+        userId: String,
+        temperature: Double?,
+        mucusType: String?,
+        onComplete: (String) -> Unit
+    ) {
+        // Pobieramy dane z ostatnich kilku dni, aby określić wzorce temperatury i śluzu
+        val currentDate = LocalDate.now()
+
+        db.collection("users")
+            .document(userId)
+            .collection("dailyInfo")
+            .get()
+            .addOnSuccessListener { documents ->
+                val tempList = mutableListOf<Double>()
+                var fertileDays = mutableListOf<LocalDate>()
+                var ovulationDay: LocalDate? = null
+
+                for (doc in documents) {
+                    val date = doc.getDate("date")?.toInstant()?.atZone(java.time.ZoneId.systemDefault())?.toLocalDate()
+                    val temp = doc.getDouble("temperature")
+                    val mucus = doc.getString("mucusType")
+
+                    if (temp != null && date != null) {
+                        tempList.add(temp)
+
+                        // Logika przewidywania owulacji i dni płodnych
+                        if (mucus == "rozciągliwy" || mucus == "przejrzysty") {
+                            fertileDays.add(date)
+                        }
+                    }
+                }
+
+                // Jeśli mamy wystarczającą liczbę danych, analizujemy
+                if (tempList.size >= 5) {
+                    val latestTemps = tempList.takeLast(5)  // Ostatnie 5 dni temperatur
+                    val tempIncrease = latestTemps.maxOrNull() ?: 0.0
+
+                    // Logika wzrostu temperatury wskazująca na owulację
+                    if (temperature != null && temperature > tempIncrease) {
+                        ovulationDay = currentDate
+                        fertileDays.add(currentDate.minusDays(1))
+                        fertileDays.add(currentDate.minusDays(2))
+                        fertileDays.add(currentDate.minusDays(3))
+                    }
+                }
+
+                // Zapisz przewidywane dni płodne i owulację do bazy danych
+                saveFertileDaysAndOvulation(userId, fertileDays, ovulationDay)
+
+                // Wywołaj callback z odpowiednim komunikatem
+                onComplete("Dni płodne: ${fertileDays.joinToString(", ")}, Przewidywany dzień owulacji: $ovulationDay")
+            }
+            .addOnFailureListener {
+                onComplete("Błąd w pobieraniu danych.")
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveFertileDaysAndOvulation(
+        userId: String,
+        fertileDays: List<LocalDate>,
+        ovulationDay: LocalDate?
+    ) {
+        val data = hashMapOf(
+            "fertileDays" to fertileDays.map { it.toString() },
+            "ovulationDay" to ovulationDay?.toString()
+        )
+
+        db.collection("users")
+            .document(userId)
+            .collection("fertilityPredictions")
+            .document(LocalDate.now().toString())
+            .set(data)
+            .addOnSuccessListener {
+                println("Przewidywane dni płodne i owulacja zostały zapisane pomyślnie!")
+            }
+            .addOnFailureListener { e ->
+                println("Błąd podczas zapisywania przewidywań: $e")
+            }
+    }
+
+    // Zapis danych o codziennym wprowadzeniu temperatury i śluzu
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun saveDailyInfo(userId: String, temperature: Double?, mucusType: String?) {
+        val data = hashMapOf(
+            "temperature" to temperature,
+            "mucusType" to mucusType,
+            "date" to LocalDate.now().toString()
+        )
+
+        db.collection("users")
+            .document(userId)
+            .collection("dailyInfo")
+            .document(LocalDate.now().toString())
+            .set(data)
+            .addOnSuccessListener {
+                println("Dzienny wpis został zapisany pomyślnie!")
+            }
+            .addOnFailureListener { e ->
+                println("Błąd podczas zapisywania dziennego wpisu: $e")
+            }
+    }
+}

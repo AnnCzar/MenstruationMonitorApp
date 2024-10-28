@@ -8,65 +8,67 @@
     android:background="@drawable/tlo"
     tools:context=".DoctorVisitsActivity">
 
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/visitRV"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginStart="16dp"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/addVisitButton"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/visitsText"-->
+    <!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+    <!--        tools:listitem="@layout/doctor_item" />-->
+
     <TextView
         android:id="@+id/visitsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/mbi"
         android:text="Wizyty u lekarza"
         android:textAlignment="center"
-        android:textColor="#A16476"
-        android:textSize="34sp"
+        android:textColor="#C69AA7"
+        android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.217" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/visitRV"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/addVisitButton"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/visitsText"-->
-<!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--        tools:listitem="@layout/doctor_item" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/visitRV"
-        android:layout_width="295dp"
-        android:layout_height="461dp"
+        android:layout_width="305dp"
+        android:layout_height="287dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visitsText"
+        app:layout_constraintVertical_bias="0.104"
         tools:listitem="@layout/doctor_item" />
-
-
 
     <Button
         android:id="@+id/addVisitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
         android:text="Dodaj wizytę"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#A16476"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/accountWidnowSettingButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/visitRV"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="136dp" />
 
     <ImageButton
         android:id="@+id/accountWidnowSettingButton"
         android:layout_width="206.5dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -79,7 +81,7 @@
         android:id="@+id/homeButtonProfil"
         android:layout_width="206.5dp"
         android:layout_height="58dp"
-        android:background="#BA798C"
+        android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
