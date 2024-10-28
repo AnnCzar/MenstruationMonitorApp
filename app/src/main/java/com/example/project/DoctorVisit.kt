@@ -4,5 +4,7 @@ data class DoctorVisit(
     var id: String,
     val doctorName: String,
     val visitDate: String,
-    var isChecked: Boolean
+    val time: String,
+    var isChecked: Boolean,
+    val extraInfo: String
 )

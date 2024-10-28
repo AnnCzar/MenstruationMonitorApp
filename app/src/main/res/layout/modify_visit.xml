@@ -2,20 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/addVisitWindow"
+    android:id="@+id/editVisitWindow"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tlo"
     android:textAlignment="center"
     android:padding="16dp">
 
-
     <TextView
         android:id="@+id/addVisitTitle"
         android:layout_width="411dp"
         android:layout_height="51dp"
         android:fontFamily="@font/mbi"
-        android:text="Dodaj wizytę"
+        android:text="Edycja wizyty"
         android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textSize="33dp"
@@ -25,8 +24,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.143" />
 
+
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/insert_date_period_start"
+        android:id="@+id/visitDateEditText"
         android:layout_width="377dp"
         android:layout_height="41dp"
         android:ems="10"
@@ -39,10 +39,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.341" />
+        app:layout_constraintVertical_bias="0.323" />
 
     <EditText
         android:id="@+id/doctorNameEditText"
@@ -50,26 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/ml"
+        android:textAlignment="center"
         android:hint="Nazwa doktora"
         android:inputType="text"
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textColorHint="#C69AA7"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addVisitTitle" />
-
-    <EditText
-        android:id="@+id/extrInformationEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="360dp"
-        android:fontFamily="@font/ml"
-        android:hint="Dodatkowe informacje"
-        android:inputType="text"
-        android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textColorHint="#C69AA7"
         android:textSize="18sp"
@@ -86,21 +69,8 @@
         android:timePickerMode="spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.579"
-        tools:layout_editor_absoluteX="41dp" />
-
-    <Button
-        android:id="@+id/addVisitConfirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#D1A1AF"
-        android:fontFamily="@font/ml"
-        android:text="Potwierdź"
-        android:textSize="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/extrInformationEditText"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="129dp" />
+        app:layout_constraintVertical_bias="0.615"
+        tools:layout_editor_absoluteX="38dp" />
 
     <TextView
         android:id="@+id/textView"
@@ -109,14 +79,43 @@
         android:fontFamily="@font/ml"
         android:text="Godzina wizyty"
         android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:textColorHint="#C69AA7"
+        android:textColor="#A16476"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.413" />
+        app:layout_constraintVertical_bias="0.456"
+        tools:layout_editor_absoluteX="102dp" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
+        android:text="Potwierdź"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/extrInformationEditText"
+        app:layout_constraintVertical_bias="0.019"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="118dp" />
+
+    <EditText
+        android:id="@+id/extrInformationEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="144dp"
+        android:fontFamily="@font/ml"
+        android:hint="Dodatkowe informacje"
+        android:inputType="text"
+        android:textColor="#C69AA7"
+        android:textAlignment="center"
+        android:textColorHint="#C69AA7"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

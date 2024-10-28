@@ -82,7 +82,7 @@ class LoginWindowActivity : AppCompatActivity() {
                                     val userDocument = db.collection("users").document(user.uid).get().await()
                                     val statusPregnancy = userDocument.getBoolean("statusPregnancy")
 
-                                    // Save user ID to SharedPreferences
+
                                     val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
                                     with(sharedPreferences.edit()) {
                                         putString("USER_ID", user.uid)
@@ -118,7 +118,7 @@ class LoginWindowActivity : AppCompatActivity() {
     }
 
     private fun openMainWindowPeriodActivity(userId: String) {
-        // Add logging
+
         println("Opening MainWindowPeriodActivity for userId: $userId")
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
@@ -126,7 +126,7 @@ class LoginWindowActivity : AppCompatActivity() {
     }
 
     private fun openMainWindowPregnancyActivity(userId: String) {
-        // Add logging
+
         println("Opening MainWindowPregnancyActivity for userId: $userId")
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)

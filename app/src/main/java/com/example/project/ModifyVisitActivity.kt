@@ -19,7 +19,7 @@ class ModifyVisitActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_modify_visit)
+        setContentView(R.layout.modify_visit)
 
         db = FirebaseFirestore.getInstance()
         userId = intent.getStringExtra("USER_ID") ?: ""

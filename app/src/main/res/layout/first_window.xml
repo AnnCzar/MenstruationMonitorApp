@@ -25,35 +25,37 @@
 
     <Button
         android:id="@+id/button_signin"
-        android:layout_width="229dp"
-        android:layout_height="60dp"
+        android:layout_width="202dp"
+        android:layout_height="65dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
-        android:text="zaloguj"
+        android:text="Zaloguj"
         android:textAlignment="center"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576"
+        app:layout_constraintTop_toBottomOf="@+id/text_app_name"
+        app:layout_constraintVertical_bias="0.155"
         tools:ignore="MissingConstraints,NotSibling" />
 
     <Button
         android:id="@+id/button_register"
-        android:layout_width="229dp"
-        android:layout_height="60dp"
+        android:layout_width="198dp"
+        android:layout_height="65dp"
         android:backgroundTint="#FFF"
         android:fontFamily="@font/ml"
-        android:text="zarejestruj"
+        android:text="Zarejestruj"
         android:textAlignment="center"
         android:textColor="#D1A1AF"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.678"
+        app:layout_constraintTop_toBottomOf="@+id/button_signin"
+        app:layout_constraintVertical_bias="0.117"
         tools:ignore="DuplicateIds,MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

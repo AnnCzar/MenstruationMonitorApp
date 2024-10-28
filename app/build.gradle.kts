@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
 }
 
 android {
@@ -34,6 +35,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -49,12 +53,17 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.recyclerview)
     implementation("androidx.work:work-runtime-ktx:2.8.0")
+    implementation(libs.play.services.maps)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
     implementation("com.github.sundeepk:compact-calendar-view:3.0.0")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.libraries.places:places:4.0.0")
+
+
 
     // implementation("com.google.gms:google-services:4.3.10")
     // implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
