@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AccountWindowActivity : AppCompatActivity() {
@@ -21,9 +22,41 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var medicationsButton: Button
     private lateinit var begginingPregnancyButton: Button
     private lateinit var logoutButton: ImageButton
-
+    private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
+
+//    private fun logout() {
+////        editor.remove("USER_ID")
+////        editor.apply()
+//
+//        val pref = getSharedPreferences("login", Context.MODE_PRIVATE)
+//        val editor = pref.edit()
+//        editor.putBoolean("isLoggedIn", false)
+//        editor.apply()
+//        auth.signOut()
+//
+//
+//        val intent = Intent(this, LoginWindowActivity::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        startActivity(intent)
+//        finish()
+//    }
+private fun logout() {
+    val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        putBoolean("isLoggedIn", false)
+        putString("USER_ID", null)
+        apply()
+    }
+    auth.signOut()
+
+    val intent = Intent(this, LoginWindowActivity::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    startActivity(intent)
+    finish()
+}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +66,8 @@ class AccountWindowActivity : AppCompatActivity() {
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
+
+
 
         loadUserInfo()
 
@@ -47,7 +82,9 @@ class AccountWindowActivity : AppCompatActivity() {
 
         logoutButton.setOnClickListener {
             logout()
+
         }
+        auth = FirebaseAuth.getInstance()
         begginingPregnancyButton.setOnClickListener {
             updatePregnancyStatusToTrue(userId)
             openPregnancyBegginingActivity(userId)
@@ -73,17 +110,6 @@ class AccountWindowActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-    }
-
-    private fun logout() {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.remove("USER_ID")
-        editor.apply()
-
-        val intent = Intent(this, LoginWindowActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     private fun openPregnancyBegginingActivity(userId: String) {

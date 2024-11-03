@@ -146,12 +146,12 @@ class CalendarActivity : AppCompatActivity() {
                 if (document != null && document.exists()) {
                     val pregnancyStatus = document.getBoolean("statusPregnancy") ?: false
                     val intent = if (pregnancyStatus) {
-                        Intent(this, DayPregnancyActivity::class.java)
+                        Intent(this, MainWindowPregnancyActivity::class.java)
                     } else {
                         Intent(this, MainWindowPeriodActivity::class.java)
                     }
                     intent.putExtra("USER_ID", userId)
-                    intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_LOCAL_DATE))  // Przekazywanie daty
+                    intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_DATE))
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
