@@ -5,7 +5,7 @@
     android:id="@+id/registerWindow3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterWindow3Activity"
+    tools:context=".ModifyMedicineActivity"
     android:background="@drawable/tlo">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/mbi"
-        android:text="Przyjmowane leki"
+        android:text="Edytuj lek"
         android:textColor="#C69AA7"
         android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -90,4 +90,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
