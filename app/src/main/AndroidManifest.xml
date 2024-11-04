@@ -109,6 +109,10 @@
             android:name=".PeriodBegginingActivity"
             android:exported="true"></activity>
         <activity
+            android:name=".ModifyMedicineActivity"
+            android:exported="true"></activity>
+
+        <activity
             android:name=".AddVisitActivity"
             android:exported="true"></activity> <!-- <activity android:name=".MyApp"> -->
         <!-- </activity> -->

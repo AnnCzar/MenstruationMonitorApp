@@ -36,7 +36,7 @@ class AddMedicineActivity : AppCompatActivity(){
         enterMedicineName = findViewById(R.id.enterMedicineName)
         enterDoseMedicineRegister = findViewById(R.id.enterDoseMedicineRegister)
         enterTimeMedicineRegister = findViewById(R.id.enterTimeMedicineRegister)
-        buttonConfirmRegisterWindow3 = findViewById(R.id.buttonConfirmRegisterWindow3)
+//        buttonConfirmRegisterWindow3 = findViewById(R.id.buttonConfirmRegisterWindow3)
         buttonSaveMedicineRegisterWindow3 = findViewById(R.id.buttonSaveMedicineRegisterWindow3)
 
         // Retrieve data from Intent

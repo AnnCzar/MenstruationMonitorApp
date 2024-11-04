@@ -16,14 +16,14 @@ import java.time.LocalDate
 class MedicineActivity : AppCompatActivity() {
 
     private lateinit var medicineRV: RecyclerView
-    private lateinit var medicineAdapter: MedicineAdapter
+    private lateinit var medicineAdapter: MedicineAdapterModify
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var homeMedications: ImageButton
     private lateinit var settingsMedications: ImageButton
     private lateinit var addMedication: Button
 
-    private val medicineList = mutableListOf<Medicine>()
+    private val medicineList = mutableListOf<MedicineList>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,16 +33,20 @@ class MedicineActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         medicineRV = findViewById(R.id.medicineRV)
+        medicineRV.layoutManager = LinearLayoutManager(this)
+
         homeMedications = findViewById(R.id.homeMedications)
         settingsMedications = findViewById(R.id.settingsMedications)
         addMedication = findViewById(R.id.addMedication)
-        medicineRV.layoutManager = LinearLayoutManager(this)
+
 
         userId = intent.getStringExtra("USER_ID") ?: ""
 
-        medicineAdapter = MedicineAdapter(medicineList) { medicine ->
-            saveMedicineCheckStatus(medicine)
-        }
+        medicineAdapter = MedicineAdapterModify(medicineList, onEditClick = { medicine ->
+            editVisit(medicine)
+        }, onDeleteClick = { medicine ->
+            deleteVisit(medicine)
+        })
         medicineRV.adapter = medicineAdapter
 
         fetchMedicines()
@@ -79,6 +83,32 @@ class MedicineActivity : AppCompatActivity() {
                 }
         }
     }
+    override fun onResume() {
+        super.onResume()
+        fetchMedicines()
+
+    }
+
+    private fun editVisit(medicine: MedicineList) {
+        val intent = Intent(this, ModifyMedicineActivity::class.java)
+        intent.putExtra("MEDICINE_ID", medicine.id)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+
+    }
+    private  fun deleteVisit(medicine: MedicineList){
+        db.collection("users").document(userId).collection("medicines")
+            .document(medicine.id)
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Lek został usunięty", Toast.LENGTH_SHORT).show()
+                medicineList.remove(medicine)
+                medicineAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
@@ -93,10 +123,11 @@ class MedicineActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 medicineList.clear()
                 for (document in result) {
-                    val medicine = Medicine(
+                    val medicine = MedicineList(
                         id = document.id,
                         name = document.getString("medicineName") ?: "",
-                        isChecked = document.getBoolean("isChecked") ?: false
+                        dose = document.getString("doseMedicine") ?: "",
+                        time = document.getString("timeMedicine") ?: ""
                     )
                     medicineList.add(medicine)
                 }
@@ -135,3 +166,8 @@ class MedicineActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
+private fun <E> MutableList<E>.add(element: Medicine) {
+
+}
+
