@@ -35,29 +35,3 @@ class SymptomsAdapter(
 
     override fun getItemCount() = symptoms.size
 }
-//class SymptomsAdapter(private var symptoms: List<Symptom>, private val onSymptomCheckChange: (Symptom, Boolean) -> Unit) : RecyclerView.Adapter<SymptomsAdapter.ViewHolder>() {
-//
-//    class ViewHolder(val binding: SymptomItemBinding) : RecyclerView.ViewHolder(binding.root)
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val binding = SymptomItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        return ViewHolder(binding)
-//    }
-//
-//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val symptom = symptoms[position]
-//        holder.binding.checkbox.text = symptom.name
-//        holder.binding.checkbox.isChecked = symptom.isChecked
-//        holder.binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
-//            symptoms[position].isChecked = isChecked
-//            onSymptomCheckChange(symptom, isChecked)
-//        }
-//    }
-//
-//    override fun getItemCount() = symptoms.size
-//
-//    // Adding a public method to access symptoms safely
-//    fun getSymptoms(): List<Symptom> {
-//        return symptoms
-//    }
-//}

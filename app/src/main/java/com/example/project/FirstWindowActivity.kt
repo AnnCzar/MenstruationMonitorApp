@@ -15,7 +15,6 @@ class FirstWindowActivity : AppCompatActivity() {
     private lateinit var userId: String
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.first_window)

@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
@@ -51,9 +52,6 @@ class PeriodBegginingActivity : AppCompatActivity() {
             val cyclePrediction = CyclePrediction(db)
 
             cyclePrediction.predictNextMenstruation(userId)  // nowa data na nastepną menstraucaje zapsiana do bazy
-
-//            openMainWindowPeriod(userId)
-
         }
     }
 
@@ -116,7 +114,6 @@ class PeriodBegginingActivity : AppCompatActivity() {
                     }
                 }
 
-                // Obliczenie następnej daty menstruacji i owulacji
                 val nextPeriodDate = calculateNextPeriodDate(startDateLocalDate)
                 val ovulationDate = calculateOvulationDate(nextPeriodDate)
 
@@ -155,9 +152,11 @@ class PeriodBegginingActivity : AppCompatActivity() {
         return nextPeriodDate.minusDays(14)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriod(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class AdditionalInformationActivity : AppCompatActivity() {
 
@@ -20,8 +21,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private lateinit var imageButtonHappy: ImageButton
     private lateinit var imageButtonNeutral: ImageButton
     private lateinit var imageButtonSad: ImageButton
-
-
 
     private lateinit var drinksCountText: TextView
     private lateinit var increaseDrinkButton: Button
@@ -40,7 +39,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
     private lateinit var spinner: Spinner
 
-
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private var selectedDate: LocalDate? = null
@@ -51,8 +49,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.additional_information)
         db = FirebaseFirestore.getInstance()
-
-
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         selectedDate = LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
@@ -93,7 +89,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             openSettingsWindowActivity(userId)
         }
     }
-
 
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
@@ -223,8 +218,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
 
-
-
         fetchTodaysDrinkCount()
     }
     private fun fetchTodaysDrinkCount() {
@@ -233,21 +226,16 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                    // Dokument istnieje, pobieramy liczbę napojów
                     drinksCount = document.getLong("drinksCount")?.toInt() ?: 0
                     updateDrinkCount()
                 } else {
-                    // Dokument nie istnieje, tworzymy nowy dokument z domyślną liczbą napojów = 0
                     val defaultDailyInfo = hashMapOf(
                         "drinksCount" to 0
-                        // Dodaj inne pola jeśli są potrzebne
-                        // Dodaj inne pola jeśli są potrzebne
                     )
                     db.collection("users").document(userId).collection("dailyInfo")
                         .document(selectedDate.toString())
                         .set(defaultDailyInfo)
                         .addOnSuccessListener {
-                            // Utworzono nowy dokument
                             drinksCount = 0
                             updateDrinkCount()
                         }
@@ -344,7 +332,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
     private fun setCurrentMood(mood: String) {
-        // Aktualizacja nastroju i zmiana wyglądu przycisku
         currentMood = mood
         when (mood) {
             "happy" -> {
@@ -404,7 +391,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
 
-
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -418,15 +404,19 @@ class AdditionalInformationActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 }

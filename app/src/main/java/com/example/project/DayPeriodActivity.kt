@@ -33,7 +33,7 @@ class DayPeriodActivity : AppCompatActivity() {
     private lateinit var medicineRecyclerView: RecyclerView
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var medicineAdapter: MedicineAdapter
-    private lateinit var doctorAdapter: DoctorVisitAdapter// Adapter for RecyclerView
+    private lateinit var doctorAdapter: DoctorVisitAdapter
     class DoctorVisitAdapter(
         private val visits: List<DoctorVisit>,
         private val onVisitClick: (DoctorVisit) -> Unit
@@ -79,14 +79,11 @@ class DayPeriodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.day_period_deprecated)
 
-        // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance()
 
-        // Get userId from Intent
         userId = intent.getStringExtra("USER_ID") ?: ""
         selectedDate = LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
 
-        // Initialize views
         cycleDayPeriod = findViewById(R.id.cycleDayPeriod)
         additionalInfoPeriod = findViewById(R.id.additionalInfoPeriod)
         drinksCountText = findViewById(R.id.drinksCountText)
@@ -98,13 +95,11 @@ class DayPeriodActivity : AppCompatActivity() {
         dateDayPeriod = findViewById(R.id.dateDayPeriod)
         dayPeriodHomeButton = findViewById(R.id.dayPeriodHomeButton)
 
-        // Initialize RecyclerViews
         medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
         doctorRecyclerView = findViewById(R.id.doctorsRecyclerView)
         medicineRecyclerView.layoutManager = LinearLayoutManager(this)
         doctorRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Initialize Adapters
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
             saveMedicineCheckStatus(medicine)
         }
@@ -112,16 +107,13 @@ class DayPeriodActivity : AppCompatActivity() {
             saveDoctorCheckStatus(doctor)
         }
 
-        // Set Adapters
         medicineRecyclerView.adapter = medicineAdapter
         doctorRecyclerView.adapter = doctorAdapter
 
-        // Fetch data
         fetchMedicines()
         fetchDoctorVisits()
         dateDayPeriod.text = selectedDate.toString()
 
-        // Button click listeners
         additionalInfoPeriod.setOnClickListener {
             openAdditionalInformationActivity(userId, selectedDate)
         }
@@ -235,7 +227,6 @@ class DayPeriodActivity : AppCompatActivity() {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
@@ -250,7 +241,6 @@ class DayPeriodActivity : AppCompatActivity() {
                     )
                     medicines.add(medicine)
                 }
-                // Fetch today's status
                 fetchTodaysMedicineStatus()
             }
             .addOnFailureListener { e ->
@@ -354,9 +344,6 @@ class DayPeriodActivity : AppCompatActivity() {
     }
 
 
-
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)
@@ -377,9 +364,11 @@ class DayPeriodActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openHomeWindowActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 }

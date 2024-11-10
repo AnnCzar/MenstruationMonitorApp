@@ -12,14 +12,13 @@ import java.util.Calendar
 
 class BootCompletedReceiver : BroadcastReceiver() {
 
-    private val notificationId = 123 // Unikalny identyfikator powiadomienia
+    private val notificationId = 123
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             // Ustawienie codziennego alarmu o 12:00
             setDailyAlarm(context)
 
-            // Uruchomienie głównej aktywności
             val mainActivityIntent = Intent(context, MainWindowPeriodActivity::class.java)
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(mainActivityIntent)
@@ -52,7 +51,7 @@ class BootCompletedReceiver : BroadcastReceiver() {
 
 class NotificationReceiver : BroadcastReceiver() {
 
-    private val notificationId = 123 // Unikalny identyfikator powiadomienia
+    private val notificationId = 123
 
     override fun onReceive(context: Context, intent: Intent) {
         showNotification(context, "Przypomnienie o lekach", "Nie zapomnij o swojej dawce dziś!")
@@ -64,10 +63,8 @@ class NotificationReceiver : BroadcastReceiver() {
             NotificationManager::class.java
         ) as NotificationManager
 
-        // ID kanału powiadomień, do którego ma być przypisane powiadomienie
         val channelId = "MEDICINE_REMINDER_CHANNEL"
 
-        // Tworzenie powiadomienia
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_medicine_reminder)
             .setContentTitle(title)
@@ -75,7 +72,6 @@ class NotificationReceiver : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true) // Powiadomienie zostanie usunięte po kliknięciu
 
-        // Wysyłanie powiadomienia
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 }

@@ -45,7 +45,6 @@ class FertilityPrediction(private val db: FirebaseFirestore) {
                     val latestTemps = tempList.takeLast(5)  // Ostatnie 5 dni temperatur
                     val tempIncrease = latestTemps.maxOrNull() ?: 0.0
 
-                    // Logika wzrostu temperatury wskazująca na owulację
                     if (temperature != null && temperature > tempIncrease) {
                         ovulationDay = currentDate
                         fertileDays.add(currentDate.minusDays(1))
@@ -54,10 +53,8 @@ class FertilityPrediction(private val db: FirebaseFirestore) {
                     }
                 }
 
-                // Zapisz przewidywane dni płodne i owulację do bazy danych
                 saveFertileDaysAndOvulation(userId, fertileDays, ovulationDay)
 
-                // Wywołaj callback z odpowiednim komunikatem
                 onComplete("Dni płodne: ${fertileDays.joinToString(", ")}, Przewidywany dzień owulacji: $ovulationDay")
             }
             .addOnFailureListener {
@@ -89,7 +86,6 @@ class FertilityPrediction(private val db: FirebaseFirestore) {
             }
     }
 
-    // Zapis danych o codziennym wprowadzeniu temperatury i śluzu
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveDailyInfo(userId: String, temperature: Double?, mucusType: String?) {
         val data = hashMapOf(

@@ -19,7 +19,6 @@ class RegisterWindow2Activity : AppCompatActivity() {
     private lateinit var weightRegister: EditText
     private lateinit var buttonConfirmRegisterWindow2: Button
 
-    // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
     val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +38,6 @@ class RegisterWindow2Activity : AppCompatActivity() {
         val password = intent.getStringExtra("PASSWORD")
         val username = intent.getStringExtra("USERNAME")
 
-        // Date Picker for Last Period
         enterLastPeriod.setOnClickListener {
             showDatePickerDialog()
         }
@@ -54,7 +52,6 @@ class RegisterWindow2Activity : AppCompatActivity() {
             if (lastPeriod.isNotEmpty() && cycleLength.toInt() > 0 && periodLength.toInt() > 0 && weight.toInt() > 0) {
                 openRegisterWindow3Activity(userId!!, email!!, password!!, username!!, lastPeriod, cycleLength, periodLength, weight)
             } else {
-                // Wyświetlenie komunikatu o błędzie
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
             }
         }
