@@ -1,4 +1,3 @@
-// DoctorVisitsAdapter1.kt
 
 import android.view.LayoutInflater
 import android.view.View

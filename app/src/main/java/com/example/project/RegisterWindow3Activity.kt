@@ -32,13 +32,11 @@ class RegisterWindow3Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_window3)
 
-        // Initialize UI elements
         enterMedicineName = findViewById(R.id.enterMedicineName)
         enterDoseMedicineRegister = findViewById(R.id.enterDoseMedicineRegister)
         enterTimeMedicineRegister = findViewById(R.id.enterTimeMedicineRegister)
         buttonSaveMedicineRegisterWindow3 = findViewById(R.id.buttonSaveMedicineRegisterWindow3)
 
-        // Retrieve data from Intent
         val userId = intent.getStringExtra("USER_ID")
         val email = intent.getStringExtra("EMAIL")
         val password = intent.getStringExtra("PASSWORD")
@@ -55,7 +53,6 @@ class RegisterWindow3Activity : AppCompatActivity() {
             LocalDate.of(2023, Month.JANUARY, 1)
         }
 
-        // Listener for saving medicine
         buttonSaveMedicineRegisterWindow3.setOnClickListener {
             val medicineName = enterMedicineName.text.toString()
             val doseMedicine = enterDoseMedicineRegister.text.toString()
@@ -83,7 +80,6 @@ class RegisterWindow3Activity : AppCompatActivity() {
             }
         }
 
-        // Listener for confirming registration
         buttonConfirmRegisterWindow3.setOnClickListener {
             saveAllUserData(userId!!, email!!, password!!, username!!, lastPeriodDate, cycleLength, periodLength, weight)
         }

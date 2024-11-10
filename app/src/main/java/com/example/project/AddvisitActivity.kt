@@ -49,13 +49,9 @@ class AddVisitActivity : AppCompatActivity() {
         timePicker = findViewById(R.id.timePicker1)
         addVisitConfirmButton = findViewById(R.id.addVisitConfirmButton)
 
-
         visitDateEditText.setOnClickListener{
             showDatePickerDialog()
         }
-
-
-
 
         addVisitConfirmButton.setOnClickListener {
             val doctorName = doctorNameEditText.text.toString()
@@ -88,8 +84,6 @@ class AddVisitActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeFromTimePicker(timePicker: TimePicker): String {
         val hour = timePicker.hour
@@ -102,16 +96,10 @@ class AddVisitActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addNewDoctorVisit() {
         val dateStr = visitDateEditText.text.toString()
-//        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-//        val visitDate: Date? = sdf.parse(dateStr)
 
         val doctorName = doctorNameEditText.text.toString()
 
-//            val visitDate = visitDateEditText.text.toString()
-
-
         val extraInfo = extrInformationEditText.text.toString()
-
 
         val selectedTime = getTimeFromTimePicker(timePicker)
 
@@ -144,17 +132,5 @@ class AddVisitActivity : AppCompatActivity() {
                 Toast.makeText(this, "Nie zapisano wizyty", Toast.LENGTH_SHORT).show()
             }
 
-//        db.collection("users").document(userId)
-//            .collection("doctorVisits")
-//            .add(newDoctorVisit)
-//            .addOnSuccessListener { documentReference ->
-//                newDoctorVisit.id = documentReference.id
-//                setResult(RESULT_OK)
-//                Toast.makeText(this, "Zapisano wizytę", Toast.LENGTH_SHORT).show()
-//                finish()
-//            }
-//            .addOnFailureListener { exception ->
-//                Toast.makeText(this, "Nie zapisano wizyty", Toast.LENGTH_SHORT).show()
-//            }
     }
 }
