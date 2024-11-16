@@ -613,6 +613,7 @@ private fun scheduleNotification() {
                         time = document.getString("time") ?: "",
                         isChecked = document.getBoolean("checked") ?: false,
                         extraInfo = document.getString("extraInfo") ?: "",
+                        address = document.getString("address") ?: ""
                     )
                     doctors.add(doctor)
                 }

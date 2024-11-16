@@ -17,6 +17,7 @@ class ModifyVisitActivity : AppCompatActivity() {
     private lateinit var visitDateEditText: EditText
     private lateinit var saveButton: Button
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.modify_visit)

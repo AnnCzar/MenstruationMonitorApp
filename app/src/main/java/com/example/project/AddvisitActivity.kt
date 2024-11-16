@@ -14,10 +14,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class AddVisitActivity : AppCompatActivity() {
@@ -30,6 +28,7 @@ class AddVisitActivity : AppCompatActivity() {
     private lateinit var extrInformationEditText: EditText
     private lateinit var timePicker: TimePicker
     private lateinit var addVisitConfirmButton: Button
+    private lateinit var addresText: EditText
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -48,12 +47,16 @@ class AddVisitActivity : AppCompatActivity() {
         extrInformationEditText = findViewById(R.id.extrInformationEditText)
         timePicker = findViewById(R.id.timePicker1)
         addVisitConfirmButton = findViewById(R.id.addVisitConfirmButton)
+        addresText = findViewById(R.id.addressText)
 
 
         visitDateEditText.setOnClickListener{
             showDatePickerDialog()
         }
 
+        addresText.setOnClickListener {
+
+        }
 
 
 
@@ -62,7 +65,6 @@ class AddVisitActivity : AppCompatActivity() {
             Log.d("dziala", doctorName)
 
             if (doctorName.isNotEmpty()) {
-                // Dodanie wizyty z pełnymi danymi
                 addNewDoctorVisit()
             } else {
                 Toast.makeText(this, "cos nie kliklo", Toast.LENGTH_SHORT).show()
@@ -111,6 +113,7 @@ class AddVisitActivity : AppCompatActivity() {
 
 
         val extraInfo = extrInformationEditText.text.toString()
+        val address = addresText.text.toString()
 
 
         val selectedTime = getTimeFromTimePicker(timePicker)
@@ -132,7 +135,8 @@ class AddVisitActivity : AppCompatActivity() {
             visitDate = dateStr,
             time = selectedTime,
             isChecked = false,
-            extraInfo = extraInfo
+            extraInfo = extraInfo,
+            address = address
         )
         newDocRef.set(newDoctorVisit)
             .addOnSuccessListener {

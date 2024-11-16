@@ -6,5 +6,6 @@ data class DoctorVisit(
     val visitDate: String,
     val time: String,
     var isChecked: Boolean,
-    val extraInfo: String
+    val extraInfo: String,
+    val address: String
 )
