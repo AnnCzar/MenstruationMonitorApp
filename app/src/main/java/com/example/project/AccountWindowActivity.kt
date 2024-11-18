@@ -3,15 +3,20 @@ package com.example.project
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
+
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class AccountWindowActivity : AppCompatActivity() {
     private lateinit var accountWidnowSettingButton: ImageButton
@@ -25,23 +30,9 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
+    private lateinit var mapSearch: Button
 
-//    private fun logout() {
-////        editor.remove("USER_ID")
-////        editor.apply()
-//
-//        val pref = getSharedPreferences("login", Context.MODE_PRIVATE)
-//        val editor = pref.edit()
-//        editor.putBoolean("isLoggedIn", false)
-//        editor.apply()
-//        auth.signOut()
-//
-//
-//        val intent = Intent(this, LoginWindowActivity::class.java)
-//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        startActivity(intent)
-//        finish()
-//    }
+
 private fun logout() {
     val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
     with(sharedPreferences.edit()) {
@@ -57,7 +48,7 @@ private fun logout() {
     finish()
 }
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.account_window)
@@ -66,8 +57,6 @@ private fun logout() {
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
-
-
 
         loadUserInfo()
 
@@ -89,7 +78,6 @@ private fun logout() {
             updatePregnancyStatusToTrue(userId)
             openPregnancyBegginingActivity(userId)
         }
-
 
         homeButtonProfil.setOnClickListener {
             val userRef = db.collection("users").document(userId)
@@ -129,8 +117,6 @@ private fun logout() {
             }
     }
 
-
-
     private fun initializeViews() {
         accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
         homeButtonProfil = findViewById(R.id.homeButtonProfil)
@@ -138,9 +124,13 @@ private fun logout() {
         lastWeightTextView = findViewById(R.id.lastWeightTextView)
         visitsButton = findViewById(R.id.visitsButton)
         medicationsButton = findViewById(R.id.medicationsButton)
+        mapSearch = findViewById(R.id.mapSearch)
 
         medicationsButton.setOnClickListener {
             openMedicineWindowActivity(userId)
+        }
+        mapSearch.setOnClickListener {
+            openMapWindowActivity(userId)
         }
     }
 
@@ -215,9 +205,11 @@ private fun logout() {
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 
@@ -229,6 +221,11 @@ private fun logout() {
 
     private fun openMedicineWindowActivity(userId: String) {
         val intent = Intent(this, MedicineActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+    private fun openMapWindowActivity(userId: String) {
+        val intent = Intent(this, MapsActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }

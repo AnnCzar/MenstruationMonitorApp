@@ -4,7 +4,6 @@ import DoctorVisitAdapter
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -47,7 +46,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
             editVisit(visit)
         }, onDeleteClick = { visit ->
             deleteVisit(visit)
-        })
+        }, onMapClick = {visit -> showOnMap(visit)})
 
         visitRV.adapter = visitAdapter
 
@@ -104,6 +103,12 @@ class DoctorVisitsActivity : AppCompatActivity() {
         fetchDoctorVisits()
     }
 
+    private fun showOnMap(visit: DoctorVisit) {
+        val intent = Intent(this, MapsActivity::class.java)
+        intent.putExtra("VISIT_ADDRESS", visit.address)
+        startActivity(intent)
+    }
+
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -125,6 +130,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
                         time = document.getString("time") ?: "",
                         isChecked = document.getBoolean("checked") ?: false,
                         extraInfo = document.getString("extraInfo") ?: "",
+                        address = document.getString("address") ?: ""
                     )
                     doctorsList.add(doctor)
                 }
