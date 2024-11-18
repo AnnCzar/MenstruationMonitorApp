@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_height="140dp"
+    android:layout_height="190dp"
     android:orientation="vertical"
     android:background="@drawable/round_shape"
     android:padding="8dp">
@@ -15,7 +15,7 @@
 
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="198dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -73,5 +73,22 @@
             android:layout_weight="1"
             android:backgroundTint="#BA798C"
             android:text="Usuń" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/visitOnMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#BA798C"
+        android:text="Wskaż na mapie" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
     </LinearLayout>
 </LinearLayout>

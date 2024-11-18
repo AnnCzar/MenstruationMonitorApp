@@ -11,7 +11,8 @@ import com.example.project.R
 class DoctorVisitAdapter(
     private val doctorVisits: List<DoctorVisit>,
     private val onEditClick: (DoctorVisit) -> Unit,
-    private val onDeleteClick: (DoctorVisit) -> Unit
+    private val onDeleteClick: (DoctorVisit) -> Unit,
+    private val onMapClick: (DoctorVisit) -> Unit
 ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
 
     class DoctorVisitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,6 +21,7 @@ class DoctorVisitAdapter(
         val extraInfo: TextView = itemView.findViewById(R.id.extraInfo)
         val editButton: Button = itemView.findViewById(R.id.editButton)
         val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
+        val visitOnMap: Button = itemView.findViewById(R.id.visitOnMap)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
@@ -35,6 +37,9 @@ class DoctorVisitAdapter(
         holder.extraInfo.text = "Dodatkowe informacje:  ${visit.extraInfo}"
         holder.editButton.setOnClickListener {
             onEditClick(visit)
+        }
+        holder.visitOnMap.setOnClickListener {
+            onMapClick(visit)
         }
 
         holder.deleteButton.setOnClickListener {
