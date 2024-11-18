@@ -97,6 +97,7 @@ class LoginWindowActivity : AppCompatActivity() {
                             lifecycleScope.launch(Dispatchers.Main) {
                                 try {
                                     val userDocument = db.collection("users").document(user.uid).get().await()
+                                    val role = userDocument.getString("role")
                                     val statusPregnancy = userDocument.getBoolean("statusPregnancy")
 
                                     val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
@@ -106,12 +107,18 @@ class LoginWindowActivity : AppCompatActivity() {
                                         apply()
                                     }
 
-                                    if (statusPregnancy == true) {
-                                        openMainWindowPregnancyActivity(user.uid)
-                                    } else if (statusPregnancy == false) {
-                                        openMainWindowPeriodActivity(user.uid)
-                                    } else {
-                                        showErrorSnackBar("Nieznany status ciąży", true)
+                                    when (role) {
+                                        "Lekarz" -> openMainWindowDoctor(user.uid)
+                                        "Zwykły użytkownik" -> {
+                                            if (statusPregnancy == true) {
+                                                openMainWindowPregnancyActivity(user.uid)
+                                            } else if (statusPregnancy == false) {
+                                                openMainWindowPeriodActivity(user.uid)
+                                            } else {
+                                                showErrorSnackBar("Nieznany status ciąży", true)
+                                            }
+                                        }
+                                        else -> showErrorSnackBar("Nieznana rola użytkownika", true)
                                     }
                                 } catch (e: Exception) {
                                     showErrorSnackBar("Błąd: ${e.message}", true)
@@ -129,6 +136,11 @@ class LoginWindowActivity : AppCompatActivity() {
         }
     }
 
+    private fun openMainWindowDoctor(uid: String) {
+        val intent = Intent(this, MainWindowDoctor::class.java)
+        intent.putExtra("USER_ID", uid)
+        startActivity(intent)
+    }
 
 
     private fun showErrorSnackBar(message: String, errorMessage: Boolean) {
