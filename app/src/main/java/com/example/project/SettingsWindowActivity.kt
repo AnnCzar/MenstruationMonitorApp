@@ -2,22 +2,25 @@ package com.example.project
 
 import com.example.project.MainWindowPregnancyActivity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class SettingsWindowActivity : AppCompatActivity(){
     private lateinit var homeButtonSetting: ImageButton
     private lateinit var settingWindowAcountButton: ImageButton
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
-    private lateinit var changePasswordButton: Button
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_window)
@@ -28,11 +31,6 @@ class SettingsWindowActivity : AppCompatActivity(){
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
-
-        changePasswordButton.setOnClickListener{
-            openChangePassword(userId)
-
-        }
 
 
         settingWindowAcountButton.setOnClickListener {
@@ -52,35 +50,31 @@ class SettingsWindowActivity : AppCompatActivity(){
                                 openMainWindowPregnancyActivity(userId)
                             }
                         } else {
-                            // Obsługa przypadku, gdy statusPregnancy nie został ustawiony lub jest null
+
                         }
                     } else {
-                        // Obsługa przypadku, gdy użytkownik nie istnieje
                     }
                 }
                 .addOnFailureListener { e ->
-                    // Obsługa błędów podczas pobierania danych użytkownika
                     Toast.makeText(this@SettingsWindowActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
 
 
     }
-    private fun openChangePassword(userId: String) {
-        val intent = Intent(this, ChangePassword::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
     private fun openAccountWindowActivity(userId: String){

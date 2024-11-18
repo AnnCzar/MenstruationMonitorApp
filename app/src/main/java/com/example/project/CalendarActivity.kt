@@ -42,7 +42,6 @@ class CalendarActivity : AppCompatActivity() {
 
         fetchUserPeriodAndOvulationDates()
 
-
         calendar.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
                 dateClicked?.let {
@@ -67,7 +66,6 @@ class CalendarActivity : AppCompatActivity() {
             openHomeWindowActivity(userId)
         }
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchUserPeriodAndOvulationDates() {
@@ -134,10 +132,6 @@ class CalendarActivity : AppCompatActivity() {
             }
     }
 
-
-
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openDayActivity(userId: String, date: LocalDate) {
         val userRef = db.collection("users").document(userId)
@@ -146,12 +140,12 @@ class CalendarActivity : AppCompatActivity() {
                 if (document != null && document.exists()) {
                     val pregnancyStatus = document.getBoolean("statusPregnancy") ?: false
                     val intent = if (pregnancyStatus) {
-                        Intent(this, DayPregnancyActivity::class.java)
+                        Intent(this, MainWindowPregnancyActivity::class.java)
                     } else {
                         Intent(this, MainWindowPeriodActivity::class.java)
                     }
                     intent.putExtra("USER_ID", userId)
-                    intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_LOCAL_DATE))  // Przekazywanie daty
+                    intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_DATE))
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
@@ -176,9 +170,11 @@ class CalendarActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openHomeWindowActivity(userId: String){
         val intent = Intent(this, MainWindowPeriodActivity::class.java).apply {
             putExtra("USER_ID", userId)
+            intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         }
         startActivity(intent)
     }

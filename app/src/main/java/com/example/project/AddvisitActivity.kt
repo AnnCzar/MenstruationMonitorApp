@@ -14,10 +14,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class AddVisitActivity : AppCompatActivity() {
@@ -30,6 +28,7 @@ class AddVisitActivity : AppCompatActivity() {
     private lateinit var extrInformationEditText: EditText
     private lateinit var timePicker: TimePicker
     private lateinit var addVisitConfirmButton: Button
+    private lateinit var addresText: EditText
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -48,13 +47,15 @@ class AddVisitActivity : AppCompatActivity() {
         extrInformationEditText = findViewById(R.id.extrInformationEditText)
         timePicker = findViewById(R.id.timePicker1)
         addVisitConfirmButton = findViewById(R.id.addVisitConfirmButton)
-
+        addresText = findViewById(R.id.addressText)
 
         visitDateEditText.setOnClickListener{
             showDatePickerDialog()
         }
 
+        addresText.setOnClickListener {
 
+        }
 
 
         addVisitConfirmButton.setOnClickListener {
@@ -62,7 +63,6 @@ class AddVisitActivity : AppCompatActivity() {
             Log.d("dziala", doctorName)
 
             if (doctorName.isNotEmpty()) {
-                // Dodanie wizyty z pełnymi danymi
                 addNewDoctorVisit()
             } else {
                 Toast.makeText(this, "cos nie kliklo", Toast.LENGTH_SHORT).show()
@@ -88,8 +88,6 @@ class AddVisitActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeFromTimePicker(timePicker: TimePicker): String {
         val hour = timePicker.hour
@@ -102,16 +100,11 @@ class AddVisitActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addNewDoctorVisit() {
         val dateStr = visitDateEditText.text.toString()
-//        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-//        val visitDate: Date? = sdf.parse(dateStr)
 
         val doctorName = doctorNameEditText.text.toString()
 
-//            val visitDate = visitDateEditText.text.toString()
-
-
         val extraInfo = extrInformationEditText.text.toString()
-
+        val address = addresText.text.toString()
 
         val selectedTime = getTimeFromTimePicker(timePicker)
 
@@ -132,7 +125,8 @@ class AddVisitActivity : AppCompatActivity() {
             visitDate = dateStr,
             time = selectedTime,
             isChecked = false,
-            extraInfo = extraInfo
+            extraInfo = extraInfo,
+            address = address
         )
         newDocRef.set(newDoctorVisit)
             .addOnSuccessListener {
@@ -144,17 +138,5 @@ class AddVisitActivity : AppCompatActivity() {
                 Toast.makeText(this, "Nie zapisano wizyty", Toast.LENGTH_SHORT).show()
             }
 
-//        db.collection("users").document(userId)
-//            .collection("doctorVisits")
-//            .add(newDoctorVisit)
-//            .addOnSuccessListener { documentReference ->
-//                newDoctorVisit.id = documentReference.id
-//                setResult(RESULT_OK)
-//                Toast.makeText(this, "Zapisano wizytę", Toast.LENGTH_SHORT).show()
-//                finish()
-//            }
-//            .addOnFailureListener { exception ->
-//                Toast.makeText(this, "Nie zapisano wizyty", Toast.LENGTH_SHORT).show()
-//            }
     }
 }

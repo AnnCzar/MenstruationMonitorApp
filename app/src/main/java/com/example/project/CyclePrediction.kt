@@ -189,10 +189,8 @@ class CyclePrediction(private val db: FirebaseFirestore) {
                                     .update("nextPeriodDate", NextMenstruation.toString())
                             }
                         }
-
                 }
             }
     }
-
 }
 

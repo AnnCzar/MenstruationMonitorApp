@@ -44,7 +44,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var additionalInfoPeriod: Button
     private lateinit var cycleDayPeriod: TextView
     private lateinit var doctorRecyclerView: RecyclerView
-    private lateinit var doctorAdapter: DoctorVisitAdapter// Adapter for RecyclerView
+    private lateinit var doctorAdapter: DoctorVisitAdapter
     class DoctorVisitAdapter(
         private val visits: List<DoctorVisit>,
     ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
@@ -57,7 +57,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: DoctorVisitViewHolder, position: Int) {
             val visit = visits[position]
             holder.bind(visit)
-//            holder.itemView.setOnClickListener { onVisitClick(visit) }
         }
 
         override fun getItemCount(): Int = visits.size
@@ -76,8 +75,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var medicineAdapter: MedicineAdapter
     private val medicines = mutableListOf<Medicine>()
 
-//    private var isPeriodStarted = false
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,12 +86,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
         checkDate();
-
-
-
-        medicineAdapter = MedicineAdapter(medicines) { medicine ->
-            saveMedicineCheckStatus(medicine)
-        }
 
         val dateString = intent?.getStringExtra("SELECTED_DATE")
         selectedDate = if (!dateString.isNullOrEmpty()) {
@@ -109,6 +100,9 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         medicineRecyclerView = findViewById(R.id.medicineRecyclerView)
         medicineRecyclerView.layoutManager = LinearLayoutManager(this)
+        medicineAdapter = MedicineAdapter(medicines) { medicine ->
+            saveMedicineCheckStatus(medicine, selectedDate)
+        }
         medicineRecyclerView.adapter = medicineAdapter
         doctorRecyclerView = findViewById(R.id.doctorsRecyclerView)
         doctorRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -123,14 +117,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         mainWindowPeriodSettingButton = findViewById(R.id.mainWindowPeriodSettingButton)
         mainWindowPeriodAcountButton = findViewById(R.id.mainWindowPeriodAcountButton)
 
-
         currentDateTextPeriod.text = selectedDate.toString()
-
 
         doctorAdapter = DoctorVisitAdapter(doctors)
         doctorRecyclerView.adapter = doctorAdapter
 
-        fetchMedicines()
+        fetchMedicinesStatus(selectedDate)
         fetchLatestCycleData()
         fetchDoctorVisits()
         fetchTodaysMedicineStatus()
@@ -158,11 +150,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
 
 
-
-
-
-
-
         toCalendarButtonPeriod.setOnClickListener {
             openCalendarActivity(userId)
         }
@@ -172,23 +159,17 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
 
         begginingPeriodButton.setOnClickListener {
-//            addCycleDataToFirestore()
             openPeriodBeggining(userId)
-//            isPeriodStarted = true
             updateButtonVisibility(true)
         }
         endPeriodButton.setOnClickListener {
-//            updateEndDateInFirestore()
             openPeriodEnding(userId)
-//            isPeriodStarted = false
             updateButtonVisibility(false)
 
         }
         additionalInfoPeriod.setOnClickListener {
             openAdditionalInformationActivity(userId, selectedDate)
         }
-
-
         mainWindowPeriodAcountButton.setOnClickListener {
             openAccountWindowActivity(userId)
         }
@@ -197,8 +178,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             openSettingsWindowActivity(userId)
         }
 
-
-
+        fetchMedicines()
         fetchTodaysCycleDay()
         fetchPeriodStatus()
         scheduleNotification()
@@ -208,25 +188,9 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
-        fetchPeriodStatus() // Pobieranie aktualnych danych z Firestore
-//        updateButtonVisibility() // Aktualizacja widoczności przycisków po powrocie
+        fetchPeriodStatus()
     }
 
-
-    private fun saveDoctorCheckStatus(doctor: DoctorVisit) {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(selectedDate.toString())
-            .collection("doctors")
-            .document(doctor.id)
-            .set(mapOf("checked" to doctor.isChecked))
-            .addOnSuccessListener {
-                Toast.makeText(this, "Doctor status updated", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPeriodStatus() {
         db.collection("users").document(userId).collection("cycles")
@@ -237,15 +201,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 if (!documents.isEmpty) {
                     val latestCycle = documents.first()
                     if (latestCycle.contains("endDate")) {
-//                        isPeriodStarted = false
                         updateButtonVisibility(false)
-                        Log.e("dupa", "nie ma okresu")
                     } else {
-//                        isPeriodStarted = true
+
                         updateButtonVisibility(true)
-                        Log.e("dupa1", "jest okres")
                     }
-//                    updateButtonVisibility()
                 }
             }
             .addOnFailureListener { e ->
@@ -253,7 +213,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
 
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -354,9 +313,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         runOnUiThread {
             daysLeftOwulation.text = "$daysLeft"
         }
-
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTodaysMedicineStatus() {
@@ -392,25 +349,25 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
-
-
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { documents ->
                 medicines.clear()
-                for (document in result) {
-                    val medicine = Medicine(
-                        id = document.id,
-                        name = document.getString("medicineName") ?: "",
-                        isChecked = document.getBoolean("isChecked") ?: false
-                    )
-                    medicines.add(medicine)
+                for (document in documents) {
+                    val medicineId = document.id
+                    val medicineName = document.getString("medicineName") ?: "Brak nazwy"
+                    val dose = document.getString("doseMedicine") ?: "Brak dawki"
+                    val time = document.getString("timeMedicine") ?: "Brak czasu"
+                    val isChecked = document.getBoolean("checked") ?: false
+
+                    medicines.add(Medicine(medicineId, medicineName, isChecked, dose, time))
                 }
+                Log.d("FirestoreData", "Pobrano leki: $medicines")
                 medicineAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -508,35 +465,42 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchMedicinesStatus(selectedDate: LocalDate) {
+        val dailyInfoRef = db.collection("users").document(userId)
+            .collection("dailyInfo").document(selectedDate.toString())
+            .collection("medicines")
+
+        dailyInfoRef.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                val medicineId = document.id
+                val isChecked = document.getBoolean("checked") ?: false
+                medicines.find { it.id == medicineId }?.isChecked = isChecked
+            }
+            medicineAdapter.notifyDataSetChanged()
+        }.addOnFailureListener { e ->
+            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveMedicineCheckStatus(medicine: Medicine) {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(LocalDate.now().toString())
-            .collection("medicines")
-            .document(medicine.id)
-            .set(mapOf("checked" to medicine.isChecked))
+    private fun saveMedicineCheckStatus(medicine: Medicine, selectedDate: LocalDate) {
+        Log.d("Zapis daty", selectedDate.toString())
+        val dateKey = selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        val dailyInfoRef = db.collection("users").document(userId)
+            .collection("dailyInfo").document(dateKey)
+            .collection("medicines").document(medicine.id)
+
+        dailyInfoRef.set(mapOf("checked" to medicine.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Medicine status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Status leku zaktualizowany dla daty $dateKey", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-//    private fun updatePregnancyStatusToTrue(userId: String) {
-//        val userRef = db.collection("users").document(userId)
-//        userRef
-//            .update("statusPregnancy", true)
-//            .addOnSuccessListener {
-//                Toast.makeText(this@MainWindowPeriodActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
-//            }
-//            .addOnFailureListener { e ->
-//                Toast.makeText(this@MainWindowPeriodActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-//            }
-//    }
 
 
 private fun scheduleNotification() {
@@ -548,7 +512,7 @@ private fun scheduleNotification() {
     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val calendar = Calendar.getInstance().apply {
         timeInMillis = System.currentTimeMillis()
-        set(Calendar.HOUR_OF_DAY, 9) // Set the time you want the reminder
+        set(Calendar.HOUR_OF_DAY, 9)
     }
 
     alarmManager.setRepeating(
@@ -558,24 +522,6 @@ private fun scheduleNotification() {
         pendingIntent
     )
 }
-
-//    private fun logout() {
-//        val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-//        val editor = sharedPreferences.edit()
-//        editor.remove("USER_ID")
-//        editor.apply()
-//
-//        val intent = Intent(this, LoginWindowActivity::class.java)
-//        startActivity(intent)
-//        finish()
-//    }
-//
-//    private fun openPregnancyBegginingActivity(userId: String) {
-//        val intent = Intent(this, PregnancyBegginingActivity::class.java)
-//        intent.putExtra("USER_ID", userId)
-//        startActivity(intent)
-//    }
-
 
 
 
@@ -614,6 +560,7 @@ private fun scheduleNotification() {
                         time = document.getString("time") ?: "",
                         isChecked = document.getBoolean("checked") ?: false,
                         extraInfo = document.getString("extraInfo") ?: "",
+                        address = document.getString("address") ?: ""
                     )
                     doctors.add(doctor)
                 }

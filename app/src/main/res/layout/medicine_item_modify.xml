@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="190dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/round_shape"
-    android:padding="8dp">
 
-
+    android:padding="16dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,37 +14,41 @@
 
 
         <LinearLayout
-            android:layout_width="198dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/visitDateAndTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="Data"
-                android:textColor="#000000"
-                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/doctorvisit"
+                android:id="@+id/medicineName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="Lekarz"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:layout_weight="1"
+                android:text="Medicine Name"
+                android:fontFamily="@font/ml"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/extraInfo"
+                android:id="@+id/doseMedicine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="Dodatkowe informacje"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:layout_weight="1"
+                android:fontFamily="@font/ml"
+                android:textColor="@color/black"
+                android:text="Dawka"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/timeMedicine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pora przyjęcia"
+                android:fontFamily="@font/ml"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -73,22 +76,9 @@
             android:layout_weight="1"
             android:backgroundTint="#BA798C"
             android:text="Usuń" />
-
     </LinearLayout>
 
-    <Button
-        android:id="@+id/visitOnMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#BA798C"
-        android:text="Wskaż na mapie" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
 
-    </LinearLayout>
+
 </LinearLayout>
