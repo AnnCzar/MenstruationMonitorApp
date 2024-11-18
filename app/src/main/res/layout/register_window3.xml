@@ -70,7 +70,21 @@
         app:layout_constraintTop_toBottomOf="@+id/enterDoseMedicineRegister"
         app:layout_constraintVertical_bias="0.093" />
 
-
+    <Button
+        android:id="@+id/buttonConfirmRegisterWindow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FDF4F7"
+        android:text="Potwierdź"
+        android:textColor="#C69AA7"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
+        tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/buttonSaveMedicineRegisterWindow3"
         android:layout_width="wrap_content"

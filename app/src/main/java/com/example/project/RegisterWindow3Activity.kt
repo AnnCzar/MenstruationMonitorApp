@@ -36,6 +36,7 @@ class RegisterWindow3Activity : AppCompatActivity() {
         enterDoseMedicineRegister = findViewById(R.id.enterDoseMedicineRegister)
         enterTimeMedicineRegister = findViewById(R.id.enterTimeMedicineRegister)
         buttonSaveMedicineRegisterWindow3 = findViewById(R.id.buttonSaveMedicineRegisterWindow3)
+        buttonConfirmRegisterWindow3 = findViewById(R.id.buttonConfirmRegisterWindow3)
 
         val userId = intent.getStringExtra("USER_ID")
         val email = intent.getStringExtra("EMAIL")
