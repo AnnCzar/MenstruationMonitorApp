@@ -3,6 +3,7 @@ package com.example.project
 import com.example.project.MainWindowPregnancyActivity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ class SettingsWindowActivity : AppCompatActivity(){
     private lateinit var settingWindowAcountButton: ImageButton
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
+    private lateinit var changePasswordButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +28,11 @@ class SettingsWindowActivity : AppCompatActivity(){
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
+
+        changePasswordButton.setOnClickListener{
+            openChangePassword(userId)
+
+        }
 
 
         settingWindowAcountButton.setOnClickListener {
@@ -59,6 +66,12 @@ class SettingsWindowActivity : AppCompatActivity(){
 
 
     }
+    private fun openChangePassword(userId: String) {
+        val intent = Intent(this, ChangePassword::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
