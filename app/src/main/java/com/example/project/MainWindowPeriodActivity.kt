@@ -187,6 +187,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
+        checkDate()
+        fetchMedicinesStatus(selectedDate)
         fetchPeriodStatus()
     }
 
@@ -466,6 +468,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicinesStatus(selectedDate: LocalDate) {
+
         val dailyInfoRef = db.collection("users").document(userId)
             .collection("dailyInfo").document(selectedDate.toString())
             .collection("medicines")
