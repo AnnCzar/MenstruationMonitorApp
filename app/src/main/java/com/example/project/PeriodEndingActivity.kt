@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -55,8 +56,6 @@ class PeriodEndingActivity : AppCompatActivity(){
     }
 
 
-
-
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -75,8 +74,6 @@ class PeriodEndingActivity : AppCompatActivity(){
         )
         datePickerDialog.show()
     }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun savePeriodEndDate() {   // tutaj dac nowy algorytm
@@ -104,12 +101,13 @@ class PeriodEndingActivity : AppCompatActivity(){
                 .addOnFailureListener { e ->
                     Toast.makeText(this@PeriodEndingActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
-
         }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 

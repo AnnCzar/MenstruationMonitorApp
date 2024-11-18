@@ -2,15 +2,19 @@ package com.example.project
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class PregnancyBegginingActivity : AppCompatActivity() {
@@ -21,6 +25,7 @@ class PregnancyBegginingActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pregnancy_beggining)
@@ -61,6 +66,7 @@ class PregnancyBegginingActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun savePregnancyStartDate() {
         val dateStr = insert_date_pregnancy_start.text.toString().trim()
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -97,9 +103,11 @@ class PregnancyBegginingActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 }

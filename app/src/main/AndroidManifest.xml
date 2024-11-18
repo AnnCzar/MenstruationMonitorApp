@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
 
     <application
         android:allowBackup="true"
@@ -25,6 +27,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
 
+
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -39,7 +43,7 @@
 
 
         <activity
-            android:name="activities.MapsActivity"
+            android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
@@ -115,7 +119,9 @@
         <activity
             android:name=".ModifyMedicineActivity"
             android:exported="true"></activity>
-
+<!--        <activity-->
+<!--            android:name=".MapsActivity"-->
+<!--            android:exported="true"></activity>-->
         <activity
             android:name=".AddVisitActivity"
             android:exported="true"></activity> <!-- <activity android:name=".MyApp"> -->
