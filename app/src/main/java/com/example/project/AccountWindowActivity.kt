@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
+
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -29,6 +30,7 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
+    private lateinit var mapSearch: Button
 
 
 private fun logout() {
@@ -122,9 +124,13 @@ private fun logout() {
         lastWeightTextView = findViewById(R.id.lastWeightTextView)
         visitsButton = findViewById(R.id.visitsButton)
         medicationsButton = findViewById(R.id.medicationsButton)
+        mapSearch = findViewById(R.id.mapSearch)
 
         medicationsButton.setOnClickListener {
             openMedicineWindowActivity(userId)
+        }
+        mapSearch.setOnClickListener {
+            openMapWindowActivity(userId)
         }
     }
 
@@ -215,6 +221,11 @@ private fun logout() {
 
     private fun openMedicineWindowActivity(userId: String) {
         val intent = Intent(this, MedicineActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+    private fun openMapWindowActivity(userId: String) {
+        val intent = Intent(this, MapsActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
