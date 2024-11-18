@@ -135,17 +135,12 @@ class RegisterWindow1Activity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-    // Referencja do obiektu FirebaseFirestore do interakcji z bazą danych Firestore
     val db = Firebase.firestore
-
-    // Obiekt do obsługi operacji na bazie danych Firestore
-    private val dbOperations = FirestoreDatabaseOperations(db)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_window1)
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
         // znalezienie elementów
@@ -178,11 +173,9 @@ class RegisterWindow1Activity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    // Wyświetlenie komunikatu o błędzie
                     Toast.makeText(this, "Hasła nie są zgodne", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                // Wyświetlenie komunikatu o błędzie
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
             }
         }

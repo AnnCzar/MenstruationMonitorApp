@@ -48,7 +48,6 @@ class DayPregnancyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.day_pregnancy)
 
-        // Initialize Views
         dateDayPregnancy = findViewById(R.id.dateDayPregnancy)
         cycleDayPregnancy = findViewById(R.id.cycleDayPregnancy)
         additionalInfoPregnancy = findViewById(R.id.additionalInfoPregnancy)
@@ -59,11 +58,9 @@ class DayPregnancyActivity : AppCompatActivity() {
         doctorsVisit = findViewById(R.id.doctorsVisit)
         fetusImageView = findViewById(R.id.fetusImageView)
 
-        // Set layout managers for RecyclerViews
         medicineDayPregn.layoutManager = LinearLayoutManager(this)
         doctorsVisit.layoutManager = LinearLayoutManager(this)
 
-        // Initialize Adapters
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
             saveMedicineCheckStatus(medicine)
         }
@@ -217,7 +214,6 @@ class DayPregnancyActivity : AppCompatActivity() {
                     )
                     medicines.add(medicine)
                 }
-                // Fetch today's status
                 fetchTodaysMedicineStatus()
             }
             .addOnFailureListener { e ->

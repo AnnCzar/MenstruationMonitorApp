@@ -69,12 +69,10 @@ class LoginWindowActivity : AppCompatActivity() {
 
     private fun validateLoginDetails(): Boolean {
         return when {
-            // Check if login is empty
             TextUtils.isEmpty(enterLogin.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(getString(R.string.err_msg_enter_email), true)
                 false
             }
-            // Check if password is empty
             TextUtils.isEmpty(enterPassword.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(getString(R.string.err_msg_enter_password), true)
                 false
@@ -86,9 +84,6 @@ class LoginWindowActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Method to handle the login of a registered user.
-     */
     private fun logInRegisteredUser() {
         if (validateLoginDetails()) {
             val login = enterLogin.text.toString().trim { it <= ' ' }

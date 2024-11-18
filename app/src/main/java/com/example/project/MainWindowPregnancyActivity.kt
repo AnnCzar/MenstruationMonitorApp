@@ -220,7 +220,6 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error fetching medicines: ", e)
-                // Handle error case
             }
     }
 
@@ -281,9 +280,11 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openAccountWindowActivity() {
         val intent = Intent(this, AccountWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
     @RequiresApi(Build.VERSION_CODES.O)
