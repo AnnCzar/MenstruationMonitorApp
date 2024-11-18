@@ -1,9 +1,6 @@
 package database.collections
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.PropertyName
 import java.time.LocalDate
-import java.util.*
 
 data class Users(
     @get:PropertyName("email") @set:PropertyName("email") var email: String = "",
@@ -13,5 +10,6 @@ data class Users(
     @get:PropertyName("lastPeriodDate") @set:PropertyName("lastPeriodDate") var lastPeriodDate: LocalDate? = null,
     @get:PropertyName("periodLength") @set:PropertyName("periodLength") var periodLength: Int = 0,
     @get:PropertyName("statusPregnancy") @set:PropertyName("statusPregnancy") var statusPregnancy: Boolean = false,
-    @get:PropertyName("weight") @set:PropertyName("weight") var weight: Double = 0.0
+    @get:PropertyName("weight") @set:PropertyName("weight") var weight: Double = 0.0,
+    val role: String
 )

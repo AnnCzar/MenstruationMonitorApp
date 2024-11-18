@@ -46,6 +46,7 @@ class RegisterWindow3Activity : AppCompatActivity() {
         val cycleLength = intent.getIntExtra("CYCLE_LENGTH", 0)
         val periodLength = intent.getIntExtra("PERIOD_LENGTH", 0)
         val weight = intent.getDoubleExtra("WEIGHT", 0.0)
+        val role = intent.getStringExtra("ROLE")
 
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val lastPeriodDate: LocalDate? = if (!lastPeriod1.isNullOrBlank()) {
@@ -82,14 +83,16 @@ class RegisterWindow3Activity : AppCompatActivity() {
         }
 
         buttonConfirmRegisterWindow3.setOnClickListener {
-            saveAllUserData(userId!!, email!!, password!!, username!!, lastPeriodDate, cycleLength, periodLength, weight)
+            if (role != null) {
+                saveAllUserData(userId!!, email!!, password!!, username!!, lastPeriodDate, cycleLength, periodLength, weight, role)
+            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAllUserData(
         userId: String, email: String, password: String, username: String,
-        lastPeriod: LocalDate?, cycleLength: Int, periodLength: Int, weight: Double
+        lastPeriod: LocalDate?, cycleLength: Int, periodLength: Int, weight: Double, role: String
     ) {
         val user = Users(
             email = email,
@@ -98,7 +101,8 @@ class RegisterWindow3Activity : AppCompatActivity() {
             cycleLength = cycleLength,
             lastPeriodDate = lastPeriod,
             periodLength = periodLength,
-            weight = weight
+            weight = weight,
+            role = role
         )
 
         GlobalScope.launch(Dispatchers.Main) {
