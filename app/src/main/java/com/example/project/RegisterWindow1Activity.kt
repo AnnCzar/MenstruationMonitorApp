@@ -110,8 +110,11 @@ package com.example.project
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.*
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -132,6 +135,7 @@ class RegisterWindow1Activity : AppCompatActivity() {
     private lateinit var enterPasswordRegisterConfirm: EditText
     private lateinit var enterUsernameRegister: EditText
     private lateinit var buttonConfirmRegisterWindow1: Button
+    private lateinit var roleSpinner: Spinner
 
     private lateinit var auth: FirebaseAuth
 
@@ -149,6 +153,16 @@ class RegisterWindow1Activity : AppCompatActivity() {
         enterPasswordRegisterConfirm = findViewById(R.id.enterPasswordRegisterConfirm)
         enterUsernameRegister = findViewById(R.id.enterUsernameRegister)
         buttonConfirmRegisterWindow1 = findViewById(R.id.buttonConfirmRegisterWindow1)
+        roleSpinner = findViewById(R.id.role)
+
+
+        val roleAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.role_array,
+            android.R.layout.simple_spinner_item
+        )
+        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        roleSpinner.adapter = roleAdapter
 
         // nasłuchiwanie na kliknięcie przycisku - obsługa kliknięcia przycisku
         buttonConfirmRegisterWindow1.setOnClickListener {
@@ -197,8 +211,10 @@ class RegisterWindow1Activity : AppCompatActivity() {
                     val user = auth.currentUser
                     val userId = user?.uid
 
+
                     if (userId != null) {
-                        openRegisterWindow2Activity(userId, email, password, username)
+                        val selectedRole = roleSpinner.selectedItem.toString()
+                        openRegisterWindow2Activity(userId, email, password, username, selectedRole)
                     }
                 } else {
                     Toast.makeText(this, "Rejestracja nieudana: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -210,13 +226,24 @@ class RegisterWindow1Activity : AppCompatActivity() {
         userId: String,
         email: String,
         password: String,
-        username: String
+        username: String,
+        role: String
     ) {
-        val intent = Intent(this, RegisterWindow2Activity::class.java).apply {
+
+        val intent = when (role) {
+            "Lekarz" -> Intent(this, RegisterWindow2DoctorActivity::class.java)
+            "Zwykły użytkownik" -> Intent(this, RegisterWindow2Activity::class.java)
+            else -> {
+                Toast.makeText(this, "Nieprawidłowa rola: $role", Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+        intent.apply {
             putExtra("USER_ID", userId)
             putExtra("EMAIL", email)
             putExtra("PASSWORD", password)
             putExtra("USERNAME", username)
+            putExtra("ROLE", role)
         }
         startActivity(intent)
     }

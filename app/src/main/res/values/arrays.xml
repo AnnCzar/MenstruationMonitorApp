@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="role_array">
+        <item>Lekarz</item>
+        <item>Zwykły użytkownik</item>
+    </string-array>
+    <string-array name="specialisation_array">
+        <item>Lekarz pierwszego kontaktu</item>
+        <item>Ginekolog</item>
+        <item>Dermatolog</item>
+        <item>Alergolog</item>
+
+    </string-array>
+
+
+</resources>
