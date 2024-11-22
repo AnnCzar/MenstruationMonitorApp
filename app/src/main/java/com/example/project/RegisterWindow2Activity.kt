@@ -37,6 +37,7 @@ class RegisterWindow2Activity : AppCompatActivity() {
         val email = intent.getStringExtra("EMAIL")
         val password = intent.getStringExtra("PASSWORD")
         val username = intent.getStringExtra("USERNAME")
+        val role = intent.getStringExtra("ROLE")
 
         enterLastPeriod.setOnClickListener {
             showDatePickerDialog()
@@ -50,7 +51,9 @@ class RegisterWindow2Activity : AppCompatActivity() {
             val weight = weightRegister.text.toString()
 
             if (lastPeriod.isNotEmpty() && cycleLength.toInt() > 0 && periodLength.toInt() > 0 && weight.toInt() > 0) {
-                openRegisterWindow3Activity(userId!!, email!!, password!!, username!!, lastPeriod, cycleLength, periodLength, weight)
+                if (role != null) {
+                    openRegisterWindow3Activity(userId!!, email!!, password!!, username!!, lastPeriod, cycleLength, periodLength, weight, role)
+                }
             } else {
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
             }
@@ -78,7 +81,7 @@ class RegisterWindow2Activity : AppCompatActivity() {
 
     private fun openRegisterWindow3Activity(
         userId: String, email: String, password: String, username: String,
-        lastPeriod: String, cycleLength: String, periodLength: String, weight: String
+        lastPeriod: String, cycleLength: String, periodLength: String, weight: String, role: String
     ) {
         val intent = Intent(this, RegisterWindow3Activity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -89,6 +92,7 @@ class RegisterWindow2Activity : AppCompatActivity() {
             putExtra("CYCLE_LENGTH", cycleLength.toInt())
             putExtra("PERIOD_LENGTH", periodLength.toInt())
             putExtra("WEIGHT", weight.toDouble())
+            putExtra("ROLE", role)
         }
         startActivity(intent)
     }

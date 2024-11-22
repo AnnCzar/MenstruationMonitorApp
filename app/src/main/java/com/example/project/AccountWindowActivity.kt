@@ -116,24 +116,6 @@ private fun logout() {
                 Toast.makeText(this@AccountWindowActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
-    private fun initializeViews() {
-        accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
-        homeButtonProfil = findViewById(R.id.homeButtonProfil)
-        usernameTextView = findViewById(R.id.usernameTextView)
-        lastWeightTextView = findViewById(R.id.lastWeightTextView)
-        visitsButton = findViewById(R.id.visitsButton)
-        medicationsButton = findViewById(R.id.medicationsButton)
-        mapSearch = findViewById(R.id.mapSearch)
-
-        medicationsButton.setOnClickListener {
-            openMedicineWindowActivity(userId)
-        }
-        mapSearch.setOnClickListener {
-            openMapWindowActivity(userId)
-        }
-    }
-
     private fun loadUserInfo() {
         db.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
@@ -191,6 +173,24 @@ private fun logout() {
                 Log.e("Firestore", "Error fetching user data", e)
             }
     }
+
+    private fun initializeViews() {
+        accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
+        homeButtonProfil = findViewById(R.id.homeButtonProfil)
+        usernameTextView = findViewById(R.id.usernameTextView)
+        lastWeightTextView = findViewById(R.id.lastWeightTextView)
+        visitsButton = findViewById(R.id.visitsButton)
+        medicationsButton = findViewById(R.id.medicationsButton)
+        mapSearch = findViewById(R.id.mapSearch)
+
+        medicationsButton.setOnClickListener {
+            openMedicineWindowActivity(userId)
+        }
+        mapSearch.setOnClickListener {
+            openMapWindowActivity(userId)
+        }
+    }
+
 
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
