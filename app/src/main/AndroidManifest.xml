@@ -117,6 +117,15 @@
             android:name=".PeriodBegginingActivity"
             android:exported="true"></activity>
         <activity
+            android:name=".RegisterWindow2DoctorActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".MainWindowDoctor"
+            android:exported="true"></activity>
+        <activity
+            android:name=".AccountWindowDoctorActivity"
+            android:exported="true"></activity>
+        <activity
             android:name=".ModifyMedicineActivity"
             android:exported="true"></activity>
 <!--        <activity-->
