@@ -225,7 +225,7 @@ private fun logout() {
         startActivity(intent)
     }
     private fun openMapWindowActivity(userId: String) {
-        val intent = Intent(this, MapsActivity::class.java)
+        val intent = Intent(this, MapActivityPlaces::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
