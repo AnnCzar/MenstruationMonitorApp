@@ -214,7 +214,7 @@ private fun findNearbyPharmacies(location: LatLng) {
             Method.GET, url,
             Response.Listener { response ->
                 try {
-                    Log.d("Geocode Response", response)  
+                    Log.d("Geocode Response", response)
                     val jsonObject = JSONObject(response)
                     val results = jsonObject.getJSONArray("results")
 
