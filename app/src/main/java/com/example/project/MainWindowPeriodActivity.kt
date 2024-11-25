@@ -373,6 +373,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleData() {
         val userDocRef = db.collection("users").document(userId)
@@ -434,33 +435,54 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 } else {
                     val latestCycle = documents.first()
                     val nextOvulationDate = LocalDate.parse(latestCycle.getString("nextOvulationDate"))
-                    displayDates( nextOvulationDate, cycleLength)
+                    displayDates(nextOvulationDate, cycleLength)
                 }
             }
             .addOnFailureListener { e ->
                 showToast("Błąd: ${e.message}")
             }
     }
-        // do wywalenia - poprawic jak bedize algorytm do owualcji
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateAndDisplayDates(lastPeriodDate: LocalDate, cycleLength: Int) {
+        val today = LocalDate.now()
+
+        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, today)
+        val currentCycleDay = (daysSinceLastPeriod % cycleLength).toInt() + 1
+
+        val daysUntilNextPeriod = if (daysSinceLastPeriod < cycleLength) {
+            cycleLength - daysSinceLastPeriod
+        } else {
+            cycleLength - (daysSinceLastPeriod % cycleLength)
+        }
+
+        // do poprawy
         val nextOvulationDate = lastPeriodDate.plusDays((cycleLength / 2).toLong())
-        displayDates( nextOvulationDate, cycleLength)
+
+
+        runOnUiThread {
+            daysLeftOwulation.text = ChronoUnit.DAYS.between(today, nextOvulationDate).toString()
+            daysLeftPeriod .text = daysUntilNextPeriod.toString()
+            cycleDayPeriod.text = currentCycleDay.toString()
+        }
     }
-    // do wywalenia - poprawic jak bedize algorytm do owualcji
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun displayDates( nextOvulationDate: LocalDate, cycleLength: Int) {
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
+    private fun displayDates(nextOvulationDate: LocalDate, cycleLength: Int) {
+        val today = LocalDate.now()
+
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(today, nextOvulationDate)
 
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(today, adjustedOvulationDate)
         }
 
         runOnUiThread {
             daysLeftOwulation.text = daysUntilNextOvulation.toString()
         }
     }
+
 
 
     private fun showToast(message: String) {
