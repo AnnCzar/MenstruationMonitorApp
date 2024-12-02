@@ -13,15 +13,18 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:background="#E2B6C3"
         android:gravity="center_vertical"> <!-- Wyrównanie elementów w pionie -->
 
         <!-- ImageButton dla ikony wiadomości -->
         <ImageButton
             android:id="@+id/MessageIcon"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/message" />
+            app:srcCompat="@drawable/message"
+            android:contentDescription="send message" />
+
 
         <!-- Przestrzeń między ikoną a tekstem -->
         <Space
@@ -39,7 +42,7 @@
                 android:id="@+id/textViewUserLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="login"
+                android:text="@string/login"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />

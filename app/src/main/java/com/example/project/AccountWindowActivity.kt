@@ -25,12 +25,14 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var lastWeightTextView: TextView
     private lateinit var visitsButton: Button
     private lateinit var medicationsButton: Button
+    private lateinit var chatButton: Button
     private lateinit var begginingPregnancyButton: Button
     private lateinit var logoutButton: ImageButton
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var mapSearch: Button
+
 
 
 private fun logout() {
@@ -62,6 +64,9 @@ private fun logout() {
 
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
+        }
+        chatButton.setOnClickListener {
+            openChatWindowActivity(userId)
         }
         visitsButton.setOnClickListener {
             openVisitsWindow(userId)
@@ -182,6 +187,7 @@ private fun logout() {
         visitsButton = findViewById(R.id.visitsButton)
         medicationsButton = findViewById(R.id.medicationsButton)
         mapSearch = findViewById(R.id.mapSearch)
+        chatButton =findViewById(R.id.contactDoctor)
 
         medicationsButton.setOnClickListener {
             openMedicineWindowActivity(userId)
@@ -194,6 +200,13 @@ private fun logout() {
 
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
+            putExtra("USER_ID", userId)
+        }
+        startActivity(intent)
+    }
+
+    private fun openChatWindowActivity(userId: String) {
+        val intent = Intent(this, ChatUserActivity::class.java).apply {
             putExtra("USER_ID", userId)
         }
         startActivity(intent)

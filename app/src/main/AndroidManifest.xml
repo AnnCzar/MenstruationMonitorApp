@@ -120,7 +120,10 @@
             android:name=".RegisterWindow2DoctorActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".MainWindowDoctor"
+            android:name=".ChatDoctorActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".ChatUserActivity"
             android:exported="true"></activity>
         <activity
             android:name=".AccountWindowDoctorActivity"

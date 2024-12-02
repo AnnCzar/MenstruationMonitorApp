@@ -3,7 +3,6 @@ package com.example.project
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -14,35 +13,38 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class CharUserActivity : AppCompatActivity() {
+class ChatUserActivity : AppCompatActivity() {
 
     private lateinit var chatUserRV: RecyclerView
-    private lateinit var chatUserAdapter: ChatUserAdapter
+    private lateinit var chatUserAdapter: ChatDoctorAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
-    private lateinit var profileMainWindowDoctor: ImageButton
-    private lateinit var settingsMainWindowDoctor: ImageButton
+    private lateinit var profileChatUser: ImageButton
+    private lateinit var settingsChatUser: ImageButton
+    private lateinit var homeChatUser: ImageButton
 
 
-    private val chatUserList = mutableListOf<ChatUser>()
+    private val chatUserList = ArrayList<ChatUser>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_window_doctor)
+        setContentView(R.layout.chat_list_user)
 
         db = FirebaseFirestore.getInstance()
 
         chatUserRV = findViewById(R.id.chatUserRV)
         chatUserRV.layoutManager = LinearLayoutManager(this)
 
-        profileMainWindowDoctor = findViewById(R.id.AcountButtonMainDoctor)
-        settingsMainWindowDoctor = findViewById(R.id.SettingButtonMainDoctor)
+
+        profileChatUser = findViewById(R.id.chatUserAcountButton)
+        settingsChatUser = findViewById(R.id.chatUserSettingButton)
+        homeChatUser = findViewById(R.id.chatUserHomeButton)
 
 
         userId = intent.getStringExtra("USER_ID") ?: ""
 
-//        chatUserAdapter = ChatUserAdapter()
+        chatUserAdapter = ChatDoctorAdapter(usersNames = chatUserList)
         chatUserRV.adapter = chatUserAdapter
 
         fetchChatUsers()
@@ -53,7 +55,7 @@ class CharUserActivity : AppCompatActivity() {
 //            startActivity(intent)
 //        }
 
-        settingsMainWindowDoctor.setOnClickListener {
+        settingsChatUser.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
 
@@ -119,16 +121,25 @@ class CharUserActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 chatUserList.clear()
                 for (document in result) {
-                    val login = ChatUser(
-                        login = document.getString("login") ?: "")
-                    chatUserList.add(login)
+                    val login = document.getString("login")
+                    val role = document.getString("role") // Retrieve the role field
+                    if (role == "Lekarz") { // Filter users with role "Lekarz"
+                        if (login.isNullOrEmpty()) {
+                            Toast.makeText(this, "Login field is missing", Toast.LENGTH_SHORT).show()
+                        } else {
+                            chatUserList.add(ChatUser(login = login))
+                            println("Added doctor login: $login") // Debugging
+                        }
+                    }
                 }
                 chatUserAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                println("Firestore error: ${e.message}")
             }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine) {
