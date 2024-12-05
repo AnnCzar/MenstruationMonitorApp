@@ -93,9 +93,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
         homeButtonaddInfo = findViewById(R.id.homeButtonaddInfo)
-//        imageButtonHappy = findViewById(R.id.imageButtonHappy)
-//        imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
-//        imageButtonSad = findViewById(R.id.imageButtonSad)
+        imageButtonHappy = findViewById(R.id.imageButtonHappy)
+        imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
+        imageButtonSad = findViewById(R.id.imageButtonSad)
 
         enterWeight = findViewById(R.id.enterWeight)
         addInfoEnterTemperature = findViewById(R.id.addInfoEnterTemperature)
@@ -168,32 +168,32 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
 
-//        imageButtonHappy.setOnClickListener {
-//            setCurrentMood("happy")
-//            saveMoodToDatabase("happy")
-//            imageButtonHappy.isSelected = true
-//            // Pozostałe przyciski są odznaczone
-//            imageButtonNeutral.isSelected = false
-//            imageButtonSad.isSelected = false
-//        }
+        imageButtonHappy.setOnClickListener {
+            setCurrentMood("happy")
+            saveMoodToDatabase("happy")
+            imageButtonHappy.isSelected = true
+            // Pozostałe przyciski są odznaczone
+            imageButtonNeutral.isSelected = false
+            imageButtonSad.isSelected = false
+        }
 
-//        imageButtonNeutral.setOnClickListener {
-//            setCurrentMood("neutral")
-//            saveMoodToDatabase("neutral")
-//            imageButtonNeutral.isSelected = true
-//            // Pozostałe przyciski są odznaczone
-//            imageButtonHappy.isSelected = false
-//            imageButtonSad.isSelected = false
-//        }
+        imageButtonNeutral.setOnClickListener {
+            setCurrentMood("neutral")
+            saveMoodToDatabase("neutral")
+            imageButtonNeutral.isSelected = true
+            // Pozostałe przyciski są odznaczone
+            imageButtonHappy.isSelected = false
+            imageButtonSad.isSelected = false
+        }
 
-//        imageButtonSad.setOnClickListener {
-//            setCurrentMood("sad")
-//            saveMoodToDatabase("sad")
-//            imageButtonSad.isSelected = true
-//            // Pozostałe przyciski są odznaczone
-//            imageButtonHappy.isSelected = false
-//            imageButtonNeutral.isSelected = false
-//        }
+        imageButtonSad.setOnClickListener {
+            setCurrentMood("sad")
+            saveMoodToDatabase("sad")
+            imageButtonSad.isSelected = true
+            // Pozostałe przyciski są odznaczone
+            imageButtonHappy.isSelected = false
+            imageButtonNeutral.isSelected = false
+        }
 
 //        addInfoSettingButton.setOnClickListener {
 //            openSettingsWindowActivity(userId)

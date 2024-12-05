@@ -73,7 +73,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation(libs.play.services.maps)
-
+    implementation("com.jjoe64:graphview:4.2.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

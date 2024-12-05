@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -28,34 +29,25 @@ import java.util.*
 
 class MainWindowPregnancyActivity : AppCompatActivity() {
     private lateinit var daysLeftPregnancy: TextView
-    private lateinit var medicinePregnancy: RecyclerView
     private lateinit var toCalendarButtonPregn: ImageButton
     private lateinit var mainWindowPregnancySettingButton: ImageButton
     private lateinit var mainWindowPregnancyAccountButton: ImageButton
      private lateinit var dateTextPregnancy: TextView
     private lateinit var endingPregnancyButton: Button
-    private lateinit var doctorsRecyclerViewPregnancy: RecyclerView
     private lateinit var additionalInfoPregnancy: Button
-    private lateinit var doctorAdapter: DoctorVisitAdapter
     private lateinit var selectedDate: LocalDate
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
 
-    private lateinit var medicineAdapter: MedicineAdapter
-    private val medicines = mutableListOf<Medicine>()
 
-    companion object {
-        private const val TAG = "MainWindowPregnancy"
-        private const val PREGNANCY_DURATION_DAYS = 266L
-    }
-
+    private lateinit var doctorsRecyclerViewPregnancy: RecyclerView
+    private lateinit var doctorAdapter: DoctorVisitAdapter
     class DoctorVisitAdapter(
         private val visits: List<DoctorVisit>,
     ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(android.R.layout.simple_list_item_1, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
             return DoctorVisitViewHolder(view)
         }
 
@@ -70,17 +62,36 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
             private val textView: TextView = itemView.findViewById(android.R.id.text1)
 
             fun bind(visit: DoctorVisit) {
-                textView.text = "${visit.doctorName} - ${visit.time} Informacje: ${visit.extraInfo}"
+                textView.text = "${visit.doctorName} - Godzina: ${visit.time}\nInformacje: ${visit.extraInfo}"
+                textView.setTextColor(Color.BLACK)
             }
         }
     }
     private val doctors = mutableListOf<DoctorVisit>()
+
+
+    private lateinit var medicinePregnancy: RecyclerView
+    private lateinit var medicineAdapter: MedicineAdapter
+    private val medicines = mutableListOf<Medicine>()
+
+
+    companion object {
+        private const val TAG = "MainWindowPregnancy"
+        private const val PREGNANCY_DURATION_DAYS = 266L
+    }
+
+
 
     @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_pregnancy)
+
+        userId = intent.getStringExtra("USER_ID") ?: ""
+
+        db = FirebaseFirestore.getInstance()
+        checkDate()
 
         val dateString = intent?.getStringExtra("SELECTED_DATE")
         selectedDate = if (!dateString.isNullOrEmpty()) {
@@ -89,16 +100,19 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
             LocalDate.now()
         }
 
-        userId = intent.getStringExtra("USER_ID") ?: ""
-
-        db = FirebaseFirestore.getInstance()
+        medicinePregnancy = findViewById(R.id.medicinePregnancy)
+        medicinePregnancy.layoutManager = LinearLayoutManager(this)
+        medicineAdapter = MedicineAdapter(medicines) { medicine ->
+            saveMedicineCheckStatus(medicine)
+        }
+        medicinePregnancy.adapter = medicineAdapter
 
         toCalendarButtonPregn = findViewById(R.id.toCalendarButtonPregn)
         mainWindowPregnancySettingButton = findViewById(R.id.mainWindowPregnancySettingButton)
         mainWindowPregnancyAccountButton = findViewById(R.id.mainWindowPregnancyAcountButton)
-            dateTextPregnancy = findViewById(R.id.dateTextPregnancy)
+        dateTextPregnancy = findViewById(R.id.dateTextPregnancy)
         daysLeftPregnancy = findViewById(R.id.daysLeftPregnancy)
-        medicinePregnancy = findViewById(R.id.medicinePregnancy)
+
         endingPregnancyButton = findViewById(R.id.endingPregnancyButton)
         doctorsRecyclerViewPregnancy = findViewById(R.id.doctorsRecyclerViewPregnancy)
         additionalInfoPregnancy = findViewById(R.id.additionalInfoPregnancy)
@@ -106,18 +120,13 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
         doctorAdapter = DoctorVisitAdapter(doctors)
         doctorsRecyclerViewPregnancy.adapter = doctorAdapter
-        medicinePregnancy.layoutManager = LinearLayoutManager(this)
 
-        medicineAdapter = MedicineAdapter(medicines) { medicine ->
-            saveMedicineCheckStatus(medicine)
-        }
-        medicinePregnancy.adapter = medicineAdapter
 
-        dateTextPregnancy.text = LocalDate.now().toString()
+        dateTextPregnancy.text = selectedDate.toString()
 
         fetchPregnancyData()
         fetchDoctorVisits()
-        fetchMedicines()
+        fetchMedicinesStatus(selectedDate)
 
 
         toCalendarButtonPregn.setOnClickListener {
@@ -138,6 +147,25 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         }
         additionalInfoPregnancy.setOnClickListener {
             openAdditionalInformationActivity(userId, selectedDate)
+        }
+
+        fetchMedicines()
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        checkDate()
+        fetchMedicinesStatus(selectedDate)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun checkDate() {
+        val dateString = intent?.getStringExtra("SELECTED_DATE")
+        selectedDate = if (dateString.isNullOrEmpty()) {
+            LocalDate.now()
+        } else {
+            LocalDate.parse(dateString)
         }
     }
 
@@ -203,25 +231,66 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         val today = LocalDate.now()
         return ChronoUnit.DAYS.between(today, endDate)
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchMedicinesStatus(selectedDate: LocalDate) {
+
+        val dailyInfoRef = db.collection("users").document(userId)
+            .collection("dailyInfo").document(selectedDate.toString())
+            .collection("medicines")
+
+        dailyInfoRef.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                val medicineId = document.id
+                val isChecked = document.getBoolean("checked") ?: false
+                medicines.find { it.id == medicineId }?.isChecked = isChecked
+            }
+            medicineAdapter.notifyDataSetChanged()
+        }.addOnFailureListener { e ->
+            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { documents ->
                 medicines.clear()
-                for (document in result) {
-                    val medicine = Medicine(
-                        id = document.id,
-                        name = document.getString("medicineName") ?: "",
-                        isChecked = document.getBoolean("isChecked") ?: false
-                    )
-                    medicines.add(medicine)
+                for (document in documents) {
+                    val medicineId = document.id
+                    val medicineName = document.getString("medicineName") ?: "Brak nazwy"
+                    val dose = document.getString("doseMedicine") ?: "Brak dawki"
+                    val time = document.getString("timeMedicine") ?: "Brak czasu"
+                    val isChecked = document.getBoolean("checked") ?: false
+
+                    medicines.add(Medicine(medicineId, medicineName, isChecked, dose, time))
                 }
+                Log.d("FirestoreData", "Pobrano leki: $medicines")
                 medicineAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Log.e(TAG, "Error fetching medicines: ", e)
+                Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+//    private fun fetchMedicines() {
+//        db.collection("users").document(userId).collection("medicines")
+//            .get()
+//            .addOnSuccessListener { result ->
+//                medicines.clear()
+//                for (document in result) {
+//                    val medicine = Medicine(
+//                        id = document.id,
+//                        name = document.getString("medicineName") ?: "",
+//                        isChecked = document.getBoolean("isChecked") ?: false
+//                    )
+//                    medicines.add(medicine)
+//                }
+//                medicineAdapter.notifyDataSetChanged()
+//            }
+//            .addOnFailureListener { e ->
+//                Log.e(TAG, "Error fetching medicines: ", e)
+//            }
+//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine) {

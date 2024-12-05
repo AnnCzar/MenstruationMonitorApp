@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -42,7 +43,7 @@ private fun logout() {
     }
     auth.signOut()
 
-    val intent = Intent(this, LoginWindowActivity::class.java)
+    val intent = Intent(this, FirstWindowActivity::class.java)
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     startActivity(intent)
     finish()
@@ -100,6 +101,29 @@ private fun logout() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkPregnantStatus()
+    }
+
+    private fun checkPregnantStatus() {
+        val userRef = db.collection("users").document(userId)
+        userRef.get()
+            .addOnSuccessListener { user ->
+                if (user != null) {
+                    val statusPregnancy = user.getBoolean("statusPregnancy")
+                    if (statusPregnancy != null) {
+                        if (statusPregnancy) {
+                            begginingPregnancyButton.visibility = Button.GONE
+
+                        } else {
+                            begginingPregnancyButton.visibility = Button.VISIBLE
+                        }
+                    }
+                }
+            }
+    }
+
     private fun openPregnancyBegginingActivity(userId: String) {
         val intent = Intent(this, PregnancyBegginingActivity::class.java)
         intent.putExtra("USER_ID", userId)
@@ -141,24 +165,24 @@ private fun logout() {
                                     .addOnSuccessListener { dateDocuments ->
                                         if (!dateDocuments.isEmpty) {
                                             val lastWeight = dateDocuments.documents[0].getDouble("weight") ?: 0.0
-                                            lastWeightTextView.text = "Last weight: $lastWeight"
+                                            lastWeightTextView.text = "$lastWeight kg"
                                             Log.d("Firestore", "Last weight from dailyInfo: $lastWeight")
                                         } else {
-                                            lastWeightTextView.text = "Weight: $userWeight"
+                                            lastWeightTextView.text = "$userWeight kg"
                                             Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
                                         }
                                     }
                                     .addOnFailureListener { e ->
-                                        lastWeightTextView.text = "Weight: $userWeight"
+                                        lastWeightTextView.text = "$userWeight kg"
                                         Log.e("Firestore", "Error fetching dailyInfo date data, using user weight: $userWeight", e)
                                     }
                             } else {
-                                lastWeightTextView.text = "Weight: $userWeight"
+                                lastWeightTextView.text = "$userWeight kg"
                                 Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
                             }
                         }
                         .addOnFailureListener { e ->
-                            lastWeightTextView.text = "Weight: $userWeight"
+                            lastWeightTextView.text = "$userWeight kg"
                             Log.e("Firestore", "Error fetching dailyInfo data, using user weight: $userWeight", e)
                         }
                 } else {
@@ -212,10 +236,11 @@ private fun logout() {
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 

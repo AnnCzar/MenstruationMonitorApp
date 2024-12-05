@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class PeriodEndingActivity : AppCompatActivity(){
@@ -77,7 +78,9 @@ class PeriodEndingActivity : AppCompatActivity(){
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun savePeriodEndDate() {   // tutaj dac nowy algorytm
-
+        val dateStr = insert_date_period_end.text.toString()
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val endDate: Date? = sdf.parse(dateStr)
             db.collection("users").document(userId).collection("cycles")
                 .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .limit(1)
@@ -88,7 +91,7 @@ class PeriodEndingActivity : AppCompatActivity(){
                         val cycleRef = db.collection("users").document(userId)
                             .collection("cycles").document(latestCycle.id)
                         cycleRef
-                            .update("endDate", LocalDate.now().toString())
+                            .update("endDate", endDate?.let { sdf.format(it) })
                             .addOnSuccessListener {
                                 Toast.makeText(this@PeriodEndingActivity, "Data zakończenia okresu zaktualizowana", Toast.LENGTH_SHORT).show()
                                 openMainWindowPregnancyActivity(userId)
