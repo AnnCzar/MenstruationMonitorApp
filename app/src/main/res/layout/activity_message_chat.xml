@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/changePasswordWindow"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginWindowActivity"
+    android:background="#FFF3F3">
+
+    <!-- Pasek nawigacji na górze -->
+    <LinearLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#C69AA7"
+        android:padding="25dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/displayLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User: [login]"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:fontFamily="@font/mbi"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <!-- RecyclerView poniżej paska nawigacji -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messageRV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/navigationBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar" />
+
+    <!-- Dolny pasek z przyciskami i polem tekstowym -->
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:orientation="horizontal"
+        android:background="#C69AA7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+<!--        <ImageView-->
+<!--            android:id="@+id/attach_image_button"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:src="@drawable/attach_file"-->
+<!--            android:layout_gravity="center_vertical" />-->
+
+        <EditText
+            android:id="@+id/message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_shape"
+            android:hint="Write message here ..." />
+
+        <ImageButton
+            android:id="@+id/send_image_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/send_arrow"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

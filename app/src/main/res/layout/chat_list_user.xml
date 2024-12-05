@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:id="@+id/main_doctor_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,38 +34,37 @@
         tools:listitem="@layout/chat_list_item" />
 
     <ImageButton
-        android:id="@+id/AcountButtonMainDoctor"
-
-        android:layout_width="215dp"
+        android:id="@+id/chatUserAcountButton"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-
-        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24"
-        android:contentDescription="acuont"/>
+        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
 
     <ImageButton
-        android:id="@+id/SettingButtonMainDoctor"
+        android:id="@+id/chatUserSettingButton"
+        android:layout_width="137dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="4dp"
+        android:background="#D1A1AF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
-        android:layout_width="215dp"
+    <ImageButton
+        android:id="@+id/chatUserHomeButton"
+        android:layout_width="137dp"
         android:layout_height="58dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toStartOf="@+id/AcountButtonMainDoctor"
-
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chatUserAcountButton"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24"
-        android:contentDescription="settings"/>
+        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 

@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="50dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+
+    <!-- Prostokąt obramowania koperty -->
+    <path
+        android:strokeColor="#000"
+        android:strokeWidth="30"
+        android:pathData="M80,200 L880,200 L880,800 L80,800 Z" />
+
+    <!-- Linia górna klapy koperty -->
+    <path
+        android:strokeColor="#000"
+        android:strokeWidth="35"
+        android:pathData="M80,200 L480,500 L880,200" />
+
+    <!-- Linia dolnej wewnętrznej klapy koperty -->
+<!--    <path-->
+<!--        android:fillColor="none"-->
+<!--        android:strokeColor="#000"-->
+<!--        android:strokeWidth="24"-->
+<!--        android:pathData="M80,800 L480,500 L880,800" />-->
+</vector>

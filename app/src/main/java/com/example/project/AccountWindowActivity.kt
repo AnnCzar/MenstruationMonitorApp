@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+
 import android.widget.ImageView
+
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -26,12 +28,16 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var lastWeightTextView: TextView
     private lateinit var visitsButton: Button
     private lateinit var medicationsButton: Button
+
+    private lateinit var chatButton: Button
+
     private lateinit var begginingPregnancyButton: Button
     private lateinit var logoutButton: ImageButton
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var mapSearch: Button
+
 
 
 private fun logout() {
@@ -43,7 +49,9 @@ private fun logout() {
     }
     auth.signOut()
 
-    val intent = Intent(this, FirstWindowActivity::class.java)
+
+    val intent = Intent(this, LoginWindowActivity::class.java)
+
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     startActivity(intent)
     finish()
@@ -64,6 +72,11 @@ private fun logout() {
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
+
+        chatButton.setOnClickListener {
+            openChatWindowActivity(userId)
+        }
+
         visitsButton.setOnClickListener {
             openVisitsWindow(userId)
         }
@@ -101,6 +114,7 @@ private fun logout() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         checkPregnantStatus()
@@ -123,6 +137,7 @@ private fun logout() {
                 }
             }
     }
+
 
     private fun openPregnancyBegginingActivity(userId: String) {
         val intent = Intent(this, PregnancyBegginingActivity::class.java)
@@ -165,24 +180,32 @@ private fun logout() {
                                     .addOnSuccessListener { dateDocuments ->
                                         if (!dateDocuments.isEmpty) {
                                             val lastWeight = dateDocuments.documents[0].getDouble("weight") ?: 0.0
+
+
                                             lastWeightTextView.text = "$lastWeight kg"
                                             Log.d("Firestore", "Last weight from dailyInfo: $lastWeight")
                                         } else {
                                             lastWeightTextView.text = "$userWeight kg"
+
                                             Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
                                         }
                                     }
                                     .addOnFailureListener { e ->
+
                                         lastWeightTextView.text = "$userWeight kg"
                                         Log.e("Firestore", "Error fetching dailyInfo date data, using user weight: $userWeight", e)
                                     }
                             } else {
                                 lastWeightTextView.text = "$userWeight kg"
+
                                 Log.d("Firestore", "No dailyInfo data found, using user weight: $userWeight")
                             }
                         }
                         .addOnFailureListener { e ->
+
+
                             lastWeightTextView.text = "$userWeight kg"
+
                             Log.e("Firestore", "Error fetching dailyInfo data, using user weight: $userWeight", e)
                         }
                 } else {
@@ -207,6 +230,9 @@ private fun logout() {
         medicationsButton = findViewById(R.id.medicationsButton)
         mapSearch = findViewById(R.id.mapSearch)
 
+        chatButton =findViewById(R.id.contactDoctor)
+
+
         medicationsButton.setOnClickListener {
             openMedicineWindowActivity(userId)
         }
@@ -223,6 +249,15 @@ private fun logout() {
         startActivity(intent)
     }
 
+
+    private fun openChatWindowActivity(userId: String) {
+        val intent = Intent(this, ChatUserActivity::class.java).apply {
+            putExtra("USER_ID", userId)
+        }
+        startActivity(intent)
+    }
+
+
     private fun openVisitsWindow(userId: String) {
         val intent = Intent(this, DoctorVisitsActivity::class.java)
         intent.putExtra("USER_ID", userId)
@@ -236,11 +271,13 @@ private fun logout() {
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+
         startActivity(intent)
     }
 

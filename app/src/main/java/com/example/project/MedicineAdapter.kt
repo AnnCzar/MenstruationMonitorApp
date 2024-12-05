@@ -35,11 +35,13 @@ class MedicineAdapter(
             medicineDose.text = "Dawka: ${medicine.dose}"
             medicineTime.text = "Czas: ${medicine.time}"
 
+
             // Disable listener temporarily to avoid triggering during initialization
             checkBox.setOnCheckedChangeListener(null)
 
             // Reflect database state in UI
             checkBox.isChecked = medicine.isChecked
+
 
             checkBox.setOnCheckedChangeListener { _, isChecked ->
                 medicine.isChecked = isChecked

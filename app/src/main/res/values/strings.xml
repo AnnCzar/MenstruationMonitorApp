@@ -6,4 +6,7 @@
     <string name="err_msg_enter_email">Please enter your email</string>
     <string name="err_msg_enter_reppassword">Please confirm your password</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="login">login</string>
+
 </resources>

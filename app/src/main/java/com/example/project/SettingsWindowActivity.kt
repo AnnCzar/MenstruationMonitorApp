@@ -4,6 +4,9 @@ import com.example.project.MainWindowPregnancyActivity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+
+import android.widget.Button
+
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -12,18 +15,24 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+>>>>>>> origin/poprawa_layout
 
 class SettingsWindowActivity : AppCompatActivity(){
     private lateinit var homeButtonSetting: ImageButton
     private lateinit var settingWindowAcountButton: ImageButton
+
+    private lateinit var buttonChangePassword: Button
+
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var temperatureChart: GraphView
     private lateinit var weightChart: GraphView
     private lateinit var waterChart: GraphView
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,9 +43,13 @@ class SettingsWindowActivity : AppCompatActivity(){
 
         homeButtonSetting = findViewById(R.id.homeButtonSetting)
         settingWindowAcountButton = findViewById(R.id.settingWindowAcountButton)
+        buttonChangePassword = findViewById(R.id.buttonChangePassword)
+
+
         temperatureChart = findViewById(R.id.temperatureChart)
         weightChart = findViewById(R.id.weightChart)
         waterChart = findViewById(R.id.waterChart)
+
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
 
@@ -68,8 +81,13 @@ class SettingsWindowActivity : AppCompatActivity(){
                 }
         }
 
+
+        buttonChangePassword.setOnClickListener {
+            openChangePassword(userId)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             loadChartData()
+
         }
 
 
@@ -122,6 +140,7 @@ class SettingsWindowActivity : AppCompatActivity(){
         chart.viewport.setScalableY(true)
         chart.viewport.setScrollableY(true)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
@@ -143,5 +162,11 @@ class SettingsWindowActivity : AppCompatActivity(){
         startActivity(intent)
     }
 
+
+    private fun openChangePassword(userId: String){
+        val intent = Intent(this, ChangePassword::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
 
 }

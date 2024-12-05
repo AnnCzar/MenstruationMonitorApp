@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.CalendarView
 import android.widget.ImageButton
+
+
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +19,7 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -28,6 +31,7 @@ class CalendarActivity : AppCompatActivity() {
     private lateinit var calendarSettingButton: ImageButton
     private lateinit var calendarAcountButton: ImageButton
     private lateinit var homeButtonCalendar: ImageButton
+
     private lateinit var imageView: ImageView
     private lateinit var imageView2: ImageView
     private lateinit var imageView3: ImageView
@@ -36,12 +40,14 @@ class CalendarActivity : AppCompatActivity() {
     private lateinit var textView3: TextView
     private lateinit var textView4: TextView
     private lateinit var textView5: TextView
+
     private lateinit var userId: String
     private lateinit var db: FirebaseFirestore
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 //        setContentView(layout.calendar)
         setContentView(R.layout.calendar)
 
@@ -57,6 +63,7 @@ class CalendarActivity : AppCompatActivity() {
         textView3 = findViewById(id.textView3)
         textView4 = findViewById(id.textView4)
         textView5 = findViewById(id.textView5)
+
 
 
 
@@ -89,6 +96,7 @@ class CalendarActivity : AppCompatActivity() {
             openHomeWindowActivity(userId)
         }
     }
+
     override fun onResume() {
         super.onResume()
         checkPregnantStatus()
@@ -131,6 +139,7 @@ class CalendarActivity : AppCompatActivity() {
 
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchUserPeriodAndOvulationDates() {
         val cyclesRef = db.collection("users").document(userId).collection("cycles")
@@ -151,6 +160,7 @@ class CalendarActivity : AppCompatActivity() {
                             val periodStart = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
                             val periodEnd = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
                             val ovulationDay = Date.from(ovulationDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+
                             val eventDecorator = EventDecorator(calendar)
 
 
@@ -163,6 +173,7 @@ class CalendarActivity : AppCompatActivity() {
                                             if (!statusPregnancy) {                            eventDecorator.markPeriodDays(periodStart, periodEnd)
                                                 eventDecorator.markOvulation(ovulationDay)
                                                 eventDecorator.markFertilityDays(ovulationDate)}}}}
+
 
                         } else {
                             Toast.makeText(this, "Incomplete cycle data for one of the documents.", Toast.LENGTH_SHORT).show()
@@ -218,7 +229,8 @@ class CalendarActivity : AppCompatActivity() {
                     }
                     intent.putExtra("USER_ID", userId)
                     intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_DATE))
-                    Log.d("dupa", date.format(DateTimeFormatter.ISO_DATE))
+
+
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()

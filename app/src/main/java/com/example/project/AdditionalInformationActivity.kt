@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter
 
 class AdditionalInformationActivity : AppCompatActivity() {
 
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var symptomsAdapter: SymptomsAdapter
 
@@ -93,6 +94,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
         homeButtonaddInfo = findViewById(R.id.homeButtonaddInfo)
+
         imageButtonHappy = findViewById(R.id.imageButtonHappy)
         imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
         imageButtonSad = findViewById(R.id.imageButtonSad)
@@ -168,6 +170,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
 
+
         imageButtonHappy.setOnClickListener {
             setCurrentMood("happy")
             saveMoodToDatabase("happy")
@@ -194,6 +197,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
             imageButtonHappy.isSelected = false
             imageButtonNeutral.isSelected = false
         }
+
 
 //        addInfoSettingButton.setOnClickListener {
 //            openSettingsWindowActivity(userId)

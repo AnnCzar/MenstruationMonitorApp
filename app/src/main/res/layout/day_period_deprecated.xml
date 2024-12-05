@@ -107,6 +107,7 @@
         app:layout_constraintVertical_bias="0.35"
         tools:listitem="@layout/doctor_item" />
 
+
     <TextView
         android:id="@+id/textViewGlassOfWater"
         android:layout_width="wrap_content"

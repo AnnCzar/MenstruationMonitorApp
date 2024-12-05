@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,12 +14,15 @@
         android:id="@+id/modeTextPregnancy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
+
         android:fontFamily="@font/mbi"
         android:text="Tryb miesiączkowy"
         android:textAlignment="center"
         android:textColor="#E89B6978"
+
         android:textSize="36dp" />
 
     <TextView
@@ -29,6 +33,7 @@
         android:hint="tu bedzie data"
         android:textAlignment="center"
         android:textColor="@color/black"
+
         android:textSize="20sp" />
 
     <!-- ScrollView for all content under the date -->
@@ -247,3 +252,4 @@
             app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
     </LinearLayout>
 </LinearLayout>
+
