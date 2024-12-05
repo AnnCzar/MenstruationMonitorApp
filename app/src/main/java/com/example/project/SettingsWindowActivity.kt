@@ -19,9 +19,9 @@ import java.time.format.DateTimeFormatter
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
->>>>>>> origin/poprawa_layout
 
-class SettingsWindowActivity : AppCompatActivity(){
+
+class SettingsWindowActivity : AppCompatActivity() {
     private lateinit var homeButtonSetting: ImageButton
     private lateinit var settingWindowAcountButton: ImageButton
 
@@ -32,7 +32,6 @@ class SettingsWindowActivity : AppCompatActivity(){
     private lateinit var temperatureChart: GraphView
     private lateinit var weightChart: GraphView
     private lateinit var waterChart: GraphView
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -77,7 +76,11 @@ class SettingsWindowActivity : AppCompatActivity(){
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this@SettingsWindowActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@SettingsWindowActivity,
+                        "Error: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
         }
 
@@ -85,88 +88,97 @@ class SettingsWindowActivity : AppCompatActivity(){
         buttonChangePassword.setOnClickListener {
             openChangePassword(userId)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            loadChartData()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                loadChartData()
 
+            }
+
+
+        }
+    }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun loadChartData() {
+            val dailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
+
+            dailyInfoRef.get()
+                .addOnSuccessListener { snapshot ->
+                    if (!snapshot.isEmpty) {
+                        val temperaturePoints = mutableListOf<DataPoint>()
+                        val weightPoints = mutableListOf<DataPoint>()
+                        val waterPoints = mutableListOf<DataPoint>()
+
+                        for (document in snapshot.documents) {
+                            val date = document.id
+                            val temperature = document.getString("temperature")?.toDoubleOrNull()
+                            val weight = document.getString("weight")?.toDoubleOrNull()
+                            val drinksCount = document.getLong("drinksCount")?.toDouble()
+
+                            val dateIndex =
+                                LocalDate.parse(date, DateTimeFormatter.ISO_DATE).toEpochDay()
+                                    .toDouble()
+
+                            temperature?.let { temperaturePoints.add(DataPoint(dateIndex, it)) }
+                            weight?.let { weightPoints.add(DataPoint(dateIndex, it)) }
+                            drinksCount?.let { waterPoints.add(DataPoint(dateIndex, it)) }
+                        }
+
+                        // Dodanie danych do wykresów
+                        temperatureChart.addSeries(LineGraphSeries(temperaturePoints.toTypedArray()))
+                        weightChart.addSeries(LineGraphSeries(weightPoints.toTypedArray()))
+                        waterChart.addSeries(LineGraphSeries(waterPoints.toTypedArray()))
+
+                        // Konfiguracja wykresów
+                        configureChart(temperatureChart, "Temperatura")
+                        configureChart(weightChart, "Waga")
+                        configureChart(waterChart, "Ilość wody")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        this,
+                        "Error loading chart data: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
 
 
+        private fun configureChart(chart: GraphView, title: String) {
+            chart.title = title
+            chart.viewport.isScalable = true
+            chart.viewport.isScrollable = true
+            chart.viewport.setScalableY(true)
+            chart.viewport.setScrollableY(true)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun openMainWindowPeriodActivity(userId: String) {
+            val intent = Intent(this, MainWindowPeriodActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+            startActivity(intent)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun openMainWindowPregnancyActivity(userId: String) {
+            val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+            startActivity(intent)
+        }
+
+        private fun openAccountWindowActivity(userId: String) {
+            val intent = Intent(this, AccountWindowActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            startActivity(intent)
+        }
+
+
+        private fun openChangePassword(userId: String) {
+            val intent = Intent(this, ChangePassword::class.java)
+            intent.putExtra("USER_ID", userId)
+            startActivity(intent)
+        }
+
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadChartData() {
-        val dailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
-
-        dailyInfoRef.get()
-            .addOnSuccessListener { snapshot ->
-                if (!snapshot.isEmpty) {
-                    val temperaturePoints = mutableListOf<DataPoint>()
-                    val weightPoints = mutableListOf<DataPoint>()
-                    val waterPoints = mutableListOf<DataPoint>()
-
-                    for (document in snapshot.documents) {
-                        val date = document.id
-                        val temperature = document.getString("temperature")?.toDoubleOrNull()
-                        val weight = document.getString("weight")?.toDoubleOrNull()
-                        val drinksCount = document.getLong("drinksCount")?.toDouble()
-
-                        val dateIndex = LocalDate.parse(date, DateTimeFormatter.ISO_DATE).toEpochDay().toDouble()
-
-                        temperature?.let { temperaturePoints.add(DataPoint(dateIndex, it)) }
-                        weight?.let { weightPoints.add(DataPoint(dateIndex, it)) }
-                        drinksCount?.let { waterPoints.add(DataPoint(dateIndex, it)) }
-                    }
-
-                    // Dodanie danych do wykresów
-                    temperatureChart.addSeries(LineGraphSeries(temperaturePoints.toTypedArray()))
-                    weightChart.addSeries(LineGraphSeries(weightPoints.toTypedArray()))
-                    waterChart.addSeries(LineGraphSeries(waterPoints.toTypedArray()))
-
-                    // Konfiguracja wykresów
-                    configureChart(temperatureChart, "Temperatura")
-                    configureChart(weightChart, "Waga")
-                    configureChart(waterChart, "Ilość wody")
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error loading chart data: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun configureChart(chart: GraphView, title: String) {
-        chart.title = title
-        chart.viewport.isScalable = true
-        chart.viewport.isScrollable = true
-        chart.viewport.setScalableY(true)
-        chart.viewport.setScrollableY(true)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun openMainWindowPeriodActivity(userId: String) {
-        val intent = Intent(this, MainWindowPeriodActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
-        startActivity(intent)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun openMainWindowPregnancyActivity(userId: String) {
-        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
-        startActivity(intent)
-    }
-    private fun openAccountWindowActivity(userId: String){
-        val intent = Intent(this, AccountWindowActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
-
-    private fun openChangePassword(userId: String){
-        val intent = Intent(this, ChangePassword::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
-}

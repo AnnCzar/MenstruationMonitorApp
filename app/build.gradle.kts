@@ -44,7 +44,7 @@ android {
         release {
             buildConfigField("String", "MAPS_API_KEY", "\"$MAPS_API_KEY\"")
             buildConfigField("String", "CHAT_API_KEY", "\"$chatApiKey\"")
-\
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
