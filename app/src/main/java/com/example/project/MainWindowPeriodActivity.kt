@@ -284,17 +284,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun calculateCycleDay(lastPeriodDate: LocalDate, currentDate: LocalDate, cycleLength: Int): Int {
-        val daysPassed = ChronoUnit.DAYS.between(lastPeriodDate, currentDate)
-        var cycleDay = ((daysPassed % cycleLength) + cycleLength) % cycleLength + 1
-
-        if (cycleDay <= 0) {
-            cycleDay += cycleLength
-        }
-
-        return cycleDay.toInt()
-    }
 
 
     private fun updateButtonVisibility(isPeriodStarted: Boolean) {
@@ -313,33 +302,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         runOnUiThread {
             cycleDayPeriod.text = "$cycleDay"
         }
-    }
-
-
-    private fun displayDaysLeftOvulation(daysLeft: Int) {
-        Log.d("UI", "Updating UI with cycleDay: $daysLeft")
-        runOnUiThread {
-            daysLeftOwulation.text = "$daysLeft"
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun fetchTodaysMedicineStatus() {
-        val today = LocalDate.now().toString()
-        db.collection("users").document(userId).collection("dailyInfo")
-            .document(today).collection("medicines")
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val medicineId = document.id
-                    val isChecked = document.getBoolean("checked") ?: false
-                    medicines.find { it.id == medicineId }?.isChecked = isChecked
-                }
-                medicineAdapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
 

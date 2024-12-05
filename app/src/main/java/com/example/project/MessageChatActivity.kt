@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project.Notifications.Client
 import com.example.project.Notifications.Data
 import com.example.project.Notifications.MyResponse
 import com.example.project.Notifications.Sender

@@ -88,5 +88,4 @@
             android:src="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
 
     </LinearLayout>
-
-
+</LinearLayout>
