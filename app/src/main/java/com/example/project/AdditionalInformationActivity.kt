@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter
 
 class AdditionalInformationActivity : AppCompatActivity() {
 
+
+    
     private lateinit var recyclerView: RecyclerView
     private lateinit var symptomsAdapter: SymptomsAdapter
 
