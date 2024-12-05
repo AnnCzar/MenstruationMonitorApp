@@ -125,6 +125,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         fetchMedicinesStatus(selectedDate)
         fetchLatestCycleData()
         fetchDoctorVisits()
+        fetchTodaysMedicineStatus()
 
 
         endPeriodButton.visibility = Button.GONE

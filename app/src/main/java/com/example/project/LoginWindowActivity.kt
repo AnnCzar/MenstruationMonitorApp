@@ -2,16 +2,15 @@ package com.example.project
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -40,13 +39,21 @@ class LoginWindowActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     try {
                         val userDocument = db.collection("users").document(userId).get().await()
+                        val role = userDocument.getString("role")
                         val statusPregnancy = userDocument.getBoolean("statusPregnancy")
-
-                        if (statusPregnancy == true) {
-                            openMainWindowPregnancyActivity(currentUser.uid)
-                        } else {
-                            openMainWindowPeriodActivity(currentUser.uid)
+                        if (role == "Lekarz") {
+                            Log.d("dupa", "dupa")
+                            openMainWindowDoctor(userId)
+                        }else if (role == "Zwykły użytkownik"){
+                            if (statusPregnancy == true) {
+                                openMainWindowPregnancyActivity(currentUser.uid)
+                            } else {
+                                openMainWindowPeriodActivity(currentUser.uid)
+                            }
+                        } else{
+                            showErrorSnackBar("Nieznana rola użytkownika", true)
                         }
+
                         finish()
                     } catch (e: Exception) {
                         showErrorSnackBar("Błąd: ${e.message}", true)
@@ -98,6 +105,7 @@ class LoginWindowActivity : AppCompatActivity() {
                                 try {
                                     val userDocument = db.collection("users").document(user.uid).get().await()
                                     val role = userDocument.getString("role")
+                                    Log.d(role, "dziala rola")
                                     val statusPregnancy = userDocument.getBoolean("statusPregnancy")
 
                                     val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
@@ -106,8 +114,9 @@ class LoginWindowActivity : AppCompatActivity() {
                                         putString("USER_ID", user.uid)
                                         apply()
                                     }
-
+                                    Log.d("logowanie", role.toString())
                                     when (role) {
+
                                         "Lekarz" -> openMainWindowDoctor(user.uid)
                                         "Zwykły użytkownik" -> {
                                             if (statusPregnancy == true) {
@@ -137,7 +146,7 @@ class LoginWindowActivity : AppCompatActivity() {
     }
 
     private fun openMainWindowDoctor(uid: String) {
-        val intent = Intent(this, MainWindowDoctor::class.java)
+        val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", uid)
         startActivity(intent)
     }

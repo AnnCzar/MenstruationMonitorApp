@@ -2,6 +2,7 @@ package com.example.project
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 
@@ -14,8 +15,9 @@ class MainWindowDoctor : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_doctor)
-        settingButton = findViewById(R.id.SettingButton)
-        acountButton = findViewById(R.id.AcountButton)
+        Log.d("proba", "ania")
+        settingButton = findViewById(R.id.SettingButtonMainDoctor)
+        acountButton = findViewById(R.id.AcountButtonMainDoctor)
         userId = intent.getStringExtra("USER_ID") ?: ""
 
         acountButton.setOnClickListener {

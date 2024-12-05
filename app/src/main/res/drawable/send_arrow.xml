@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="30dp"
+    android:height="30dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+
+    <!-- Główna linia strzałki -->
+    <path
+        android:strokeColor="#000"
+        android:strokeWidth="40"
+        android:pathData="M200,800 L760,480 L200,160" />
+
+    <!-- Górna część grotu -->
+    <path
+        android:strokeColor="#000"
+        android:strokeWidth="40"
+        android:pathData="M350,500, L210,170" />
+
+    <!-- Dolna część grotu -->
+    <path
+        android:strokeColor="#000"
+        android:strokeWidth="40"
+        android:pathData="M350,480 L210,790" />
+</vector>
