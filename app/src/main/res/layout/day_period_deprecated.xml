@@ -97,13 +97,16 @@
         android:id="@+id/doctorsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
-        tools:listitem="@layout/doctor_item"
+        android:background="@drawable/round_shape"
         android:textColor="@android:color/black"
-        android:background="@drawable/round_shape"/>
+        app:layout_constraintBottom_toTopOf="@id/additionalInfoPeriod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/doctorsTextDayPeriod"
+        app:layout_constraintVertical_bias="0.35"
+        tools:listitem="@layout/doctor_item" />
+
 
     <TextView
         android:id="@+id/textViewGlassOfWater"

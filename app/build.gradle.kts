@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
 }
 
+
 val localProperties = Properties().apply {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
@@ -18,6 +19,9 @@ val MAPS_API_KEY = localProperties.getProperty("MAPS_API_KEY") ?: ""
 val chatApiKey: String? = project.findProperty("CHAT_API_KEY") as String?
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     namespace = "com.example.project"
     compileSdk = 34
 
@@ -34,11 +38,13 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "MAPS_API_KEY", "\"$MAPS_API_KEY\"")
+
             buildConfigField("String", "CHAT_API_KEY", "\"$chatApiKey\"")
         }
         release {
             buildConfigField("String", "MAPS_API_KEY", "\"$MAPS_API_KEY\"")
             buildConfigField("String", "CHAT_API_KEY", "\"$chatApiKey\"")
+\
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -56,10 +62,12 @@ android {
         jvmTarget = "1.8"
     }
 
+
     buildFeatures {
         viewBinding = true
         dataBinding = true
         buildConfig = true
+
     }
 }
 
@@ -67,8 +75,10 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx:21.0.1")
+
     implementation("com.google.firebase:firebase-storage")
     implementation("com.android.volley:volley:1.2.1")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -79,16 +89,21 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation(libs.play.services.maps)
+
     implementation(libs.firebase.database.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+
+    implementation("com.jjoe64:graphview:4.2.2")
+
     implementation("com.github.sundeepk:compact-calendar-view:3.0.0")
     implementation("com.google.android.gms:play-services-maps:18.0.2")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.android.libraries.places:places:4.0.0")
+
 
     implementation("com.squareup.retrofit2:retrofit:2.6.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")

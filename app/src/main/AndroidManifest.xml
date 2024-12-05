@@ -123,15 +123,18 @@
             android:name=".RegisterWindow2DoctorActivity"
             android:exported="true"></activity>
         <activity
+
             android:name=".ChatDoctorActivity"
             android:exported="true"></activity>
         <activity
             android:name=".ChatUserActivity"
+
             android:exported="true"></activity>
         <activity
             android:name=".AccountWindowDoctorActivity"
             android:exported="true"></activity>
         <activity
+
             android:name=".MessageChatActivity"
             android:exported="true"></activity>
         <activity
@@ -143,6 +146,7 @@
         <!--        <activity-->
         <!--            android:name=".MapsActivity"-->
         <!--            android:exported="true"></activity>-->
+
         <activity
             android:name=".AddVisitActivity"
             android:exported="true"></activity> <!-- <activity android:name=".MyApp"> -->

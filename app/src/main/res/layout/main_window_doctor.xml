@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/main_doctor_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,6 +36,7 @@
 
     <ImageButton
         android:id="@+id/AcountButtonMainDoctor"
+
         android:layout_width="215dp"
         android:layout_height="58dp"
         android:background="#D1A1AF"
@@ -44,16 +46,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
+
         app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24"
         android:contentDescription="acuont"/>
 
     <ImageButton
         android:id="@+id/SettingButtonMainDoctor"
+
         android:layout_width="215dp"
         android:layout_height="58dp"
         android:background="#D1A1AF"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toStartOf="@+id/AcountButtonMainDoctor"
+
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -62,4 +68,5 @@
         android:contentDescription="settings"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
