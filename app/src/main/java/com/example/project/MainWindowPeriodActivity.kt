@@ -230,7 +230,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun fetchTodaysCycleDay() {
+    private fun fetchTodaysCycleDay() {   // to jest uzywane do przedstawiania ile dni do nastepengo okresu
 
         db.collection("users").document(userId)
             .get()
@@ -254,11 +254,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
                                     val currentDate = LocalDate.now()
 
-                                    val daysSinceLastStart = ChronoUnit.DAYS.between(lastStartLocalDate, currentDate).toInt()
+                                    val daysSinceLastStart = ChronoUnit.DAYS.between(lastStartLocalDate, selectedDate).toInt()
                                     val currentCycleDay = (daysSinceLastStart % cycleLength) + 1
 
                                     val nextMenstruationDate = lastStartLocalDate.plusDays(cycleLength)
-                                    val daysUntilNextMenstruation = ChronoUnit.DAYS.between(currentDate, nextMenstruationDate).toInt()
+                                    val daysUntilNextMenstruation = ChronoUnit.DAYS.between(selectedDate, nextMenstruationDate).toInt()
 
                                     displayCycleDay(currentCycleDay)
                                     runOnUiThread {
@@ -367,7 +367,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                         return@addOnSuccessListener
                     }
 
-                    fetchLatestCycleDocument(lastPeriodDate, cycleLength)
+//                    fetchLatestCycleDocument(lastPeriodDate, cycleLength)
                 } else {
                     showToast("Nie znaleziono danych użytkownika")
                 }
@@ -413,11 +413,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)  // nie uzywane
     private fun calculateAndDisplayDates(lastPeriodDate: LocalDate, cycleLength: Int) {
         val today = LocalDate.now()
 
-        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, today)
+        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, selectedDate)
         val currentCycleDay = (daysSinceLastPeriod % cycleLength).toInt() + 1
 
         val daysUntilNextPeriod = if (daysSinceLastPeriod < cycleLength) {
@@ -431,21 +431,22 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
 
         runOnUiThread {
-            daysLeftOwulation.text = ChronoUnit.DAYS.between(today, nextOvulationDate).toString()
-            daysLeftPeriod .text = daysUntilNextPeriod.toString()
-            cycleDayPeriod.text = currentCycleDay.toString()
+//            daysLeftOwulation.text = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate).toString()
+//            daysLeftPeriod .text = daysUntilNextPeriod.toString()
+//            cycleDayPeriod.text = currentCycleDay.toString()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)  // to jest do wyswietlaniaa ile dni do owulacji
     private fun displayDates(nextOvulationDate: LocalDate, cycleLength: Int) {
         val today = LocalDate.now()
 
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(today, nextOvulationDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
 
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(today, adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate
+                , adjustedOvulationDate)
         }
 
         runOnUiThread {
