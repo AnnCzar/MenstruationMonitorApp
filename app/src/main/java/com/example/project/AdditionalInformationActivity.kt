@@ -321,11 +321,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val weight = document.getString("weight") ?: ""
-                    val temperature = document.getString("temperature") ?: ""
+                    val temperature = document.get("temperature") ?: ""
                     val symptomsMap = document.get("symptoms") as? Map<String, Boolean> ?: emptyMap()
 
                     enterWeight.setText(weight)
-                    addInfoEnterTemperature.setText(temperature)
+                    addInfoEnterTemperature.setText(temperature.toString())
                     val currentSymptoms = symptomsAdapter.getSymptoms()
                     currentSymptoms.forEach { it.isChecked = symptomsMap[it.name] == true }
                     symptomsAdapter.notifyDataSetChanged()
