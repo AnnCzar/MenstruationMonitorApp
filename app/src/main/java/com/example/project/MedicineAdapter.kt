@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+
 class MedicineAdapter(
     private val medicines: List<Medicine>,
     private val onMedicineChecked: (Medicine) -> Unit
@@ -33,7 +34,15 @@ class MedicineAdapter(
             medicineName.text = medicine.name
             medicineDose.text = "Dawka: ${medicine.dose}"
             medicineTime.text = "Czas: ${medicine.time}"
+
+
+            // Disable listener temporarily to avoid triggering during initialization
+            checkBox.setOnCheckedChangeListener(null)
+
+            // Reflect database state in UI
             checkBox.isChecked = medicine.isChecked
+
+
             checkBox.setOnCheckedChangeListener { _, isChecked ->
                 medicine.isChecked = isChecked
                 onMedicineChecked(medicine)
