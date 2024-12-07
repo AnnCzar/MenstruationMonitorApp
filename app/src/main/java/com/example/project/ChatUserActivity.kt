@@ -19,9 +19,10 @@ class ChatUserActivity : AppCompatActivity() {
     private lateinit var chatUserAdapter: ChatDoctorAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
-    private lateinit var profileChatUser: ImageButton
-    private lateinit var settingsChatUser: ImageButton
-    private lateinit var homeChatUser: ImageButton
+    private lateinit var chatUserAcountButton: ImageButton
+    private lateinit var chatUserSettingButton: ImageButton
+    private lateinit var chatUserHomeButton: ImageButton
+
 
 
     private val chatUserList = ArrayList<ChatUser>()
@@ -37,9 +38,9 @@ class ChatUserActivity : AppCompatActivity() {
         chatUserRV.layoutManager = LinearLayoutManager(this)
 
 
-        profileChatUser = findViewById(R.id.chatUserAcountButton)
-        settingsChatUser = findViewById(R.id.chatUserSettingButton)
-        homeChatUser = findViewById(R.id.chatUserHomeButton)
+        chatUserAcountButton = findViewById(R.id.chatUserAcountButton)
+        chatUserSettingButton = findViewById(R.id.chatUserSettingButton)
+        chatUserHomeButton = findViewById(R.id.chatUserHomeButton)
 
 
         userId = intent.getStringExtra("USER_ID") ?: ""
@@ -52,8 +53,31 @@ class ChatUserActivity : AppCompatActivity() {
         fetchChatUsers()
 
 
-        settingsChatUser.setOnClickListener {
+        chatUserSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
+        }
+
+        chatUserAcountButton.setOnClickListener {
+            openAccountWindowActivity(userId)
+        }
+        chatUserHomeButton.setOnClickListener {
+            val userRef = db.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { user ->
+                    if (user != null) {
+                        val statusPregnancy = user.getBoolean("statusPregnancy")
+                        if (statusPregnancy != null) {
+                            if (!statusPregnancy) {
+                                openMainWindowPeriodActivity(userId)
+                            } else {
+                                openMainWindowPregnancyActivity(userId)
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
 
     }
@@ -116,6 +140,11 @@ class ChatUserActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    private fun openAccountWindowActivity(userId: String) {
+        val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
@@ -133,6 +162,7 @@ class ChatUserActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
 
 private fun <E> MutableList<E>.add(element: Medicine) {
 

@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
@@ -89,7 +90,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_period)
         createNotificationChannel()
-
+        createNotificationChannelPeriod()
         userId = intent.getStringExtra("USER_ID") ?: ""
 
         db = FirebaseFirestore.getInstance()
@@ -260,10 +261,14 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
                                     val nextMenstruationDate = lastStartLocalDate.plusDays(cycleLength)
                                     val daysUntilNextMenstruation = ChronoUnit.DAYS.between(selectedDate, nextMenstruationDate).toInt()
+                                    Log.d("PeriodReminder", "Days until next period: $daysUntilNextMenstruation")
 
                                     displayCycleDay(currentCycleDay)
                                     runOnUiThread {
                                         daysLeftPeriod.text = daysUntilNextMenstruation.toString()
+                                    }
+                                    if (daysUntilNextMenstruation == 1) {
+                                        schedulePeriodNotification()
                                     }
                                 } else {
                                     Log.e("CycleDataError", "Last start date not found.")
@@ -283,9 +288,6 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 Log.e("FirestoreError", "Failed to fetch user data: $e")
             }
     }
-
-
-
 
     private fun updateButtonVisibility(isPeriodStarted: Boolean) {
         if(!isPeriodStarted){
@@ -321,6 +323,22 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+    private fun createNotificationChannelPeriod() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "PeriodReminderChannel"
+            val descriptionText = "Channel for Period Reminders"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("PERIOD_REMINDER_CHANNEL", name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
@@ -367,8 +385,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                         showToast("Nieprawidłowy format daty: $lastPeriodDateValue")
                         return@addOnSuccessListener
                     }
-
                     fetchLatestCycleDocument(lastPeriodDate, cycleLength)
+                    fetchTemperatureDataAndCalculateOvulation(lastPeriodDate, cycleLength)
                 } else {
                     showToast("Nie znaleziono danych użytkownika")
                 }
@@ -394,7 +412,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)  // to uzywane ile dni do menstruacji
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleDocument(lastPeriodDate: LocalDate, cycleLength: Int) {
         db.collection("users").document(userId).collection("cycles")
             .orderBy("startDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
@@ -403,10 +421,18 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
                     calculateAndDisplayDates(lastPeriodDate, cycleLength)
+                    changeButtonVisibility()
                 } else {
                     val latestCycle = documents.first()
-                    val nextOvulationDate = LocalDate.parse(latestCycle.getString("nextOvulationDate"))
-                    displayDates(nextOvulationDate, cycleLength)
+                    val nextOvulationDateString = latestCycle.getString("nextOvulationDate")
+
+                    if (nextOvulationDateString != null) {
+                        val nextOvulationDate = LocalDate.parse(nextOvulationDateString)
+                        displayDates(nextOvulationDate, cycleLength)
+                    } else {
+                        val estimatedOvulationDate = lastPeriodDate.plusDays((cycleLength - 14).toLong())
+                        displayDates(estimatedOvulationDate, cycleLength)
+                    }
                 }
             }
             .addOnFailureListener { e ->
@@ -414,11 +440,128 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchTemperatureDataAndCalculateOvulation(lastPeriodDate: LocalDate, cycleLength: Int) {
+        val ovulationDays = mutableListOf<Int>()
+
+        db.collection("users").document(userId).collection("dailyInfo")
+            .get()
+            .addOnSuccessListener { documents ->
+                val temperatureData = mutableListOf<Pair<String, Double>>()
+
+                for (document in documents) {
+                    val date = document.id
+                    val temperatureValue = document.get("temperature")
+                    val temperature = when (temperatureValue) {
+                        is Number -> temperatureValue.toDouble()
+                        is String -> temperatureValue.toDoubleOrNull()
+                        else -> null
+                    }
+
+                    if (temperature != null) {
+                        temperatureData.add(Pair(date, temperature))
+                    }
+                }
+
+
+                val groupedByMonth = temperatureData.groupBy { pair ->
+                    pair.first.substring(0, 7)
+                }
+
+                var validMonthsCount = 0
+                groupedByMonth.forEach { (month, data) ->
+                    val daysInMonth = getDaysInMonth(month)
+                    if (data.size == daysInMonth) {
+                        validMonthsCount++
+                        val sortedData = data.sortedBy { it.first }
+
+                        for (i in 1 until sortedData.size) {
+                            val currentTemp = sortedData[i].second
+                            val previousTemp = sortedData[i - 1].second
+                            val temperatureDifference = currentTemp - previousTemp
+
+                            if (temperatureDifference in 0.2..0.7) {
+                                val tempDate = LocalDate.parse(sortedData[i].first)
+                                val cycleDay = calculateCycleDay(lastPeriodDate, tempDate, cycleLength)
+
+                                if (cycleDay != null) {
+                                    ovulationDays.add(cycleDay - 1)
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+
+                val estimatedOvulation = if (validMonthsCount >= 5 && ovulationDays.isNotEmpty()) {
+                    val medianCycleDay = calculateMedian(ovulationDays)
+
+                    if (medianCycleDay.toInt() in cycleLength - 14 - 2..cycleLength - 14 + 2) {
+                        val cycleDay = medianCycleDay.toInt()
+                        val ovulationDate = calculateDateFromCycleDay(lastPeriodDate, cycleDay, cycleLength)
+
+                        Pair(cycleDay, ovulationDate)
+                    } else {
+                        val cycleDay = cycleLength - 14
+                        val ovulationDate = calculateDateFromCycleDay(lastPeriodDate, cycleDay, cycleLength)
+
+                        Pair(cycleDay, ovulationDate)
+                    }
+                } else {
+                    val cycleDay = cycleLength - 14
+                    val ovulationDate = calculateDateFromCycleDay(lastPeriodDate, cycleDay, cycleLength)
+
+                    Pair(cycleDay, ovulationDate)
+                }
+
+                println("Owulacja przypada na dzień cyklu: ${estimatedOvulation.first}, data: ${estimatedOvulation.second}")
+            }
+            .addOnFailureListener { e ->
+                showToast("Błąd pobierania danych: ${e.message}")
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateDateFromCycleDay(lastPeriodDate: LocalDate, cycleDay: Int, cycleLength: Int): LocalDate {
+        val daysFromStart = (cycleDay - 1) % cycleLength
+        return lastPeriodDate.plusDays(daysFromStart.toLong())
+    }
+
+    private fun changeButtonVisibility() {
+        begginingPeriodButton.visibility = Button.VISIBLE
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDaysInMonth(month: String): Int {
+        val year = month.substring(0, 4).toInt()
+        val monthValue = month.substring(5, 7).toInt()
+        val firstDayOfMonth = LocalDate.of(year, monthValue, 1)
+        return firstDayOfMonth.lengthOfMonth()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateCycleDay(lastPeriodDate: LocalDate, tempDate: LocalDate, cycleLength: Int): Int? {
+        val daysDifference = java.time.temporal.ChronoUnit.DAYS.between(lastPeriodDate, tempDate).toInt()
+        return if (daysDifference >= 0) (daysDifference % cycleLength) + 1 else null
+    }
+
+    private fun calculateMedian(data: List<Int>): Double {
+        if (data.isEmpty()) return 0.0
+        val sorted = data.sorted()
+        val size = sorted.size
+        return if (size % 2 == 0) {
+            (sorted[size / 2 - 1] + sorted[size / 2]) / 2.0
+        } else {
+            sorted[size / 2].toDouble()
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateAndDisplayDates(lastPeriodDate: LocalDate, cycleLength: Int) {
         val today = LocalDate.now()
 
-        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, selectedDate)
+        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, today)
         val currentCycleDay = (daysSinceLastPeriod % cycleLength).toInt() + 1
 
         val daysUntilNextPeriod = if (daysSinceLastPeriod < cycleLength) {
@@ -427,27 +570,58 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             cycleLength - (daysSinceLastPeriod % cycleLength)
         }
 
-        // do poprawy
-        val nextOvulationDate = lastPeriodDate.plusDays((cycleLength / 2).toLong())
+        val nextOvulationDate = lastPeriodDate.plusDays((cycleLength - 14).toLong())
 
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(today, nextOvulationDate)
+        if (daysUntilNextOvulation < 0) {
+            val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(today, adjustedOvulationDate)
+        }
+
+        if (daysUntilNextPeriod.toInt() == 1) {
+            schedulePeriodNotification()
+        }
+        Log.d("PeriodReminder", "Days until next period: $daysUntilNextPeriod")
 
         runOnUiThread {
-            daysLeftOwulation.text = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate).toString()
-//            daysLeftPeriod .text = daysUntilNextPeriod.toString()
-//            cycleDayPeriod.text = currentCycleDay.toString()
+            daysLeftOwulation.text = daysUntilNextOvulation.toString()
+            daysLeftPeriod.text = daysUntilNextPeriod.toString()
+            cycleDayPeriod.text = currentCycleDay.toString()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)  // to jest do wyswietlaniaa ile dni do owulacji
+    @SuppressLint("ScheduleExactAlarm")
+    private fun schedulePeriodNotification() {
+        val intent = Intent(this, periodReminder::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 20)
+            set(Calendar.MINUTE,0)
+        }
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayDates(nextOvulationDate: LocalDate, cycleLength: Int) {
         val today = LocalDate.now()
 
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(today, nextOvulationDate)
 
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate
-                , adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(today, adjustedOvulationDate)
         }
 
         runOnUiThread {
@@ -520,7 +694,8 @@ private fun scheduleNotification() {
     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val calendar = Calendar.getInstance().apply {
         timeInMillis = System.currentTimeMillis()
-        set(Calendar.HOUR_OF_DAY, 9)
+        set(Calendar.HOUR_OF_DAY, 19)
+        set(Calendar.MINUTE, 5)
     }
 
     alarmManager.setRepeating(
@@ -530,8 +705,6 @@ private fun scheduleNotification() {
         pendingIntent
     )
 }
-
-    
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
