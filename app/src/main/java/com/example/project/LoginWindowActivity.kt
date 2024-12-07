@@ -148,7 +148,7 @@ class LoginWindowActivity : AppCompatActivity() {
     }
 
     private fun openMainWindowDoctor(uid: String) {
-        val intent = Intent(this, ChatUserActivity::class.java)
+        val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", uid)
         startActivity(intent)
     }

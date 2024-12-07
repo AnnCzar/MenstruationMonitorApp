@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registerWindow1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RegisterWindow1Activity"
-    android:background="@drawable/tlo">
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/registerWindow1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tlo"
+        android:orientation="vertical"
+        tools:context=".RegisterWindow1Activity"
+        android:textAlignment="center">
+
 
     <TextView
         android:id="@+id/medicineRegisterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zarejestruj się"
+        android:layout_gravity="center"
+        android:layout_marginTop="190dp"
         android:fontFamily="@font/mbi"
+        android:text="Zarejestruj się"
         android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226" />
+        android:textSize="36dp" />
 
     <EditText
         android:id="@+id/enterEmailRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:fontFamily="@font/ml"
@@ -33,88 +37,69 @@
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medicineRegisterText"
-        app:layout_constraintVertical_bias="0.044" />
+        android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/enterPasswordRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Hasło"
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterEmailRegister"
-        app:layout_constraintVertical_bias="0.025" />
+        android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/enterPasswordRegisterConfirm"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Potwierdź hasło"
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterPasswordRegister"
-        app:layout_constraintVertical_bias="0.024" />
+        android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/enterUsernameRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Nazwa użytkownika"
         android:textAlignment="center"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterPasswordRegisterConfirm"
-        app:layout_constraintVertical_bias="0.049" />
+        android:textColor="@color/black" />
+    <Spinner
+        android:id="@+id/role"
+        android:layout_width="252dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/ml"
+        />
+
 
     <Button
         android:id="@+id/buttonConfirmRegisterWindow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Przejdź dalej"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/role"
-        app:layout_constraintVertical_bias="0.121"
-        tools:ignore="MissingConstraints" />
-
-    <Spinner
-        android:id="@+id/role"
-        android:layout_width="252dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="14dp"
-        android:fontFamily="@font/ml"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterUsernameRegister" />
+        android:textSize="16dp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

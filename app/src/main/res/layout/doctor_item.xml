@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="190dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:orientation="vertical"
     android:background="@drawable/round_shape"
     android:padding="8dp">
@@ -66,6 +69,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:backgroundTint="#BA798C"
+            android:textColor="#FFFFFF"
             android:text="Edytuj" />
 
 
@@ -75,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#BA798C"
+            android:textColor="#FFFFFF"
             android:text="Usuń" />
 
     </LinearLayout>
@@ -83,15 +88,11 @@
         android:id="@+id/visitOnMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:backgroundTint="#BA798C"
+        android:textColor="#FFFFFF"
         android:text="Wskaż na mapie" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
 
-    </LinearLayout>
 </LinearLayout>

@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/medications"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/tlo">
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/medications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tlo"
+        android:orientation="vertical"
+        android:textAlignment="center">
     <TextView
         android:id="@+id/allMedications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
         android:fontFamily="@font/mbi"
         android:text="Leki"
-        android:textColor="#C69AA7"
+        android:textColor="#E89B6978"
         android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.213" />
+ />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicineRV"
-        android:layout_width="275dp"
-        android:layout_height="326dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allMedications"
-        app:layout_constraintVertical_bias="0.132"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
         tools:listitem="@layout/medicine_item_modify" />
 
     <Button
         android:id="@+id/addMedication"
-        android:layout_width="122dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Dodaj lek"
         android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medicineRV"
-        app:layout_constraintVertical_bias="0.282" />
+ />
 
-    <ImageButton
-        android:id="@+id/homeMedications"
-        android:layout_width="206.5dp"
-        android:layout_height="59dp"
-        android:layout_marginEnd="205dp"
-        android:backgroundTint="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/settingsMedications"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addMedication"
-        app:layout_constraintVertical_bias="0.998"
-        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 
-    <ImageButton
-        android:id="@+id/settingsMedications"
-        android:layout_width="206.5dp"
-        android:layout_height="59dp"
-        android:backgroundTint="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/homeMedications"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998"
-        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:weightSum="3">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/settingsMedications"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/settings_fill0_wght400_grad0_opsz24" />
+
+        <ImageButton
+            android:id="@+id/homeMedications"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/home_fill0_wght400_grad0_opsz24" />
+        <ImageButton
+            android:id="@+id/accountMedications"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
