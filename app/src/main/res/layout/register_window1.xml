@@ -39,6 +39,7 @@
         android:textColorHint="@color/black"
         android:textColor="@color/black" />
 
+
     <EditText
         android:id="@+id/enterPasswordRegister"
         android:layout_width="294dp"
@@ -66,7 +67,6 @@
         android:textAlignment="center"
         android:textColorHint="@color/black"
         android:textColor="@color/black" />
-
     <EditText
         android:id="@+id/enterUsernameRegister"
         android:layout_width="294dp"
@@ -99,6 +99,7 @@
         android:fontFamily="@font/ml"
         android:text="Przejdź dalej"
         android:textSize="16dp" />
+
 
 
 

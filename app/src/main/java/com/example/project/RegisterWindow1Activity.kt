@@ -159,7 +159,7 @@ class RegisterWindow1Activity : AppCompatActivity() {
         val roleAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.role_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         )
         roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         roleSpinner.adapter = roleAdapter

@@ -1,9 +1,16 @@
 package com.example.project
 
 import DoctorVisitAdapter
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -12,6 +19,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+
 //
 // do okna wizyt jak wjedzie sie przez profil
 
@@ -61,6 +72,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
+        createNotificationChannel()
 
         homeButtonProfil.setOnClickListener {
             val userRef = db.collection("users").document(userId)
@@ -133,6 +145,12 @@ class DoctorVisitsActivity : AppCompatActivity() {
                         address = document.getString("address") ?: ""
                     )
                     doctorsList.add(doctor)
+
+                    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    val visitTime = formatter.parse("${doctor.visitDate} ${doctor.time}")?.time
+                    if (visitTime != null) {
+                        scheduleNotification(visitTime)
+                    }
                 }
                 visitAdapter.notifyDataSetChanged()
             }
@@ -148,6 +166,54 @@ class DoctorVisitsActivity : AppCompatActivity() {
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private fun scheduleNotification(visitTimeInMillis: Long) {
+        val intent = Intent(this, visitReminder::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val now = System.currentTimeMillis()
+
+        val timeUntilVisit = visitTimeInMillis - now
+
+        val calendar = Calendar.getInstance()
+
+        if (timeUntilVisit > 24 * 60 * 60 * 1000) {
+            calendar.timeInMillis = visitTimeInMillis - (24 * 60 * 60 * 1000)
+            calendar.set(Calendar.HOUR_OF_DAY, 20)
+            calendar.set(Calendar.MINUTE, 49)
+        } else if (timeUntilVisit > 60 * 60 * 1000) {
+            calendar.timeInMillis = visitTimeInMillis - (60 * 60 * 1000)
+        } else {
+            return
+        }
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "VisitReminderChannel"
+            val descriptionText = "Channel for Visits Reminders"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("VISIT_REMINDER_CHANNEL", name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
 
     private fun deleteVisit(visit: DoctorVisit) {
         db.collection("users").document(userId).collection("doctorVisits")

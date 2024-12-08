@@ -1,6 +1,7 @@
 package com.example.project
 
 import android.content.Intent
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -23,6 +24,7 @@ class MedicineActivity : AppCompatActivity() {
     private lateinit var homeMedications: ImageButton
     private lateinit var settingsMedications: ImageButton
     private lateinit var addMedication: Button
+    private lateinit var accountMedications: ImageButton
 
     private val medicineList = mutableListOf<MedicineList>()
 
@@ -39,6 +41,12 @@ class MedicineActivity : AppCompatActivity() {
         homeMedications = findViewById(R.id.homeMedications)
         settingsMedications = findViewById(R.id.settingsMedications)
         addMedication = findViewById(R.id.addMedication)
+//        ODKOMENTOWAĆ
+//        accountMedications = findViewById(R.id.accountMedications)
+
+        accountMedications.setOnClickListener {
+            openAccountWindowActivity(userId)
+        }
 
 
         userId = intent.getStringExtra("USER_ID") ?: ""
@@ -115,6 +123,12 @@ class MedicineActivity : AppCompatActivity() {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
         }
+        startActivity(intent)
+    }
+
+    private fun openAccountWindowActivity(userId: String) {
+        val intent = Intent(this, AccountWindowActivity::class.java)
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 

@@ -2,6 +2,7 @@ package com.example.project
 
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
@@ -13,18 +14,24 @@ class EventDecorator(
     private val calendarView: CompactCalendarView,
 ) {
 
-    fun markPeriodDays(startDate: Date, endDate: Date ) {
-        val startDate = startDate.time
-        val endDate= endDate.time
-        var currentTime = startDate
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun markPeriodDays(startDate: Date, endDate: Date) {
+        val startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        val endLocalDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
-        while (currentTime <= endDate) {
-            val event = Event(Color.RED, currentTime)
+        var currentDate = startLocalDate
+        while (!currentDate.isAfter(endLocalDate)) {
+            Log.d("MarkPeriodDays", "Przetwarzanie daty: $currentDate")
+
+            val currentEpochMilli = currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val event = Event(Color.RED, currentEpochMilli)
             calendarView.addEvent(event)
-            currentTime += 24 * 60 * 60 * 1000
+
+            currentDate = currentDate.plusDays(1)
         }
         calendarView.invalidate()
     }
+
 
     fun markOvulation( ovulationDate: Date) {
         val ovulationTime = ovulationDate.time
