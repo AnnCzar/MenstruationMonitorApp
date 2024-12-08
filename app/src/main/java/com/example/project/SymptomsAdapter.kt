@@ -27,6 +27,7 @@ class SymptomsAdapter(
         holder.checkBox.text = symptom.name
         holder.checkBox.isChecked = symptom.isChecked
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+            symptom.isChecked = isChecked
             onSymptomCheckChange(symptom, isChecked)
         }
     }

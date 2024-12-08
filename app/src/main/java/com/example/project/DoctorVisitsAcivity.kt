@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -78,6 +79,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
+        ensureExactAlarmPermission()
         createNotificationChannel()
 
         homeButtonProfil.setOnClickListener {
@@ -162,9 +164,11 @@ class DoctorVisitsActivity : AppCompatActivity() {
                     try {
                         val visitTime = formatter.parse("${doctor.visitDate} ${doctor.time}")?.time
                         if (visitTime != null) {
-                            scheduleNotification(visitTime)
+                            scheduleNotification(visitTime,doctor.id)
                         }
                     } catch (e: ParseException) {
+                        e.printStackTrace()
+                        Log.d("DoctorVisitsActivity", "Błąd parsowania daty wizyty: ${e.message}")
                     }
                 }
                 visitAdapter.notifyDataSetChanged()
@@ -181,37 +185,81 @@ class DoctorVisitsActivity : AppCompatActivity() {
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
+    private fun ensureExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+            }
+        }
+    }
 
     @SuppressLint("ScheduleExactAlarm")
-    private fun scheduleNotification(visitTimeInMillis: Long) {
-        val intent = Intent(this, visitReminder::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
+    private fun scheduleNotification(visitTimeInMillis: Long, visitId: String) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val now = System.currentTimeMillis()
 
-        val timeUntilVisit = visitTimeInMillis - now
-
-        val calendar = Calendar.getInstance()
-
-        if (timeUntilVisit > 24 * 60 * 60 * 1000) {
-            calendar.timeInMillis = visitTimeInMillis - (24 * 60 * 60 * 1000)
-            calendar.set(Calendar.HOUR_OF_DAY, 20)
-            calendar.set(Calendar.MINUTE, 49)
-        } else if (timeUntilVisit > 60 * 60 * 1000) {
-            calendar.timeInMillis = visitTimeInMillis - (60 * 60 * 1000)
-        } else {
-            return
+        // Intencja powiadomienia
+        val intent = Intent(this, visitReminder::class.java).apply {
+            putExtra("VISIT_ID", visitId)
         }
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            pendingIntent
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            visitId.hashCode(), // Unikalny identyfikator dla każdego alarmu
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+        val now = System.currentTimeMillis()
+        val timeUntilVisit = visitTimeInMillis - now
+
+        // Harmonogram alarmu
+        val alarmTime = when {
+            timeUntilVisit > 24 * 60 * 60 * 1000 -> visitTimeInMillis - (24 * 60 * 60 * 1000) // 24 godziny wcześniej
+            timeUntilVisit > 60 * 60 * 1000 -> visitTimeInMillis - (60 * 60 * 1000) // 1 godzina wcześniej
+            else -> null // Zbyt mało czasu na ustawienie powiadomienia
+        }
+
+        alarmTime?.let {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                it,
+                pendingIntent
+            )
+        }
     }
+
+//    @SuppressLint("ScheduleExactAlarm")
+//    private fun scheduleNotification(visitTimeInMillis: Long) {
+//        val intent = Intent(this, visitReminder::class.java)
+//        val pendingIntent = PendingIntent.getBroadcast(
+//            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//        )
+//
+//        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val now = System.currentTimeMillis()
+//
+//        val timeUntilVisit = visitTimeInMillis - now
+//
+//        val calendar = Calendar.getInstance()
+//
+//        if (timeUntilVisit > 24 * 60 * 60 * 1000) {
+//            calendar.timeInMillis = visitTimeInMillis - (24 * 60 * 60 * 1000)
+//            calendar.set(Calendar.HOUR_OF_DAY, 20)
+//            calendar.set(Calendar.MINUTE, 49)
+//        } else if (timeUntilVisit > 60 * 60 * 1000) {
+//            calendar.timeInMillis = visitTimeInMillis - (60 * 60 * 1000)
+//        } else {
+//            return
+//        }
+//
+//        alarmManager.setExactAndAllowWhileIdle(
+//            AlarmManager.RTC_WAKEUP,
+//            calendar.timeInMillis,
+//            pendingIntent
+//        )
+//    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -256,7 +256,7 @@
         <ImageButton
             android:id="@+id/accountWidnowSettingButton"
             android:layout_width="0dp"
-            android:layout_height="58dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#D1A1AF"
             app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
@@ -264,7 +264,7 @@
         <ImageButton
             android:id="@+id/homeButtonProfil"
             android:layout_width="0dp"
-            android:layout_height="58dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#D1A1AF"
             app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
