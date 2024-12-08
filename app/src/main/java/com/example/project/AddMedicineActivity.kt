@@ -35,25 +35,13 @@ class AddMedicineActivity : AppCompatActivity(){
         enterMedicineName = findViewById(R.id.enterMedicineName)
         enterDoseMedicineRegister = findViewById(R.id.enterDoseMedicineRegister)
         enterTimeMedicineRegister = findViewById(R.id.enterTimeMedicineRegister)
-//        buttonConfirmRegisterWindow3 = findViewById(R.id.buttonConfirmRegisterWindow3)
+        buttonConfirmRegisterWindow3 = findViewById(R.id.buttonConfirmRegisterWindow3)
         buttonSaveMedicineRegisterWindow3 = findViewById(R.id.buttonSaveMedicineRegisterWindow3)
+        buttonConfirmRegisterWindow3.visibility = Button.GONE
+
 
         val userId = intent.getStringExtra("USER_ID")
-        val email = intent.getStringExtra("EMAIL")
-        val password = intent.getStringExtra("PASSWORD")
-        val username = intent.getStringExtra("USERNAME")
-        val lastPeriod1 = intent.getStringExtra("LAST_PERIOD")
-        val cycleLength = intent.getIntExtra("CYCLE_LENGTH", 0)
-        val periodLength = intent.getIntExtra("PERIOD_LENGTH", 0)
-        val weight = intent.getDoubleExtra("WEIGHT", 0.0)
-        val role = intent.getStringExtra("ROLE")
 
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val lastPeriodDate: LocalDate? = if (!lastPeriod1.isNullOrBlank()) {
-            LocalDate.parse(lastPeriod1, dateFormatter)
-        } else {
-            LocalDate.of(2023, Month.JANUARY, 1)
-        }
 
         buttonSaveMedicineRegisterWindow3.setOnClickListener {
             val medicineName = enterMedicineName.text.toString()
@@ -82,38 +70,8 @@ class AddMedicineActivity : AppCompatActivity(){
             }
         }
 
-        buttonConfirmRegisterWindow3.setOnClickListener {
-            if (role != null) {
-                saveAllUserData(userId!!, email!!, password!!, username!!, lastPeriodDate, cycleLength, periodLength, weight, role)
-            }
-        }
+
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveAllUserData(
-        userId: String, email: String, password: String, username: String,
-        lastPeriod: LocalDate?, cycleLength: Int, periodLength: Int, weight: Double, role:String
-    ) {
-        val user = Users(
-            email = email,
-            login = username,
-            password = password,
-            cycleLength = cycleLength,
-            lastPeriodDate = lastPeriod,
-            periodLength = periodLength,
-            weight = weight,
-            role = role
-        )
 
-        GlobalScope.launch(Dispatchers.Main) {
-            db.collection("users").document(userId)
-                .set(user)
-                .addOnSuccessListener {
-                    Toast.makeText(this@AddMedicineActivity, "Dane użytkownika zapisane", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this@AddMedicineActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
 }

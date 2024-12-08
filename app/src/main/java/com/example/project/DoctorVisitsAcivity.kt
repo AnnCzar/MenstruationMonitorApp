@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.recyclerview.widget.RecyclerView
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -34,6 +35,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
     private lateinit var userId: String
     private lateinit var homeButtonProfil: ImageButton
     private lateinit var accountWidnowSettingButton: ImageButton
+    private lateinit var accountButton: ImageButton
     private lateinit var addVisitButton: Button
 
     private val doctorsList = mutableListOf<DoctorVisit>()
@@ -49,6 +51,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
         homeButtonProfil = findViewById(R.id.homeButtonProfil)
         accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
         addVisitButton = findViewById(R.id.addVisitButton)
+        accountButton =findViewById(R.id.accountButton)
         visitRV.layoutManager = LinearLayoutManager(this)
 
         userId = intent.getStringExtra("USER_ID") ?: ""
@@ -68,7 +71,10 @@ class DoctorVisitsActivity : AppCompatActivity() {
             intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
+        accountButton.setOnClickListener{
+            openAccountWindowActivity(userId)
 
+        }
         accountWidnowSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
@@ -127,6 +133,12 @@ class DoctorVisitsActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+    private fun openAccountWindowActivity(userId: String){
+        val intent = Intent(this, AccountWindowActivity::class.java).apply {
+            putExtra("USER_ID", userId)
+        }
+        startActivity(intent)
+    }
 
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
@@ -139,7 +151,7 @@ class DoctorVisitsActivity : AppCompatActivity() {
                         id = document.id,
                         doctorName = document.getString("doctorName") ?: "",
                         visitDate = document.getString("visitDate") ?: "",
-                        time = document.getString("time") ?: "",
+                        time = document.getString("time")?.trim() ?: "",
                         isChecked = document.getBoolean("checked") ?: false,
                         extraInfo = document.getString("extraInfo") ?: "",
                         address = document.getString("address") ?: ""
@@ -147,9 +159,12 @@ class DoctorVisitsActivity : AppCompatActivity() {
                     doctorsList.add(doctor)
 
                     val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                    val visitTime = formatter.parse("${doctor.visitDate} ${doctor.time}")?.time
-                    if (visitTime != null) {
-                        scheduleNotification(visitTime)
+                    try {
+                        val visitTime = formatter.parse("${doctor.visitDate} ${doctor.time}")?.time
+                        if (visitTime != null) {
+                            scheduleNotification(visitTime)
+                        }
+                    } catch (e: ParseException) {
                     }
                 }
                 visitAdapter.notifyDataSetChanged()

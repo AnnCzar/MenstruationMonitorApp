@@ -561,7 +561,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private fun calculateAndDisplayDates(lastPeriodDate: LocalDate, cycleLength: Int) {
         val today = LocalDate.now()
 
-        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, today)
+        val daysSinceLastPeriod = ChronoUnit.DAYS.between(lastPeriodDate, selectedDate)
         val currentCycleDay = (daysSinceLastPeriod % cycleLength).toInt() + 1
 
         val daysUntilNextPeriod = if (daysSinceLastPeriod < cycleLength) {
@@ -572,10 +572,10 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         val nextOvulationDate = lastPeriodDate.plusDays((cycleLength - 14).toLong())
 
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(today, nextOvulationDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(today, adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, adjustedOvulationDate)
         }
 
         if (daysUntilNextPeriod.toInt() == 1) {
@@ -617,11 +617,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private fun displayDates(nextOvulationDate: LocalDate, cycleLength: Int) {
         val today = LocalDate.now()
 
-        var daysUntilNextOvulation = ChronoUnit.DAYS.between(today, nextOvulationDate)
+        var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
 
         if (daysUntilNextOvulation < 0) {
             val adjustedOvulationDate = nextOvulationDate.plusDays(cycleLength.toLong())
-            daysUntilNextOvulation = ChronoUnit.DAYS.between(today, adjustedOvulationDate)
+            daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, adjustedOvulationDate)
         }
 
         runOnUiThread {

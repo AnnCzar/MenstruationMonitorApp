@@ -42,7 +42,7 @@ class MedicineActivity : AppCompatActivity() {
         settingsMedications = findViewById(R.id.settingsMedications)
         addMedication = findViewById(R.id.addMedication)
 //        ODKOMENTOWAĆ
-//        accountMedications = findViewById(R.id.accountMedications)
+        accountMedications = findViewById(R.id.accountMedications)
 
         accountMedications.setOnClickListener {
             openAccountWindowActivity(userId)
