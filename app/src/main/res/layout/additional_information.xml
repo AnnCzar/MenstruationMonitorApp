@@ -59,6 +59,7 @@
                     android:fontFamily="@font/ml"
                     android:hint="Waga"
                     android:inputType="text"
+                    android:textColor="@color/black"
                     android:textAlignment="center"
                     android:gravity="center" />
 
@@ -70,6 +71,7 @@
                     android:background="@drawable/round_shape"
                     android:fontFamily="@font/ml"
                     android:hint="Temperatura"
+                    android:textColor="@color/black"
                     android:inputType="text"
                     android:textAlignment="center"
                     android:gravity="center"
@@ -95,7 +97,17 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="10dp" />
 
-    <!-- Mood Section -->
+            <TextView
+                android:id="@+id/textWarning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ml"
+                android:gravity="center"
+                android:text="km"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
     <TextView
         android:id="@+id/textMood"
         android:layout_width="match_parent"

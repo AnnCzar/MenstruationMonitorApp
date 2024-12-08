@@ -3,13 +3,17 @@ package com.example.project
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -38,7 +42,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private lateinit var addInfoSettingButton: ImageButton
     private lateinit var homeButtonaddInfo: ImageButton
     private lateinit var addDate: TextView
-
+    private lateinit var textWarning: TextView
     private lateinit var spinner: Spinner
 
     private lateinit var db: FirebaseFirestore
@@ -105,6 +109,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
         addInfoSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
+        fetchSymptomsForWeek()
     }
 
     private fun initializeViews() {
@@ -114,7 +119,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
         imageButtonHappy = findViewById(R.id.imageButtonHappy)
         imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
         imageButtonSad = findViewById(R.id.imageButtonSad)
-
+        textWarning = findViewById(R.id.textWarning)
         enterWeight = findViewById(R.id.enterWeight)
         addInfoEnterTemperature = findViewById(R.id.addInfoEnterTemperature)
         recyclerView = findViewById(R.id.recyclerViewSymptoms)
@@ -148,6 +153,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = symptomsAdapter
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners() {
@@ -343,6 +349,57 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchSymptomsForWeek() {
+        val userDailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
+        val today = LocalDate.now()
+        val datesToCheck = (0..6).map { today.minusDays(it.toLong()).toString() }
+
+        val tasks = datesToCheck.map { date ->
+            userDailyInfoRef.document(date).get()
+        }
+
+        Tasks.whenAllComplete(tasks).addOnSuccessListener { completedTasks ->
+            val symptomFrequency = mutableMapOf<String, Int>()
+
+            completedTasks.forEach { task ->
+                val documentSnapshot = (task.result as? DocumentSnapshot)
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    val symptoms = documentSnapshot.get("symptoms") as? Map<String, Boolean>
+                    symptoms?.forEach { (symptomName, isChecked) ->
+                        if (isChecked) {
+                            symptomFrequency[symptomName] = symptomFrequency.getOrDefault(symptomName, 0) + 1
+                        }
+                    }
+                }
+            }
+
+            Log.d("FetchSymptoms", "Symptom Frequency Map: $symptomFrequency")
+
+            val repeatedSymptoms = symptomFrequency.filter { it.value == 7 }
+
+            runOnUiThread {
+                if (repeatedSymptoms.isNotEmpty()) {
+                    val symptomList = repeatedSymptoms.keys.joinToString(", ")
+                    textWarning.visibility = View.VISIBLE
+                    textWarning.text =
+                        "Następujące symptomy występują każdego dnia przez tydzień: $symptomList.\n Skontaktuj się z lekarzem!"
+                    Log.d("FetchSymptoms", "Updated TextView with symptoms: $symptomList")
+                } else {
+                    textWarning.visibility = View.GONE
+                    Log.d("FetchSymptoms", "No symptoms repeated for 7 days.")
+                }
+            }
+        }.addOnFailureListener { e ->
+            runOnUiThread {
+                Toast.makeText(this, "Błąd w odczycie danych: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("FetchSymptoms", "Error fetching data: ${e.message}")
+            }
+        }
+    }
+
+
 
 
     private fun loadAdditionalInformation(date: LocalDate?) {
