@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
+            android:textColor="#FFFFFF"
             android:backgroundTint="#BA798C"
             android:text="Edytuj" />
 
@@ -73,6 +74,7 @@
             android:id="@+id/deleteButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
             android:layout_weight="1"
             android:backgroundTint="#BA798C"
             android:text="Usuń" />

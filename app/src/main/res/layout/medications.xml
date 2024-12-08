@@ -38,6 +38,7 @@
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Dodaj lek"
+        android:textColor="#FFFFFF"
         android:textSize="16dp"
  />
 

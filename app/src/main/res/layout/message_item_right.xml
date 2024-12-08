@@ -17,9 +17,9 @@
         android:layout_alignParentRight="true"
         android:textColor="@android:color/white"
         android:text="test message"
-        android:textSize="18sp"
-        android:padding="8dp"
-        android:background="#C69AA7">
+        android:textSize="20sp"
+        android:padding="12dp"
+        android:background="@drawable/background_rounded">
     </TextView>
     <TextView
         android:id="@+id/text_see"

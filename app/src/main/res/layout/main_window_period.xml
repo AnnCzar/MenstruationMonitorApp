@@ -179,6 +179,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#D1A1AF"
                 android:fontFamily="@font/ml"
+                android:textColor="#FFFFFF"
                 android:text="Wprowadź dodatkowe informacje"
                 android:textAlignment="center"
                 android:textSize="15dp" />
@@ -195,6 +196,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#D1A1AF"
                     android:fontFamily="@font/ml"
+                    android:textColor="#FFFFFF"
                     android:text="Początek menstruacji"
                     android:textSize="15dp" />
 
@@ -203,6 +205,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textColor="#FFFFFF"
                     android:backgroundTint="#D1A1AF"
                     android:fontFamily="@font/ml"
                     android:text="Koniec menstruacji"

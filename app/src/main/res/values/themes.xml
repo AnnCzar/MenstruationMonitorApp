@@ -7,4 +7,11 @@
 
 
     <style name="Theme.Project" parent="Base.Theme.Project" />
+
+    <style name="CustomTimePickerStyle" parent="Widget.MaterialComponents.TimePicker">
+        <!-- Kolor tekstu dla godzin i minut -->
+        <item name="android:textColorPrimary">#000000</item>
+        <!-- Kolor dla AM/PM -->
+        <item name="android:textColorSecondary">#000000</item>
+    </style>
 </resources>

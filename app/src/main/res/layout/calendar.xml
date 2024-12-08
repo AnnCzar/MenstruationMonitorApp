@@ -34,7 +34,7 @@
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="284dp"
+        android:layout_height="200dp"
         android:layout_marginTop="20dp"
         app:compactCalendarCurrentDayBackgroundColor="#C69AA7"
         app:compactCalendarCurrentSelectedDayBackgroundColor="#fff"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -152,8 +152,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_weight="1"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="20dp">
 
         <TextView
@@ -190,7 +190,6 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
         android:layout_gravity="bottom"
         android:weightSum="3">
         <ImageButton
@@ -207,6 +206,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:background="#D1A1AF"
             android:src="@drawable/home_fill0_wght400_grad0_opsz24" />
 

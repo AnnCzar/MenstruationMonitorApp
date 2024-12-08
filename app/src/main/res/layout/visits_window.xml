@@ -47,6 +47,7 @@
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Dodaj wizytę"
+
         android:textAlignment="center"
         android:textColor="#FFFFFF"
  />

@@ -39,6 +39,7 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var mapSearch: Button
     private lateinit var meanCycle: TextView
     private lateinit var meanMenstruation: TextView
+    private lateinit var chatBot: Button
 
 
 private fun logout() {
@@ -90,6 +91,9 @@ private fun logout() {
             logout()
 
         }
+        chatBot.setOnClickListener {
+            openChatBot(userId)
+        }
         auth = FirebaseAuth.getInstance()
         begginingPregnancyButton.setOnClickListener {
             updatePregnancyStatusToTrue(userId)
@@ -116,6 +120,12 @@ private fun logout() {
                     Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    private fun openChatBot(userId: String) {
+        val intent = Intent(this, GeminiChatBot::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
     }
 
 
@@ -246,7 +256,7 @@ private fun logout() {
         visitsButton = findViewById(R.id.visitsButton)
         medicationsButton = findViewById(R.id.medicationsButton)
         mapSearch = findViewById(R.id.mapSearch)
-
+        chatBot = findViewById(R.id.chatBot)
         chatButton =findViewById(R.id.contactDoctor)
 
 
@@ -285,7 +295,7 @@ private fun logout() {
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
-        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+//        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 

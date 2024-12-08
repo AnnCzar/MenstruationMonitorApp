@@ -18,6 +18,7 @@
         android:layout_marginTop="120dp"
         android:fontFamily="@font/mbi"
         android:text="Wiadomości"
+        android:textAlignment="center"
         android:textColor="#E89B6978"
         android:textSize="36dp" />
 
@@ -26,7 +27,8 @@
         android:id="@+id/doctorType"
         android:layout_width="342dp"
         android:layout_height="56dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:textAlignment="center" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatUserRV"

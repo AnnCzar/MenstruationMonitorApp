@@ -123,6 +123,7 @@
                 android:fontFamily="@font/ml"
                 android:text="Wprowadź dodatkowe informacje"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:textSize="15dp" />
             <Button
                 android:id="@+id/endingPregnancyButton"
@@ -130,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#D1A1AF"
                 android:text="Koniec ciąży"
+                android:textColor="#FFFFFF"
                 android:fontFamily="@font/ml"
                 android:textSize="15sp" />
         </LinearLayout>
