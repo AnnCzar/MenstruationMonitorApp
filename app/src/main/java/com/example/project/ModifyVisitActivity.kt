@@ -1,11 +1,16 @@
 package com.example.project
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TimePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class ModifyVisitActivity : AppCompatActivity() {
 
@@ -15,7 +20,10 @@ class ModifyVisitActivity : AppCompatActivity() {
 
     private lateinit var doctorNameEditText: EditText
     private lateinit var visitDateEditText: EditText
+    private lateinit var timePicker: TimePicker
+    private lateinit var addresText: EditText
     private lateinit var saveButton: Button
+    private lateinit var extrInformationEditText: EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +37,10 @@ class ModifyVisitActivity : AppCompatActivity() {
         doctorNameEditText = findViewById(R.id.doctorNameEditText)
         visitDateEditText = findViewById(R.id.visitDateEditText)
         saveButton = findViewById(R.id.saveButton)
+        timePicker = findViewById(R.id.timePicker1)
+        addresText = findViewById(R.id.eddresModify)
+        extrInformationEditText = findViewById(R.id.extrInformationEditText)
+
 
         loadVisitDetails()
 
@@ -41,42 +53,78 @@ class ModifyVisitActivity : AppCompatActivity() {
         db.collection("users").document(userId).collection("doctorVisits").document(visitId)
             .get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document != null && document.exists()) {
                     doctorNameEditText.setText(document.getString("doctorName"))
                     visitDateEditText.setText(document.getString("visitDate"))
+                  val timeString = document.getString("time")
+                    if (!timeString.isNullOrEmpty()) {
+                        val timeParts = timeString.split(":")
+                        if (timeParts.size == 2) {
+                            val hour = timeParts[0].toInt()
+                            val minute = timeParts[1].toInt()
+                            timePicker.setHour(hour)  // Ustawiamy godzinę
+                            timePicker.setMinute(minute)  // Ustawiamy minutę
+                        }
+                    }
+
+
+
+                    addresText.setText(document.getString("address"))
+                    extrInformationEditText.setText(document.getString("extraInfo"))
+
                 } else {
-                    Toast.makeText(this, "No visit found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Brak danych dla wizyty", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 finish()
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveVisitDetails() {
         val doctorName = doctorNameEditText.text.toString()
         val visitDate = visitDateEditText.text.toString()
+        val selectedTime = getTimeFromTimePicker(timePicker)
+
+        val address = addresText.text.toString()
+        val extraInfo = extrInformationEditText.text.toString()
+
+
 
         if (doctorName.isEmpty() || visitDate.isEmpty()) {
-            Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Wypełnij wszystkie wymagane pola", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val visit = hashMapOf(
+        val visit = mapOf(
             "doctorName" to doctorName,
-            "visitDate" to visitDate
+            "visitDate" to visitDate,
+            "address" to address,
+            "time" to selectedTime,
+            "extraInfo" to extraInfo
         )
 
         db.collection("users").document(userId).collection("doctorVisits").document(visitId)
-            .set(visit)
+            .update(visit)
             .addOnSuccessListener {
-                Toast.makeText(this, "Visit modified successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Dane wizyty zostały zaktualizowane", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getTimeFromTimePicker(timePicker: TimePicker): String {
+        val hour = timePicker.hour
+        val minute = timePicker.minute
+        val time = LocalTime.of(hour, minute)
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        return time.format(formatter)
+    }
+
+
 }
