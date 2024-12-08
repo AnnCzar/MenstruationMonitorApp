@@ -126,8 +126,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         doctorAdapter = DoctorVisitAdapter(doctors)
         doctorRecyclerView.adapter = doctorAdapter
-
-        fetchMedicinesStatus(selectedDate)
+        fetchMedicines()
+//        fetchMedicinesStatus(selectedDate)
         fetchLatestCycleData()
         fetchDoctorVisits()
 
@@ -163,7 +163,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             openSettingsWindowActivity(userId)
         }
 
-        fetchMedicines()
+//        fetchMedicines()
         fetchTodaysCycleDay()
 
         scheduleNotification()
@@ -193,7 +193,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         checkDate()
-        fetchMedicinesStatus(selectedDate)
+        fetchMedicines()
+//        fetchMedicinesStatus(selectedDate)
         fetchPeriodStatus()
         fetchLatestCycleData()
     }
@@ -339,27 +340,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchMedicines() {
-        db.collection("users").document(userId).collection("medicines")
-            .get()
-            .addOnSuccessListener { documents ->
-                medicines.clear()
-                for (document in documents) {
-                    val medicineId = document.id
-                    val medicineName = document.getString("medicineName") ?: "Brak nazwy"
-                    val dose = document.getString("doseMedicine") ?: "Brak dawki"
-                    val time = document.getString("timeMedicine") ?: "Brak czasu"
-                    val isChecked = document.getBoolean("checked") ?: false
 
-                    medicines.add(Medicine(medicineId, medicineName, isChecked, dose, time))
-                }
-                Log.d("FirestoreData", "Pobrano leki: $medicines")
-                medicineAdapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 
 
 
@@ -634,33 +615,75 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicinesStatus(selectedDate: LocalDate) {
+
 
         val dailyInfoRef = db.collection("users").document(userId)
             .collection("dailyInfo").document(selectedDate.toString())
             .collection("medicines")
-
+        Log.d("medicinesBeforeFetch dupa", medicines.toString())
         dailyInfoRef.get().addOnSuccessListener { documents ->
+            if (medicines.isNotEmpty()) {
+                medicines.forEach { it.isChecked = false }
+                for (document in documents) {
 
-//            medicines.forEach { it.isChecked = false }
+                    val medicineId = document.id
+                    val isChecked = document.getBoolean("checked") ?: false
+                    Log.d("FetchedMedicineId", medicineId)
+                    val medicine = medicines.find { it.id == medicineId }
+                    if (medicine != null) {
+                        medicine.isChecked = isChecked
+                    } else {
+                        Log.d("MedicineNotFound", "No medicine found with id: $medicineId")
+                    }
 
-            for (document in documents) {
-                val medicineId = document.id
-                val isChecked = document.getBoolean("checked") ?: false
-                medicines.find { it.id == medicineId }?.isChecked = isChecked
+                }
+                runOnUiThread {
+                    Log.d(
+                        "medicinesAfterUpdate",
+                        medicines.toString()
+                    )  // Log the medicines list after updating
+                    medicineAdapter.notifyDataSetChanged()
+                }
 
+            } else {
+                Log.d("medicinesEmpty", "Medicines list is empty!")
             }
-            runOnUiThread { medicineAdapter.notifyDataSetChanged() }
 
 
         }.addOnFailureListener { e ->
             Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e("FirestoreError", "Error fetching medicines: ${e.message}")
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchMedicines() {
+        db.collection("users").document(userId).collection("medicines")
+            .get()
+            .addOnSuccessListener { documents ->
+                medicines.clear()
+                for (document in documents) {
+                    val medicineId = document.id
+                    val medicineName = document.getString("medicineName") ?: "Brak nazwy"
+                    val dose = document.getString("doseMedicine") ?: "Brak dawki"
+                    val time = document.getString("timeMedicine") ?: "Brak czasu"
+                    val isChecked = document.getBoolean("checked") ?: false
 
+                    medicines.add(Medicine(medicineId, medicineName, isChecked, dose, time))
+                }
+                Log.d("FirestoreData", "Pobrano leki: $medicines")
+                medicineAdapter.notifyDataSetChanged()
+
+                // Po zakończeniu pobierania leków wywołaj fetchMedicinesStatus()
+                fetchMedicinesStatus(selectedDate) // Teraz fetchMedicinesStatus() będzie wywołane po fetchMedicines
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine, selectedDate: LocalDate) {

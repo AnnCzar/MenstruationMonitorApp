@@ -41,6 +41,7 @@
         android:layout_height="47dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/name"
         tools:layout_editor_absoluteX="61dp" />
 
@@ -52,6 +53,7 @@
         android:layout_gravity="center"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
+        android:textColor="#FFFFFF"
         android:text="Przejdź dalej"
         android:textSize="18dp"
  />

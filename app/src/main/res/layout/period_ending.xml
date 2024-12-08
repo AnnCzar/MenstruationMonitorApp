@@ -17,6 +17,7 @@
         android:textAlignment="center"
         android:textColor="#C69AA7"
         android:textSize="33dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
@@ -36,6 +37,7 @@
         android:inputType="text"
         android:textAlignment="center"
         android:textColorHint="@color/black"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -51,6 +53,7 @@
         android:fontFamily="@font/ml"
         android:text="Potwierdź"
         android:textSize="16dp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

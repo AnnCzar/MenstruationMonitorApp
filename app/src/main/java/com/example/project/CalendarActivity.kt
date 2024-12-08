@@ -48,6 +48,7 @@ class CalendarActivity : AppCompatActivity() {
     private lateinit var pegnancyMucusBAsed: TextView
     private lateinit var userId: String
     private lateinit var db: FirebaseFirestore
+    private lateinit var textMucus: TextView
 
     @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -71,6 +72,7 @@ class CalendarActivity : AppCompatActivity() {
         textView5 = findViewById(id.textView5)
         monthNameTextView = findViewById(id.monthNameTextView)
         pegnancyMucusBAsed = findViewById(id.pegnancyMucusBAsed)
+        textMucus = findViewById(id.textMucus)
 
 
 
@@ -104,10 +106,37 @@ class CalendarActivity : AppCompatActivity() {
         calendarSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
-
         homeButtonCalendar.setOnClickListener {
-            openHomeWindowActivity(userId)
+            val userRef = db.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { user ->
+                    if (user != null) {
+                        val statusPregnancy = user.getBoolean("statusPregnancy")
+                        if (statusPregnancy != null) {
+                            if (!statusPregnancy) {
+                                openMainWindowPeriodActivity(userId)
+                            } else {
+                                openMainWindowPregnancyActivity(userId)
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     override fun onResume() {
@@ -132,6 +161,8 @@ class CalendarActivity : AppCompatActivity() {
                             imageView2.visibility = ImageView.VISIBLE
                             imageView3.visibility = ImageView.VISIBLE
                             imageView4.visibility = ImageView.VISIBLE
+                            textMucus.visibility = ImageView.VISIBLE
+                            pegnancyMucusBAsed.visibility = ImageView.VISIBLE
 
 
 
@@ -144,6 +175,8 @@ class CalendarActivity : AppCompatActivity() {
                             imageView2.visibility = ImageView.GONE
                             imageView3.visibility = ImageView.GONE
                             imageView4.visibility = ImageView.GONE
+                            textMucus.visibility = ImageView.GONE
+                            pegnancyMucusBAsed.visibility = ImageView.GONE
 
                         }
                     }
@@ -359,6 +392,8 @@ class CalendarActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openHomeWindowActivity(userId: String){
         val intent = Intent(this, MainWindowPeriodActivity::class.java).apply {
@@ -367,4 +402,23 @@ class CalendarActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun openMainWindowPeriodActivity(userId: String) {
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+        startActivity(intent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun openMainWindowPregnancyActivity(userId: String) {
+        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+
+        startActivity(intent)
+    }
+
 }

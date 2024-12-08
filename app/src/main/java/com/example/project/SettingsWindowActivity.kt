@@ -2,6 +2,7 @@ package com.example.project
 
 import com.example.project.MainWindowPregnancyActivity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 
@@ -142,6 +143,28 @@ class SettingsWindowActivity : AppCompatActivity() {
                     weightChart.addSeries(LineGraphSeries(weightPoints.toTypedArray()))
                     waterChart.addSeries(LineGraphSeries(waterPoints.toTypedArray()))
 
+                    temperatureChart.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+                    temperatureChart.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+
+// Ustawianie kolorów tytułów osi na wykresie temperatureChart
+                    temperatureChart.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLACK);
+                    temperatureChart.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLACK);
+
+// Ustawianie podpisów osi X i Y na wykresie weightChart
+                    weightChart.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+                    weightChart.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+
+// Ustawianie kolorów tytułów osi na wykresie weightChart
+                    weightChart.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLACK);
+                    weightChart.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLACK);
+
+// Ustawianie podpisów osi X i Y na wykresie waterChart
+                    waterChart.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+                    waterChart.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+
+// Ustawianie kolorów tytułów osi na wykresie waterChart
+                    waterChart.getGridLabelRenderer().setHorizontalAxisTitleColor(Color.BLACK);
+                    waterChart.getGridLabelRenderer().setVerticalAxisTitleColor(Color.BLACK);
                     // Konfiguracja wykresów
                     configureChart(temperatureChart, "Temperatura", selectedDateLabels)
                     configureChart(weightChart, "Waga", selectedDateLabels)
@@ -180,6 +203,7 @@ class SettingsWindowActivity : AppCompatActivity() {
 
         chart.gridLabelRenderer.isHorizontalLabelsVisible = true
         chart.gridLabelRenderer.isVerticalLabelsVisible = true
+        chart.titleColor = Color.BLACK
     }
 
 

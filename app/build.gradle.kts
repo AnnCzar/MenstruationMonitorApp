@@ -53,6 +53,7 @@ android {
         }
     }
 
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -64,11 +65,17 @@ android {
 
 
     buildFeatures {
+        compose = true
         viewBinding = true
         dataBinding = true
         buildConfig = true
 
+
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"  // Use the appropriate version here
+    }
+
 }
 
 dependencies {
@@ -91,6 +98,7 @@ dependencies {
     implementation(libs.play.services.maps)
 
     implementation(libs.firebase.database.ktx)
+    implementation(libs.generativeai)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -114,4 +122,15 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")
 
     implementation("com.google.firebase:firebase-messaging:20.1.2")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
+    // Compose dependencies
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("androidx.compose.ui:ui:1.5.0")
+
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+
 }
