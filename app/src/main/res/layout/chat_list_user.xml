@@ -9,6 +9,7 @@
         android:background="@drawable/tlo"
         android:orientation="vertical"
         android:textAlignment="center">
+
     <TextView
         android:id="@+id/MainDocViewText"
         android:layout_width="wrap_content"
@@ -19,6 +20,13 @@
         android:text="Wiadomości"
         android:textColor="#E89B6978"
         android:textSize="36dp" />
+
+
+    <Spinner
+        android:id="@+id/doctorType"
+        android:layout_width="342dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatUserRV"
@@ -65,6 +73,5 @@
             android:src="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
 
     </LinearLayout>
-
 
 </LinearLayout>

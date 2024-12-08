@@ -37,7 +37,8 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private lateinit var mapSearch: Button
-
+    private lateinit var meanCycle: TextView
+    private lateinit var meanMenstruation: TextView
 
 
 private fun logout() {
@@ -66,6 +67,8 @@ private fun logout() {
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
+        meanCycle = findViewById(R.id.meanCycle)
+        meanMenstruation = findViewById(R.id.meanMenstruation)
 
         loadUserInfo()
 
@@ -92,6 +95,7 @@ private fun logout() {
             updatePregnancyStatusToTrue(userId)
             openPregnancyBegginingActivity(userId)
         }
+        fetchCycleData()
 
         homeButtonProfil.setOnClickListener {
             val userRef = db.collection("users").document(userId)
@@ -134,6 +138,19 @@ private fun logout() {
                             begginingPregnancyButton.visibility = Button.VISIBLE
                         }
                     }
+                }
+            }
+    }
+
+    private fun fetchCycleData() {
+        val userRef = db.collection("users").document(userId)
+        userRef.get()
+            .addOnSuccessListener { user ->
+                if (user != null) {
+                    val cycleLength = user.getDouble("cycleLength")?.toInt()
+                    meanCycle.text = "$cycleLength dni"
+                    val menstruationLength = user.getDouble("periodLength")?.toInt()
+                    meanMenstruation.text = "$menstruationLength dni"
                 }
             }
     }

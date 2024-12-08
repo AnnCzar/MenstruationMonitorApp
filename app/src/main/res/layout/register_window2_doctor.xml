@@ -26,12 +26,13 @@
         android:id="@+id/name"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Imię i nazwisko"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textColorHint="@color/black" />
 
     <Spinner

@@ -17,6 +17,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var symptoms: MutableList<Symptom>
     private lateinit var symptomsAdapter: SymptomsAdapter
 
     private lateinit var imageButtonHappy: ImageButton
@@ -50,6 +51,21 @@ class AdditionalInformationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.additional_information)
         db = FirebaseFirestore.getInstance()
+
+        symptoms = mutableListOf(
+            Symptom("Ból głowy", false),
+            Symptom("Trądzik", false),
+            Symptom("Ból brzucha", false),
+            Symptom("Ból piersi", false),
+            Symptom("Zawroty głowy", false),
+            Symptom("Gorączka", false),
+            Symptom("Ból pleców", false),
+            Symptom("Obrzęki", false),
+            Symptom("Podenerwowanie", false),
+            Symptom("Głód", false),
+            Symptom("Biegunka", false),
+            Symptom("Zaparcie", false)
+        )
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         selectedDate = LocalDate.parse(intent.getStringExtra("SELECTED_DATE"))
@@ -122,20 +138,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun configureRecyclerView() {
-        val symptoms = listOf(
-            Symptom("Ból głowy", false),
-            Symptom("Trądzik", false),
-            Symptom("Ból brzucha", false),
-            Symptom("Ból piersi", false),
-            Symptom("Zawroty głowy", false),
-            Symptom("Gorączka", false),
-            Symptom("Ból pleców", false),
-            Symptom("Obrzęki", false),
-            Symptom("Podenerwowanie", false),
-            Symptom("Głód", false),
-            Symptom("Biegunka", false),
-            Symptom("Zaparcie", false)
-        )
+
 
         symptomsAdapter = SymptomsAdapter(symptoms) { symptom, isChecked ->
             symptom.isChecked = isChecked
@@ -160,11 +163,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 id: Long
             ) {
                 val selectedOption = parent.getItemAtPosition(position).toString()
-                Toast.makeText(
-                    this@AdditionalInformationActivity,
-                    "Selected: $selectedOption",
-                    Toast.LENGTH_SHORT
-                ).show()
+                saveMucusTypeToDatabase(selectedOption)
 
             }
 
@@ -227,6 +226,21 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
         fetchTodaysDrinkCount()
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveMucusTypeToDatabase(mucusType: String) {
+        db.collection("users").document(userId)
+            .collection("dailyInfo")
+            .document(selectedDate?.toString() ?: LocalDate.now().toString())
+            .update("mucusType", mucusType)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Mucus type updated", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error updating mucus type: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private fun fetchTodaysDrinkCount() {
         db.collection("users").document(userId).collection("dailyInfo")
             .document(selectedDate.toString())
@@ -330,6 +344,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
 
+
     private fun loadAdditionalInformation(date: LocalDate?) {
         if (date == null) return
 
@@ -339,6 +354,21 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
+
+                    val symptomsMap = try {
+                        document.get("symptoms") as? Map<String, Boolean> ?: emptyMap()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        emptyMap<String, Boolean>()
+                    }
+                    // Teraz zaktualizuj stany objawów w adapterze
+                    symptoms.forEach { symptom ->
+                        // Ustaw stan zaznaczenia dla każdego objawu
+                        symptom.isChecked = symptomsMap[symptom.name] == true
+                    }
+
+                    symptomsAdapter.notifyDataSetChanged() // Odświeżenie adaptera
+
                     val weight = document.getString("weight") ?: ""
 
                     enterWeight.setText(weight)
@@ -359,16 +389,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
                     val position = adapter.getPosition(mucusType)
                     spinner.setSelection(if (position >= 0) position else 0)
 
-                    val symptomsMap = try {
-                        document.get("symptoms") as? Map<String, Boolean> ?: emptyMap()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        emptyMap<String, Boolean>()
-                    }
 
-                    val currentSymptoms = symptomsAdapter.getSymptoms()
-                    currentSymptoms.forEach { it.isChecked = symptomsMap[it.name] == true }
-                    symptomsAdapter.notifyDataSetChanged()
+
+
                 } else {
                     enterWeight.setText("")
                     addInfoEnterTemperature.setText("")

@@ -62,6 +62,7 @@
         android:textColorHint="#C69AA7"
         android:textSize="20sp" />
 
+
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="347dp"
@@ -70,8 +71,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:timePickerMode="spinner" />
-
-
 
     <EditText
 

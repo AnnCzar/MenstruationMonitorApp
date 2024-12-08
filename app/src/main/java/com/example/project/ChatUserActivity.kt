@@ -3,7 +3,11 @@ package com.example.project
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +26,7 @@ class ChatUserActivity : AppCompatActivity() {
     private lateinit var chatUserAcountButton: ImageButton
     private lateinit var chatUserSettingButton: ImageButton
     private lateinit var chatUserHomeButton: ImageButton
+    private lateinit var  doctorType: Spinner
 
 
 
@@ -36,6 +41,30 @@ class ChatUserActivity : AppCompatActivity() {
 
         chatUserRV = findViewById(R.id.chatUserRV)
         chatUserRV.layoutManager = LinearLayoutManager(this)
+        doctorType = findViewById(R.id.doctorType)
+
+        val doctorAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.doctor_type,
+            R.layout.spinner_item
+        )
+        doctorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        doctorType.adapter = doctorAdapter
+
+        doctorType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedSpecialization = parent?.getItemAtPosition(position).toString()
+
+                when (selectedSpecialization) {
+                    "Wszyscy" -> fetchAllChatUsers()
+                    else -> fetchChatUsers(selectedSpecialization)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
 
 
         chatUserAcountButton = findViewById(R.id.chatUserAcountButton)
@@ -49,8 +78,6 @@ class ChatUserActivity : AppCompatActivity() {
             openMessageChatActivity(chatUser)
         }
         chatUserRV.adapter = chatUserAdapter
-
-        fetchChatUsers()
 
 
         chatUserSettingButton.setOnClickListener {
@@ -83,7 +110,6 @@ class ChatUserActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        fetchChatUsers()
 
     }
 
@@ -103,14 +129,16 @@ class ChatUserActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun fetchChatUsers() {
+    private fun fetchChatUsers(specialisation: String) {
         db.collection("users")
+            .whereEqualTo("role", "Lekarz")
+            .whereEqualTo("specialisation", specialisation)
             .get()
             .addOnSuccessListener { result ->
                 chatUserList.clear()
                 for (document in result) {
                     val login = document.getString("login")
-                    val id = document.id // ID dokumentu z Firestore
+                    val id = document.id
                     if (login.isNullOrEmpty() && id.isEmpty()) {
                         Toast.makeText(this, "Login field is missing", Toast.LENGTH_SHORT).show()
                     } else {
@@ -123,6 +151,30 @@ class ChatUserActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    private fun fetchAllChatUsers() {
+        db.collection("users")
+            .whereEqualTo("role", "Lekarz")
+            .get()
+            .addOnSuccessListener { result ->
+                chatUserList.clear()
+                for (document in result) {
+                    val login = document.getString("login")
+                    val id = document.id
+                    if (login.isNullOrEmpty() && id.isEmpty()) {
+                        Toast.makeText(this, "Login field is missing", Toast.LENGTH_SHORT).show()
+                    } else {
+                        chatUserList.add(ChatUser(login = login.toString(), id = id))
+                    }
+                }
+                chatUserAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -38,7 +38,7 @@ class RegisterWindow2DoctorActivity : AppCompatActivity(){
         val specificationAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.specialisation_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         )
         specificationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         specialisation.adapter = specificationAdapter

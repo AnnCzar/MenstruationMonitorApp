@@ -10,6 +10,7 @@
         <item>Ginekolog</item>
         <item>Dermatolog</item>
         <item>Alergolog</item>
+        <item>Inny</item>
 
     </string-array>
     <string-array name="place_types">
@@ -29,6 +30,15 @@
         <item>Przejrzysty lekko ciągnący się</item>
         <item>Wodnisty</item>
          <item>Rozciągliwy, o dużej wilgotności (białko jajka)</item>
+    </string-array>
+
+    <string-array name="doctor_type">
+    <item>Wszyscy</item>
+    <item>Lekarz pierwszego kontaktu</item>
+    <item>Ginekolog</item>
+    <item>Dermatolog</item>
+    <item>Alergolog</item>
+    <item>Inny</item>
     </string-array>
 
 </resources>
