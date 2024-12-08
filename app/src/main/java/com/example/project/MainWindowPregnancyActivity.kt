@@ -108,18 +108,12 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         checkDate()
 
 
-        val dateString = intent?.getStringExtra("SELECTED_DATE")
-        selectedDate = if (!dateString.isNullOrEmpty()) {
-            LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE)
-        } else {
-            LocalDate.now()
-        }
 
 
         medicinePregnancy = findViewById(R.id.medicinePregnancy)
         medicinePregnancy.layoutManager = LinearLayoutManager(this)
         medicineAdapter = MedicineAdapter(medicines) { medicine ->
-            saveMedicineCheckStatus(medicine)
+            saveMedicineCheckStatus(medicine,selectedDate)
         }
         medicinePregnancy.adapter = medicineAdapter
 
@@ -142,10 +136,10 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
 
         dateTextPregnancy.text = selectedDate.toString()
-
-        fetchPregnancyData()
+        fetchMedicines()
+//        fetchMedicinesStatus(selectedDate)
         fetchDoctorVisits()
-        fetchMedicinesStatus(selectedDate)
+        fetchPregnancyData()
 
 
 
@@ -170,13 +164,13 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         }
 
 
-        fetchMedicines()
+
     }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
         checkDate()
-        fetchMedicinesStatus(selectedDate)
+        fetchMedicines()
     }
 
 
@@ -204,7 +198,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                         val daysLeft = calculateDaysLeft(endDate)
                         daysLeftPregnancy.text = daysLeft.toString()
                         Log.d(TAG, "Days left until due date: $daysLeft")
-                        fetchMedicines()
+
                         return@addOnSuccessListener
                     }
                 }
@@ -258,22 +252,47 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicinesStatus(selectedDate: LocalDate) {
 
+
         val dailyInfoRef = db.collection("users").document(userId)
             .collection("dailyInfo").document(selectedDate.toString())
             .collection("medicines")
-
+        Log.d("medicinesBeforeFetch dupa", medicines.toString())
         dailyInfoRef.get().addOnSuccessListener { documents ->
+            if (medicines.isNotEmpty()) {
+                medicines.forEach { it.isChecked = false }
             for (document in documents) {
+
                 val medicineId = document.id
                 val isChecked = document.getBoolean("checked") ?: false
-                medicines.find { it.id == medicineId }?.isChecked = isChecked
+                Log.d("FetchedMedicineId", medicineId)
+                val medicine = medicines.find { it.id == medicineId }
+                if (medicine != null) {
+                    medicine.isChecked = isChecked
+                } else {
+                    Log.d("MedicineNotFound", "No medicine found with id: $medicineId")
+                }
+
             }
-            medicineAdapter.notifyDataSetChanged()
-        }.addOnFailureListener { e ->
-            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
+            runOnUiThread {
+                Log.d(
+                    "medicinesAfterUpdate",
+                    medicines.toString()
+                )  // Log the medicines list after updating
+                medicineAdapter.notifyDataSetChanged()
+            }
+
+        } else {
+        Log.d("medicinesEmpty", "Medicines list is empty!")
     }
 
+
+        }.addOnFailureListener { e ->
+            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e("FirestoreError", "Error fetching medicines: ${e.message}")
+        }
+       }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
@@ -290,11 +309,17 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 }
                 Log.d("FirestoreData", "Pobrano leki: $medicines")
                 medicineAdapter.notifyDataSetChanged()
+
+                // Po zakończeniu pobierania leków wywołaj fetchMedicinesStatus()
+                fetchMedicinesStatus(selectedDate) // Teraz fetchMedicinesStatus() będzie wywołane po fetchMedicines
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+
     }
+
+
 //    private fun fetchMedicines() {
 //        db.collection("users").document(userId).collection("medicines")
 //            .get()
@@ -315,23 +340,27 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 //            }
 //    }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveMedicineCheckStatus(medicine: Medicine) {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(LocalDate.now().toString())
-            .collection("medicines")
-            .document(medicine.id)
-            .set(mapOf("checked" to medicine.isChecked))
+    private fun saveMedicineCheckStatus(medicine: Medicine, selectedDate: LocalDate) {
+        Log.d("Zapis daty", selectedDate.toString())
+
+        val dateKey = selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        val dailyInfoRef = db.collection("users").document(userId)
+            .collection("dailyInfo").document(dateKey)
+            .collection("medicines").document(medicine.id)
+
+        dailyInfoRef.set(mapOf("checked" to medicine.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Medicine status updated", Toast.LENGTH_SHORT).show()
+
+                medicines.find { it.id == medicine.id }?.isChecked = medicine.isChecked
+                runOnUiThread { medicineAdapter.notifyDataSetChanged() }
+
+                Toast.makeText(this, "Status leku zaktualizowany dla daty $dateKey", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
     private fun updatePregnancyStatusToFalse(userId: String) {
         val userRef = db.collection("users").document(userId)
         userRef

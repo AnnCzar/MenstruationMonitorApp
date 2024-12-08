@@ -70,7 +70,8 @@
         android:layout_gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:timePickerMode="spinner" />
+        android:timePickerMode="spinner"
+        android:theme="@style/CustomTimePickerStyle"/>
 
     <EditText
 
@@ -118,6 +119,7 @@
         android:backgroundTint="#E8B48994"
         android:fontFamily="@font/ml"
         android:text="Potwierdź"
+        android:textColor="@color/white"
         android:textSize="16dp"
         />
 

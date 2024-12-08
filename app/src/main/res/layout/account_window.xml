@@ -161,6 +161,7 @@
             android:layout_marginStart="10dp"
             android:backgroundTint="#D1A1AF"
             android:fontFamily="@font/ml"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:text="Skontaktuj się z lekarzem" />
 
@@ -173,6 +174,7 @@
             android:backgroundTint="#D1A1AF"
             android:fontFamily="@font/ml"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="Wizyty u lekarza"
             android:textAlignment="center"
             android:textSize="15dp" />
@@ -193,6 +195,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:backgroundTint="#D1A1AF"
             android:fontFamily="@font/ml"
             android:text="Znajdź na mapie" />
@@ -206,6 +209,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:backgroundTint="#D1A1AF"
+            android:textColor="@color/white"
             android:fontFamily="@font/ml"
             android:text="Leki"
             android:textSize="15dp" />
@@ -223,6 +227,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:backgroundTint="#D1A1AF"
             android:fontFamily="@font/ml"
@@ -236,6 +241,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:backgroundTint="#D1A1AF"
             android:fontFamily="@font/ml"
             android:text="Zapytaj bota"

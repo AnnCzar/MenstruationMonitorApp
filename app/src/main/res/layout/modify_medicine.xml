@@ -34,6 +34,7 @@
         android:fontFamily="@font/ml"
         android:hint="Nazwa leku"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textColorHint="@color/black"
  />
 
@@ -47,6 +48,7 @@
         android:fontFamily="@font/ml"
         android:hint="Dawka/ilość"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textColorHint="@color/black" />
 
     <EditText
@@ -55,6 +57,7 @@
         android:layout_height="56dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        android:textColor="@color/black"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Pora przyjmowania leku"
@@ -72,6 +75,7 @@
         android:fontFamily="@font/ml"
         android:text="Zapisz lek"
         android:textStyle="italic"
+        android:textColor="#FFFFFF"
         android:textSize="18dp"
  />
 

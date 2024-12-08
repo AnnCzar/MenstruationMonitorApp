@@ -31,6 +31,7 @@
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Długość cyklu (dni)"
+        android:textColor="@color/black"
         android:textAlignment="center"
         android:textColorHint="@color/black" />
     <EditText
@@ -39,6 +40,7 @@
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
+        android:textColor="@color/black"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Długość okresu (dni)"
@@ -69,6 +71,7 @@
         android:fontFamily="@font/ml"
         android:hint="RRRR-MM-DD"
         android:inputType="text"
+        android:textColor="@color/black"
         android:textAlignment="center"
         android:textColorHint="@color/black" />
 
@@ -83,6 +86,7 @@
         android:fontFamily="@font/ml"
         android:hint="Waga (kg)"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textColorHint="@color/black" />
     <Button
         android:id="@+id/buttonConfirmRegisterWindow2"
@@ -93,6 +97,7 @@
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Przejdź dalej"
+        android:textColor="#FFFFFF"
         android:textSize="16dp" />
 
 

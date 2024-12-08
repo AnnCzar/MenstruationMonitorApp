@@ -41,6 +41,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:backgroundTint="#D1A1AF"
+                android:textColor="@color/white"
                 android:fontFamily="@font/ml"
                 android:textAlignment="center"
                 android:text="Zmień hasło"
@@ -51,18 +52,22 @@
                 android:id="@+id/temperatureChart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"/>
 
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/weightChart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"
+                />
 
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/waterChart"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
     </ScrollView>

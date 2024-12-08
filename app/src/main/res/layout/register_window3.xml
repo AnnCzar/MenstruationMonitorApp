@@ -32,6 +32,7 @@
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Nazwa leku"
+        android:textColor="@color/black"
         android:textAlignment="center"
         android:textColorHint="@color/black" />
 
@@ -45,6 +46,7 @@
         android:fontFamily="@font/ml"
         android:hint="Dawka/ilość"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textColorHint="@color/black" />
 
     <EditText
@@ -57,6 +59,7 @@
         android:fontFamily="@font/ml"
         android:hint="Pora przyjmowania leku"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textColorHint="@color/black" />
 
     <Button
@@ -69,6 +72,7 @@
         android:fontFamily="@font/ml"
         android:text="Zapisz lek"
         android:textStyle="italic"
+        android:textColor="#FFFFFF"
         android:textSize="16dp"/>
 
     <Button
@@ -82,6 +86,7 @@
         android:text="Przejdż dalej"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
+        android:textColor="#FFFFFF"
         android:textStyle="italic"
         android:textSize="16dp"/>
 
