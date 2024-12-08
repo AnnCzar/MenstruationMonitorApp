@@ -21,7 +21,7 @@
         android:text="Tryb ciąży"
         android:textColor="#E89B6978"
         android:textSize="36dp"
-        />
+ />
 
     <TextView
         android:id="@+id/dateTextPregnancy"
@@ -109,46 +109,50 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/round_shape"
                 tools:listitem="@layout/doctor_item" />
-            <LinearLayout
-                android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/additionalInfoPregnancy"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/additionalInfoPregnancy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#D1A1AF"
-                    android:fontFamily="@font/ml"
-                    android:text="Wprowadź dodatkowe informacje"
-                    android:textAlignment="center"
-                    android:textSize="15dp" />
-                <Button
-                    android:id="@+id/endingPregnancyButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#D1A1AF"
-                    android:text="Koniec ciąży"
-                    android:fontFamily="@font/ml"
-                    android:textSize="15sp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:backgroundTint="#D1A1AF"
+                android:fontFamily="@font/ml"
+                android:text="Wprowadź dodatkowe informacje"
+                android:textAlignment="center"
+                android:textSize="15dp" />
+            <Button
+                android:id="@+id/endingPregnancyButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="right|bottom"
-                android:orientation="horizontal">
+                android:backgroundTint="#D1A1AF"
+                android:text="Koniec ciąży"
+                android:fontFamily="@font/ml"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="right|bottom"
+            android:orientation="horizontal">
 
 
-                <ImageButton
+            <ImageButton
+
                     android:id="@+id/toCalendarButtonPregn"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginStart="28dp"
                     android:background="@null"
                     app:srcCompat="@drawable/calendar" />
-            </LinearLayout>
+
+        </LinearLayout>
+
 
 
 

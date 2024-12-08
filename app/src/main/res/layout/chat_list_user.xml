@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_doctor_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/tlo">
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main_doctor_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tlo"
+        android:orientation="vertical"
+        android:textAlignment="center">
     <TextView
         android:id="@+id/MainDocViewText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
         android:fontFamily="@font/mbi"
         android:text="Wiadomości"
-        android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.213" />
+        android:textColor="#E89B6978"
+        android:textSize="36dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatUserRV"
-        android:layout_width="275dp"
-        android:layout_height="326dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MainDocViewText"
-        app:layout_constraintVertical_bias="0.132"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         tools:listitem="@layout/chat_list_item" />
 
-    <ImageButton
-        android:id="@+id/chatUserAcountButton"
-        android:layout_width="137dp"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
-
-    <ImageButton
-        android:id="@+id/chatUserSettingButton"
-        android:layout_width="137dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="4dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
-
-    <ImageButton
-        android:id="@+id/chatUserHomeButton"
-        android:layout_width="137dp"
-        android:layout_height="58dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/chatUserAcountButton"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/chatUserSettingButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/settings_fill0_wght400_grad0_opsz24" />
 
+        <ImageButton
+            android:id="@+id/chatUserHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/home_fill0_wght400_grad0_opsz24" />
+        <ImageButton
+            android:id="@+id/chatUserAcountButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

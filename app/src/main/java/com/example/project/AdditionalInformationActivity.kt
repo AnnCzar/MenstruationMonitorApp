@@ -340,6 +340,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val weight = document.getString("weight") ?: ""
+
                     enterWeight.setText(weight)
 
                     // Pobranie temperatury z bezpiecznym rzutowaniem
@@ -364,6 +365,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
                         e.printStackTrace()
                         emptyMap<String, Boolean>()
                     }
+
                     val currentSymptoms = symptomsAdapter.getSymptoms()
                     currentSymptoms.forEach { it.isChecked = symptomsMap[it.name] == true }
                     symptomsAdapter.notifyDataSetChanged()

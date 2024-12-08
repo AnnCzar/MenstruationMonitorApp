@@ -1,125 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/registerWindow2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/tlo"
+    android:orientation="vertical"
     tools:context=".RegisterWindow2Activity"
-    android:background="@drawable/tlo">
+    android:textAlignment="center">
+
 
     <TextView
         android:id="@+id/medicineRegisterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="190dp"
         android:fontFamily="@font/mbi"
         android:text="Zarejestruj się"
         android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.231" />
+        android:textSize="36dp" />
 
     <EditText
         android:id="@+id/cycleLen"
         android:layout_width="294dp"
         android:layout_height="56dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Długość cyklu (dni)"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterLastPeriod"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textColorHint="@color/black" />
 
     <EditText
         android:id="@+id/enterLastPeriod"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:ems="10"
         android:fontFamily="@font/ml"
         android:hint="RRRR-MM-DD"
         android:inputType="text"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lastPeriodText"
-        app:layout_constraintVertical_bias="0.114" />
+        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/lastPeriodText"
         android:layout_width="361dp"
         android:layout_height="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:fontFamily="@font/ml"
         android:text="Data początku ostatniej menstruacji"
         android:textAlignment="center"
         android:textColor="#C69AA7"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medicineRegisterText"
-        app:layout_constraintVertical_bias="0.07" />
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/periodLen"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Długość okresu (dni)"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cycleLen"
-        app:layout_constraintVertical_bias="0.089" />
-
-    <Button
-        android:id="@+id/buttonConfirmRegisterWindow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#D1A1AF"
-        android:fontFamily="@font/ml"
-        android:text="Przejdź dalej"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.222"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919"
-        tools:ignore="MissingConstraints" />
-
+        android:textColorHint="@color/black" />
     <EditText
         android:id="@+id/weightRegister"
         android:layout_width="299dp"
         android:layout_height="54dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Waga (kg)"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/periodLen"
-        app:layout_constraintVertical_bias="0.042" />
+        android:textColorHint="@color/black" />
+    <Button
+        android:id="@+id/buttonConfirmRegisterWindow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
+        android:text="Przejdź dalej"
+        android:textSize="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

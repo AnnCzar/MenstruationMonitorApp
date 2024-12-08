@@ -17,6 +17,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -52,7 +53,7 @@ class SettingsWindowActivity : AppCompatActivity() {
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
 
-
+        loadChartData()
         settingWindowAcountButton.setOnClickListener {
             openAccountWindowActivity(userId)
         }
@@ -88,69 +89,99 @@ class SettingsWindowActivity : AppCompatActivity() {
         buttonChangePassword.setOnClickListener {
             openChangePassword(userId)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                loadChartData()
-
-            }
-
 
         }
     }
 
-        @RequiresApi(Build.VERSION_CODES.O)
-        private fun loadChartData() {
-            val dailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadChartData() {
+        val dailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
+        val dateFormatter = DateTimeFormatter.ofPattern("dd-MM") // Format: dzień-miesiąc
+        dailyInfoRef.get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    val temperaturePoints = mutableListOf<DataPoint>()
+                    val weightPoints = mutableListOf<DataPoint>()
+                    val waterPoints = mutableListOf<DataPoint>()
+                    val dateLabels = mutableListOf<String>() // Etykiety dla osi X
+                    val selectedDateLabels = mutableListOf<String>() // Wybrane etykiety
 
-            dailyInfoRef.get()
-                .addOnSuccessListener { snapshot ->
-                    if (!snapshot.isEmpty) {
-                        val temperaturePoints = mutableListOf<DataPoint>()
-                        val weightPoints = mutableListOf<DataPoint>()
-                        val waterPoints = mutableListOf<DataPoint>()
+                    snapshot.documents.forEachIndexed { index, document ->
+                        val date = document.id // Zakładamy, że format daty to "YYYY-MM-DD"
+                        val temperatureRaw = document.get("temperature")
+                        val weight = document.getString("weight")?.toDoubleOrNull()
+                        val drinksCount = document.getLong("drinksCount")?.toDouble()
 
-                        for (document in snapshot.documents) {
-                            val date = document.id
-                            val temperature = document.getString("temperature")?.toDoubleOrNull()
-                            val weight = document.getString("weight")?.toDoubleOrNull()
-                            val drinksCount = document.getLong("drinksCount")?.toDouble()
-
-                            val dateIndex =
-                                LocalDate.parse(date, DateTimeFormatter.ISO_DATE).toEpochDay()
-                                    .toDouble()
-
-                            temperature?.let { temperaturePoints.add(DataPoint(dateIndex, it)) }
-                            weight?.let { weightPoints.add(DataPoint(dateIndex, it)) }
-                            drinksCount?.let { waterPoints.add(DataPoint(dateIndex, it)) }
+                        val temperature = when (temperatureRaw) {
+                            is Number -> temperatureRaw.toDouble()
+                            is String -> temperatureRaw.toDoubleOrNull()
+                            else -> null
                         }
 
-                        // Dodanie danych do wykresów
-                        temperatureChart.addSeries(LineGraphSeries(temperaturePoints.toTypedArray()))
-                        weightChart.addSeries(LineGraphSeries(weightPoints.toTypedArray()))
-                        waterChart.addSeries(LineGraphSeries(waterPoints.toTypedArray()))
+                        // Konwersja daty na lokalną i formatowanie do "dd-MM"
+                        val formattedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
+                            .format(dateFormatter)
 
-                        // Konfiguracja wykresów
-                        configureChart(temperatureChart, "Temperatura")
-                        configureChart(weightChart, "Waga")
-                        configureChart(waterChart, "Ilość wody")
+                        // Dodanie etykiety co 5. dzień lub dla pierwszego/ostatniego
+                        if (index % 10 == 0 || index == 0 || index == snapshot.size() - 1) {
+                            selectedDateLabels.add(formattedDate)
+                        } else {
+                            selectedDateLabels.add("") // Puste miejsce na osi
+                        }
+
+                        // Użycie indeksu jako wartości na osi X
+                        val xValue = index.toDouble()
+
+                        temperature?.let { temperaturePoints.add(DataPoint(xValue, it)) }
+                        weight?.let { weightPoints.add(DataPoint(xValue, it)) }
+                        drinksCount?.let { waterPoints.add(DataPoint(xValue, it)) }
                     }
+
+                    // Dodanie danych do wykresów
+                    temperatureChart.addSeries(LineGraphSeries(temperaturePoints.toTypedArray()))
+                    weightChart.addSeries(LineGraphSeries(weightPoints.toTypedArray()))
+                    waterChart.addSeries(LineGraphSeries(waterPoints.toTypedArray()))
+
+                    // Konfiguracja wykresów
+                    configureChart(temperatureChart, "Temperatura", selectedDateLabels)
+                    configureChart(weightChart, "Waga", selectedDateLabels)
+                    configureChart(waterChart, "Ilość wody", selectedDateLabels)
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(
-                        this,
-                        "Error loading chart data: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-        }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this,
+                    "Error loading chart data: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
 
 
-        private fun configureChart(chart: GraphView, title: String) {
-            chart.title = title
-            chart.viewport.isScalable = true
-            chart.viewport.isScrollable = true
-            chart.viewport.setScalableY(true)
-            chart.viewport.setScrollableY(true)
+
+    private fun configureChart(chart: GraphView, title: String, dateLabels: List<String>) {
+        chart.title = title
+        chart.viewport.isScalable = true
+        chart.viewport.isScrollable = true
+        chart.viewport.setScalableY(true)
+        chart.viewport.setScrollableY(true)
+
+        val staticLabelsFormatter = StaticLabelsFormatter(chart)
+        staticLabelsFormatter.setHorizontalLabels(dateLabels.toTypedArray()) // Ustawienie dat jako etykiet
+        chart.gridLabelRenderer.labelFormatter = staticLabelsFormatter
+
+        // Ustawienia dla osi
+        chart.gridLabelRenderer.horizontalAxisTitle = "Data"
+        chart.gridLabelRenderer.verticalAxisTitle = when (title) {
+            "Waga" -> "kg"
+            "Ilość wody" -> "szklanki"
+            else -> "°C"
         }
+
+        chart.gridLabelRenderer.isHorizontalLabelsVisible = true
+        chart.gridLabelRenderer.isVerticalLabelsVisible = true
+    }
+
 
         @RequiresApi(Build.VERSION_CODES.O)
         private fun openMainWindowPeriodActivity(userId: String) {

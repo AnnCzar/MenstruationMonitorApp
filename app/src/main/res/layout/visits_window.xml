@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/visitsWindow"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/tlo"
-    tools:context=".DoctorVisitsActivity">
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/visitRV"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/addVisitButton"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/visitsText"-->
-    <!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-    <!--        tools:listitem="@layout/doctor_item" />-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/visitsWindow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tlo"
+        android:orientation="vertical"
+        tools:context=".DoctorVisitsActivity"
+        android:textAlignment="center">
+
 
     <TextView
         android:id="@+id/visitsText"
@@ -28,66 +19,71 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/mbi"
         android:text="Wizyty u lekarza"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
         android:textAlignment="center"
-        android:textColor="#C69AA7"
+        android:textColor="#E89B6978"
         android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.217" />
+ />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/visitRV"
-        android:layout_width="305dp"
-        android:layout_height="287dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visitsText"
-        app:layout_constraintVertical_bias="0.104"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+
         tools:listitem="@layout/doctor_item" />
 
     <Button
         android:id="@+id/addVisitButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Dodaj wizytę"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@+id/visitRV"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="136dp" />
+ />
 
-    <ImageButton
-        android:id="@+id/accountWidnowSettingButton"
-        android:layout_width="206.5dp"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24" />
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:weightSum="3">
 
-    <ImageButton
-        android:id="@+id/homeButtonProfil"
-        android:layout_width="206.5dp"
-        android:layout_height="58dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/home_fill0_wght400_grad0_opsz24" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/accountWidnowSettingButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/settings_fill0_wght400_grad0_opsz24" />
+
+        <ImageButton
+            android:id="@+id/homeButtonProfil"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/home_fill0_wght400_grad0_opsz24" />
+        <ImageButton
+            android:id="@+id/accountButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#D1A1AF"
+            android:src="@drawable/account_circle_fill0_wght400_grad0_opsz24" />
+
+    </LinearLayout>
+
+</LinearLayout>

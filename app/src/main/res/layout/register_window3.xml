@@ -1,107 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registerWindow3"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RegisterWindow3Activity"
-    android:background="@drawable/tlo">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/registerWindow3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tlo"
+        android:orientation="vertical"
+        tools:context=".RegisterWindow3Activity"
+        android:textAlignment="center">
+
 
     <TextView
         android:id="@+id/medicineRegisterTextWindow3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="190dp"
         android:fontFamily="@font/mbi"
         android:text="Przyjmowane leki"
         android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.202" />
+        android:textSize="36dp" />
 
     <EditText
         android:id="@+id/enterMedicineName"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Nazwa leku"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/medicineRegisterTextWindow3"
-        app:layout_constraintVertical_bias="0.159" />
+        android:textColorHint="@color/black" />
 
     <EditText
         android:id="@+id/enterDoseMedicineRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Dawka/ilość"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterMedicineName"
-        app:layout_constraintVertical_bias="0.061" />
+        android:textColorHint="@color/black" />
 
     <EditText
         android:id="@+id/enterTimeMedicineRegister"
         android:layout_width="294dp"
         android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_shape"
         android:fontFamily="@font/ml"
         android:hint="Pora przyjmowania leku"
         android:textAlignment="center"
-        android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterDoseMedicineRegister"
-        app:layout_constraintVertical_bias="0.093" />
+        android:textColorHint="@color/black" />
 
-    <Button
-        android:id="@+id/buttonConfirmRegisterWindow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FDF4F7"
-        android:text="Potwierdź"
-        android:textColor="#C69AA7"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
-        tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/buttonSaveMedicineRegisterWindow3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FDF4F7"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#D1A1AF"
         android:fontFamily="@font/ml"
         android:text="Zapisz lek"
-        android:textColor="#C69AA7"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterTimeMedicineRegister"
-        app:layout_constraintVertical_bias="0.2"
-        tools:ignore="MissingConstraints" />
+        android:textSize="16dp"/>
+
+    <Button
+        android:id="@+id/buttonConfirmRegisterWindow3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_gravity="center"
+        android:text="Przejdż dalej"
+        android:backgroundTint="#D1A1AF"
+        android:fontFamily="@font/ml"
+        android:textStyle="italic"
+        android:textSize="16dp"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 

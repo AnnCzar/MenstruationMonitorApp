@@ -81,6 +81,7 @@
         <activity
             android:name=".MapActivityPlaces"
             android:exported="true"></activity>
+
         <activity
             android:name=".MainWindowPregnancyActivity"
             android:exported="true"></activity>
