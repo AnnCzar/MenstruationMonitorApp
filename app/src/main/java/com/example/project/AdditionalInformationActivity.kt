@@ -111,8 +111,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
         increaseDrinkButton = findViewById(R.id.increaseDrinkButton)
         decreaseDrinkButton = findViewById(R.id.decreaseDrinkButton)
 
-        val spinnerItems = listOf("Brak śluzu", "Lepki", "Kremowy", "Wodnisty", "Rozciągliwy (białko jajka)", "Gęsty")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerItems)
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.mucus_types,
+            R.layout.spinner_item
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
     }
@@ -272,14 +275,29 @@ class AdditionalInformationActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAdditionalInformation() {
         val weight = enterWeight.text.toString()
-        val temperature = addInfoEnterTemperature.text.toString()
+
+        val temperatureInput = addInfoEnterTemperature.text.toString()
+
+        val temperature = if (temperatureInput.isBlank()) null else temperatureInput.toDoubleOrNull()
+        if (temperatureInput.isNotBlank() && temperature == null) {
+            addInfoEnterTemperature.error = "Wprowadź poprawną temperaturę"
+            return
+        }
+
         val symptomsData = symptomsAdapter.getSymptoms().map { it.name to it.isChecked }.toMap()
+
+        val selectedMucusType = spinner.selectedItem.toString()
+        if (selectedMucusType.isBlank()) {
+            Toast.makeText(this, "Proszę wybrać typ śluzu", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val data = hashMapOf(
             "weight" to weight,
-            "temperature" to temperature,
+            "temperature" to temperatureInput,
             "symptoms" to symptomsData,
-            "mood" to currentMood
+            "mood" to currentMood,
+            "mucusType" to selectedMucusType
         )
 
         db.collection("users").document(userId)
@@ -293,6 +311,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -321,21 +340,51 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val weight = document.getString("weight") ?: ""
-                    val temperature = document.getString("temperature") ?: ""
-                    val symptomsMap = document.get("symptoms") as? Map<String, Boolean> ?: emptyMap()
 
                     enterWeight.setText(weight)
-                    addInfoEnterTemperature.setText(temperature)
+
+                    // Pobranie temperatury z bezpiecznym rzutowaniem
+                    val temperature: Double? = try {
+                        document.getDouble("temperature")
+                            ?: document.getString("temperature")?.toDoubleOrNull()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+                    // Ustawienie temperatury w polu tekstowym
+                    addInfoEnterTemperature.setText(temperature?.toString() ?: "")
+
+                    val mucusType = document.getString("mucusType") ?: "Brak danych"
+                    val adapter = spinner.adapter as ArrayAdapter<String>
+                    val position = adapter.getPosition(mucusType)
+                    spinner.setSelection(if (position >= 0) position else 0)
+
+                    val symptomsMap = try {
+                        document.get("symptoms") as? Map<String, Boolean> ?: emptyMap()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        emptyMap<String, Boolean>()
+                    }
+
                     val currentSymptoms = symptomsAdapter.getSymptoms()
                     currentSymptoms.forEach { it.isChecked = symptomsMap[it.name] == true }
+                    symptomsAdapter.notifyDataSetChanged()
+                } else {
+                    enterWeight.setText("")
+                    addInfoEnterTemperature.setText("")
+                    spinner.setSelection(0)
+                    symptomsAdapter.getSymptoms().forEach { it.isChecked = false }
                     symptomsAdapter.notifyDataSetChanged()
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT). show()
+                Toast.makeText(this, "Błąd pobierania danych: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
+                e.printStackTrace()
             }
     }
-    private fun setCurrentMood(mood: String) {
+
+        private fun setCurrentMood(mood: String) {
         currentMood = mood
         when (mood) {
             "happy" -> {

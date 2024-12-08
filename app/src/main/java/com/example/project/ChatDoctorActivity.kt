@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -19,8 +21,8 @@ class ChatDoctorActivity : AppCompatActivity() {
     private lateinit var chatUserAdapter: ChatDoctorAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
-    private lateinit var profileMainWindowDoctor: ImageButton
-    private lateinit var settingsMainWindowDoctor: ImageButton
+    private lateinit var logoutButton: ImageButton
+    private lateinit var auth: FirebaseAuth
 
 
     private val chatUserList = ArrayList<ChatUser>()
@@ -34,10 +36,17 @@ class ChatDoctorActivity : AppCompatActivity() {
 
         chatUserRV = findViewById(R.id.chatUserRV)
         chatUserRV.layoutManager = LinearLayoutManager(this)
+        auth = FirebaseAuth.getInstance()
+
+        logoutButton = findViewById(R.id.logoutButton)
+
+        logoutButton.setOnClickListener {
+            logout()
+
+        }
 
 
-        profileMainWindowDoctor = findViewById(R.id.AcountButtonMainDoctor)
-        settingsMainWindowDoctor = findViewById(R.id.SettingButtonMainDoctor)
+
 
 
         userId = intent.getStringExtra("USER_ID") ?: ""
@@ -51,9 +60,6 @@ class ChatDoctorActivity : AppCompatActivity() {
         fetchChatUsers()
 
 
-        settingsMainWindowDoctor.setOnClickListener {
-            openSettingsWindowActivity(userId)
-        }
 
 
     }
@@ -61,6 +67,22 @@ class ChatDoctorActivity : AppCompatActivity() {
         super.onResume()
         fetchChatUsers()
 
+    }
+    private fun logout() {
+        val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("isLoggedIn", false)
+            putString("USER_ID", null)
+            apply()
+        }
+        auth.signOut()
+
+
+        val intent = Intent(this, LoginWindowActivity::class.java)
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun openMessageChatActivity(chatUser: ChatUser) {

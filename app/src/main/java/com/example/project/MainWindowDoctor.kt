@@ -19,19 +19,9 @@ class MainWindowDoctor : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_window_doctor)
 
-        settingButton = findViewById(R.id.SettingButtonMainDoctor)
-        acountButton = findViewById(R.id.AcountButtonMainDoctor)
-
 
         userId = intent.getStringExtra("USER_ID") ?: ""
 
-        acountButton.setOnClickListener {
-            openAccountWindowActivity(userId)
-        }
-
-        settingButton.setOnClickListener {
-            openSettingsWindowActivity(userId)
-        }
     }
 
     private fun openSettingsWindowActivity(userId: String) {

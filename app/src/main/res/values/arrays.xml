@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="role_array">
-        <item>Lekarz</item>
         <item>Zwykły użytkownik</item>
+        <item>Lekarz</item>
     </string-array>
     <string-array name="specialisation_array">
         <item>Lekarz pierwszego kontaktu</item>
@@ -16,6 +16,19 @@
         <item>Wybierz miejsce</item>
         <item>Apteki</item>
         <item>Drogerie</item>
+    </string-array>
+
+    <string-array name="mucus_types">
+        <item>Brak śluzu</item>
+        <item>Lepki</item>
+        <item>Gęsty</item>
+        <item>Kleisty</item>
+        <item>Białe lub lekko żółte zabarwienie</item>
+        <item>Mętny</item>
+        <item>Brązowy</item>
+        <item>Przejrzysty lekko ciągnący się</item>
+        <item>Wodnisty</item>
+         <item>Rozciągliwy, o dużej wilgotności (białko jajka)</item>
     </string-array>
 
 </resources>

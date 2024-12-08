@@ -1,72 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:id="@+id/main_doctor_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tlo">
+    android:background="@drawable/tlo"
+    android:orientation="vertical"
+    android:textAlignment="center">
+
+    <ImageButton
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:backgroundTint="#D395A8"
+        android:layout_gravity="right"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="6dp"
+        android:text="Wyloguj"
+        android:textStyle="bold"
+        app:srcCompat="@drawable/log_out" />
 
     <TextView
         android:id="@+id/MainDocViewText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
         android:fontFamily="@font/mbi"
         android:text="Wiadomości"
-        android:textColor="#C69AA7"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.213" />
+        android:textColor="#E89B6978"
+        android:textSize="36dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatUserRV"
-        android:layout_width="275dp"
-        android:layout_height="326dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MainDocViewText"
-        app:layout_constraintVertical_bias="0.132"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         tools:listitem="@layout/chat_list_item" />
 
-    <ImageButton
-        android:id="@+id/AcountButtonMainDoctor"
-
-        android:layout_width="215dp"
-        android:layout_height="58dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-
-        app:srcCompat="@drawable/account_circle_fill0_wght400_grad0_opsz24"
-        android:contentDescription="acuont"/>
-
-    <ImageButton
-        android:id="@+id/SettingButtonMainDoctor"
-
-        android:layout_width="215dp"
-        android:layout_height="58dp"
-        android:background="#D1A1AF"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toStartOf="@+id/AcountButtonMainDoctor"
-
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/settings_fill0_wght400_grad0_opsz24"
-        android:contentDescription="settings"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
+
+
+</LinearLayout>

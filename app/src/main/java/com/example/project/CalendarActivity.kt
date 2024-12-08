@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -19,11 +20,14 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
 
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class CalendarActivity : AppCompatActivity() {
 
@@ -31,6 +35,7 @@ class CalendarActivity : AppCompatActivity() {
     private lateinit var calendarSettingButton: ImageButton
     private lateinit var calendarAcountButton: ImageButton
     private lateinit var homeButtonCalendar: ImageButton
+    private lateinit var monthNameTextView: TextView
 
     private lateinit var imageView: ImageView
     private lateinit var imageView2: ImageView
@@ -40,10 +45,11 @@ class CalendarActivity : AppCompatActivity() {
     private lateinit var textView3: TextView
     private lateinit var textView4: TextView
     private lateinit var textView5: TextView
-
+    private lateinit var pegnancyMucusBAsed: TextView
     private lateinit var userId: String
     private lateinit var db: FirebaseFirestore
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +69,8 @@ class CalendarActivity : AppCompatActivity() {
         textView3 = findViewById(id.textView3)
         textView4 = findViewById(id.textView4)
         textView5 = findViewById(id.textView5)
+        monthNameTextView = findViewById(id.monthNameTextView)
+        pegnancyMucusBAsed = findViewById(id.pegnancyMucusBAsed)
 
 
 
@@ -70,19 +78,24 @@ class CalendarActivity : AppCompatActivity() {
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
 
+        fetchMucus()
         fetchUserPeriodAndOvulationDates()
+
 
         calendar.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
                 dateClicked?.let {
                     val selectedDate = dateClicked.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    fetchMucusForDate(selectedDate)
                     openDayActivity(userId, selectedDate)
                 }
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
+                updateMonthName(firstDayOfNewMonth)
             }
         })
+
 
         calendarAcountButton.setOnClickListener {
             openAccountWindowActivity(userId)
@@ -146,38 +159,38 @@ class CalendarActivity : AppCompatActivity() {
 
         cyclesRef.get()
             .addOnSuccessListener { result ->
-                if (!result.isEmpty ) {
-                    for (document in result) {
-                        val startDateString = document.getString("startDate")
-                        val endDateString = document.getString("endDate")
-                        val ovulationDateString = document.getString("nextOvulationDate")
+                if (!result.isEmpty) {
+                    val userRef = db.collection("users").document(userId)
+                    userRef.get().addOnSuccessListener { user ->
+                        val statusPregnancy = user?.getBoolean("statusPregnancy") ?: false
 
-                        if (startDateString != null && endDateString != null && ovulationDateString != null) {
-                            val startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_LOCAL_DATE)
-                            val ovulationDate = LocalDate.parse(ovulationDateString, DateTimeFormatter.ISO_LOCAL_DATE)
-                            val endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_LOCAL_DATE)
+                        for (document in result) {
+                            val startDateString = document.getString("startDate")
+                            val endDateString = document.getString("endDate")
+                            val ovulationDateString = document.getString("nextOvulationDate")
 
-                            val periodStart = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-                            val periodEnd = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-                            val ovulationDay = Date.from(ovulationDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                            if (startDateString != null && endDateString != null && ovulationDateString != null) {
+                                val startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_LOCAL_DATE)
+                                val endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_LOCAL_DATE)
+                                val ovulationDate = LocalDate.parse(ovulationDateString, DateTimeFormatter.ISO_LOCAL_DATE)
 
-                            val eventDecorator = EventDecorator(calendar)
+                                val periodStart = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                                val periodEnd = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                                val ovulationDay = Date.from(ovulationDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
 
+                                val eventDecorator = EventDecorator(calendar)
+                                eventDecorator.markPeriodDays(periodStart, periodEnd)
+                                eventDecorator.markOvulation(ovulationDay)
+                                eventDecorator.markFertilityDays(ovulationDate)
 
-                            val userRef = db.collection("users").document(userId)
-                            userRef.get()
-                                .addOnSuccessListener { user ->
-                                    if (user != null) {
-                                        val statusPregnancy = user.getBoolean("statusPregnancy")
-                                        if (statusPregnancy != null) {
-                                            if (!statusPregnancy) {                            eventDecorator.markPeriodDays(periodStart, periodEnd)
-                                                eventDecorator.markOvulation(ovulationDay)
-                                                eventDecorator.markFertilityDays(ovulationDate)}}}}
-
-
-                        } else {
-                            Toast.makeText(this, "Incomplete cycle data for one of the documents.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this, "Incomplete cycle data for one of the documents.", Toast.LENGTH_SHORT).show()
+                            }
                         }
+
+                        calendar.invalidate()
+                    }.addOnFailureListener { exception ->
+                        Toast.makeText(this, "Error fetching user data: ${exception.message}", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(this, "No cycle data found.", Toast.LENGTH_SHORT).show()
@@ -188,8 +201,8 @@ class CalendarActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error fetching cycle data: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
-        calendar.invalidate()
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
@@ -214,6 +227,97 @@ class CalendarActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error fetching doctor visits: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchMucusForDate(date: LocalDate) {
+
+        val mucusDescriptions = mapOf(
+            "Brak śluzu" to "Nie zaobserwowano śluzu.",
+            "Lepki" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Gęsty" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Kleisty" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Białe lub lekko żółte zabarwienie" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Mętny" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Brązowy" to "Niskie szanse. Może sugerować zbliżający się okres lub sygnalizować zapłodnienie.",
+            "Przejrzysty lekko ciągnący się" to "Wysokie szanse na zajście w ciążę.",
+            "Wodnisty" to "Wysokie szanse na zajście w ciążę.",
+            "Rozciągliwy, o dużej wilgotności (białko jajka)" to "Bardzo wysokie szanse na zapłodnienie, śluz charakterystyczny dla owulacji."
+        )
+        val dateString = date.format(DateTimeFormatter.ISO_DATE)
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(dateString)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val mucusType = document.getString("mucusType")
+                    val description = mucusDescriptions[mucusType] ?: "Brak informacji o śluzie."
+                    pegnancyMucusBAsed.text = description
+                } else {
+                    pegnancyMucusBAsed.text = "Brak danych na ten dzień."
+                }
+            }
+            .addOnFailureListener { exception ->
+                pegnancyMucusBAsed.text = "Błąd pobierania danych: ${exception.message}"
+            }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchMucus() {
+        val mucusDescriptions = mapOf(
+            "Brak śluzu" to "Nie zaobserwowano śluzu.",
+            "Lepki" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Gęsty" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Kleisty" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Białe lub lekko żółte zabarwienie" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Mętny" to "Bardzo niskie szanse na zapłodnienie, sugeruje zbliżanie się okresu.",
+            "Brązowy" to "Niskie szanse. Może sugerować zbliżający się okres lub sygnalizować zapłodnienie.",
+            "Przejrzysty lekko ciągnący się" to "Wysokie szanse na zajście w ciążę.",
+            "Wodnisty" to "Wysokie szanse na zajście w ciążę.",
+            "Rozciągliwy, o dużej wilgotności (białko jajka)" to "Bardzo wysokie szanse na zapłodnienie, śluz charakterystyczny dla owulacji."
+        )
+        val todayDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(todayDate)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val mucusType = document.getString("mucusType")
+                    if (mucusType != null && mucusDescriptions.containsKey(mucusType)) {
+                        val description = mucusDescriptions[mucusType]
+                        runOnUiThread {
+                            pegnancyMucusBAsed.text = "$description"
+                            Log.d("FetchMucus", "Mucus Type: $mucusType")
+                            Log.d("FetchMucus", "Description: ${mucusDescriptions[mucusType]}")
+
+                        }
+                    } else {
+                        runOnUiThread {
+                            pegnancyMucusBAsed.text = "\nBrak informacji o śluzie."
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        pegnancyMucusBAsed.text = "\nBrak danych na ten dzień."
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                runOnUiThread {
+                    pegnancyMucusBAsed.text = "Błąd pobierania danych: ${exception.message}"
+                }
+            }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateMonthName(date: Date) {
+        val dateFormat = SimpleDateFormat("LLLL yyyy", Locale("pl"))
+        val monthName = dateFormat.format(date)
+        monthNameTextView.text = monthName.capitalize(Locale("pl"))
+    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openDayActivity(userId: String, date: LocalDate) {

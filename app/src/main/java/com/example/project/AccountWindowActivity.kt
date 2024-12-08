@@ -50,7 +50,7 @@ private fun logout() {
     auth.signOut()
 
 
-    val intent = Intent(this, LoginWindowActivity::class.java)
+    val intent = Intent(this, FirstWindowActivity::class.java)
 
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     startActivity(intent)
