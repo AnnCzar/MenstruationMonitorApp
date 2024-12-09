@@ -81,7 +81,7 @@ class PeriodBegginingActivity : AppCompatActivity() {
         val startDate: Date? = sdf.parse(dateStr)
 
         if (startDate == null) {
-            Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Nieprawidłowy format daty", Toast.LENGTH_SHORT).show()
             return
         }
 

@@ -232,7 +232,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 doctorAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -287,8 +287,8 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
 
         }.addOnFailureListener { e ->
-            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            Log.e("FirestoreError", "Error fetching medicines: ${e.message}")
+            Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e("FirestoreError", "Błąd przy pobieraniu leków: ${e.message}")
         }
        }
 
@@ -314,7 +314,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 fetchMedicinesStatus(selectedDate) // Teraz fetchMedicinesStatus() będzie wywołane po fetchMedicines
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd przy pobieraniu leków: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
     }

@@ -80,7 +80,7 @@ class SettingsWindowActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Toast.makeText(
                         this@SettingsWindowActivity,
-                        "Error: ${e.message}",
+                        "Błąd: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -174,7 +174,7 @@ class SettingsWindowActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(
                     this,
-                    "Error loading chart data: ${e.message}",
+                    "Błąd podczas ładowania danych wykresu: ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
             }

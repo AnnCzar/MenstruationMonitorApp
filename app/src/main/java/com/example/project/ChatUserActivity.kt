@@ -103,7 +103,7 @@ class ChatUserActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
 
@@ -140,7 +140,7 @@ class ChatUserActivity : AppCompatActivity() {
                     val login = document.getString("login")
                     val id = document.id
                     if (login.isNullOrEmpty() && id.isEmpty()) {
-                        Toast.makeText(this, "Login field is missing", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Brakuje pola loginu", Toast.LENGTH_SHORT).show()
                     } else {
                         chatUserList.add(ChatUser(login = login.toString(), id = id))
                     }
@@ -162,7 +162,7 @@ class ChatUserActivity : AppCompatActivity() {
                     val login = document.getString("login")
                     val id = document.id
                     if (login.isNullOrEmpty() && id.isEmpty()) {
-                        Toast.makeText(this, "Login field is missing", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Brakuje pola loginu", Toast.LENGTH_SHORT).show()
                     } else {
                         chatUserList.add(ChatUser(login = login.toString(), id = id))
                     }
@@ -186,10 +186,10 @@ class ChatUserActivity : AppCompatActivity() {
             .document(medicine.id)
             .set(mapOf("checked" to medicine.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Medicine status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Zaktualizowano stan leków", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
     private fun openAccountWindowActivity(userId: String) {

@@ -48,12 +48,12 @@ class ModifyMedicineActivity : AppCompatActivity() {
                     medicineDose.setText(document.getString("doseMedicine"))
                     medicineTime.setText(document.getString("timeMedicine"))
                 } else {
-                    Toast.makeText(this, "No medicine found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Nie znaleziono leków", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 finish()
             }
     }
@@ -65,7 +65,7 @@ class ModifyMedicineActivity : AppCompatActivity() {
         val timeMedicine = medicineTime.text.toString()
 
         if (medicineName.isEmpty() || doseMedicine.isEmpty() || timeMedicine.isEmpty()) {
-            Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Proszę uzupełnić wszystkie pola", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -78,11 +78,11 @@ class ModifyMedicineActivity : AppCompatActivity() {
         db.collection("users").document(userId).collection("medicines").document(medicineId)
             .set(medicine)
             .addOnSuccessListener {
-                Toast.makeText(this, "Medicines modified successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Pomyślnie zmodyfikowano leki", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

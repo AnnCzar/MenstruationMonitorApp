@@ -110,7 +110,7 @@ class ChatDoctorActivity : AppCompatActivity() {
                     val login = document.getString("login")
                     val id = document.id // ID dokumentu z Firestore
                     if (login.isNullOrEmpty() && id.isEmpty()) {
-                        Toast.makeText(this, "Login field is missing", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Brakuje pola loginu", Toast.LENGTH_SHORT).show()
                     } else {
                         chatUserList.add(ChatUser(login = login.toString(), id = id))
                     }
@@ -118,7 +118,7 @@ class ChatDoctorActivity : AppCompatActivity() {
                 chatUserAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

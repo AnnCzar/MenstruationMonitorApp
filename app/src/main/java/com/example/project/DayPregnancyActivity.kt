@@ -217,7 +217,7 @@ class DayPregnancyActivity : AppCompatActivity() {
                 fetchTodaysMedicineStatus()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -236,7 +236,7 @@ class DayPregnancyActivity : AppCompatActivity() {
                 medicineAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -263,7 +263,7 @@ class DayPregnancyActivity : AppCompatActivity() {
                 doctorAdapter.notifyDataSetChanged() // Aktualizacja adaptera po zmianie danych
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -282,7 +282,7 @@ class DayPregnancyActivity : AppCompatActivity() {
                 doctorAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -295,7 +295,7 @@ class DayPregnancyActivity : AppCompatActivity() {
             .document(medicine.id)
             .set(mapOf("checked" to medicine.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Medicine status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Zaktualizowano stan leków", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -311,10 +311,10 @@ class DayPregnancyActivity : AppCompatActivity() {
             .document(doctor.id)
             .set(mapOf("checked" to doctor.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Doctor status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Zaktualizowano status lekarza", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

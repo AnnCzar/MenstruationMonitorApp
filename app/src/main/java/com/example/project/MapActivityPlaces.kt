@@ -99,7 +99,7 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         val typePlaceChoiceAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.place_types,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         )
         typePlaceChoiceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         typePlaceChoice.adapter = typePlaceChoiceAdapter

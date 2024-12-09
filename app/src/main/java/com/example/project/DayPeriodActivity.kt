@@ -157,7 +157,7 @@ class DayPeriodActivity : AppCompatActivity() {
                                 Log.d("CycleDay", "cycleDay calculated: $cycleDay")
                                 displayCycleDay(cycleDay)
                             } else {
-                                Toast.makeText(this, "No valid cycleLength found", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Nie znaleziono prawidłowej długości cyklu", Toast.LENGTH_SHORT).show()
                             }
                         } else {
                             val lastPeriodDate = parseCustomDate(lastPeriodDateValue)
@@ -171,21 +171,21 @@ class DayPeriodActivity : AppCompatActivity() {
                                     Log.d("CycleDay", "cycleDay calculated: $cycleDay")
                                     displayCycleDay(cycleDay)
                                 } else {
-                                    Toast.makeText(this, "No valid cycleLength found", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "ie znaleziono prawidłowej długości cyklu", Toast.LENGTH_SHORT).show()
                                 }
                             } else {
-                                Toast.makeText(this, "'lastPeriodDate' is not a valid date format in Firestore", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Nieprawidłowy format daty ostatniej miesiączki", Toast.LENGTH_SHORT).show()
                             }
                         }
                     } else {
-                        Toast.makeText(this, "'lastPeriodDate' field does not exist in Firestore", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Nie znaleziono pola daty ostatniej miesiączki", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this, "User document does not exist", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Nie istnieje dokument dla danego użytkownika", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd przy pobieraniu danych użytkownika: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -244,7 +244,7 @@ class DayPeriodActivity : AppCompatActivity() {
                 fetchTodaysMedicineStatus()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -263,7 +263,7 @@ class DayPeriodActivity : AppCompatActivity() {
                 medicineAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -291,7 +291,7 @@ class DayPeriodActivity : AppCompatActivity() {
                 doctorAdapter.notifyDataSetChanged() // Aktualizacja adaptera po zmianie danych
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -310,7 +310,7 @@ class DayPeriodActivity : AppCompatActivity() {
                 doctorAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -322,10 +322,10 @@ class DayPeriodActivity : AppCompatActivity() {
             .document(medicine.id)
             .set(mapOf("checked" to medicine.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Medicine status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Zaktualizowano stan leków", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -337,10 +337,10 @@ class DayPeriodActivity : AppCompatActivity() {
             .document(doctor.id)
             .set(mapOf("checked" to doctor.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Doctor status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Zaktualizowano status lekarza", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
