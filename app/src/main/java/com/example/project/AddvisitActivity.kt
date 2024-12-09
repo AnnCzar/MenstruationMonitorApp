@@ -60,12 +60,11 @@ class AddVisitActivity : AppCompatActivity() {
 
         addVisitConfirmButton.setOnClickListener {
             val doctorName = doctorNameEditText.text.toString()
-            Log.d("dziala", doctorName)
 
             if (doctorName.isNotEmpty()) {
                 addNewDoctorVisit()
             } else {
-                Toast.makeText(this, "cos nie kliklo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -110,7 +109,7 @@ class AddVisitActivity : AppCompatActivity() {
 
 
         if (dateStr == null) {
-            Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Niepoprawny format daty", Toast.LENGTH_SHORT).show()
             return
         }
 

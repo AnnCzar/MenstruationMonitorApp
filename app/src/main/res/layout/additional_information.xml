@@ -57,11 +57,12 @@
                     android:layout_weight="1"
                     android:background="@drawable/round_shape"
                     android:fontFamily="@font/ml"
+                    android:gravity="center"
                     android:hint="Waga"
                     android:inputType="text"
-                    android:textColor="@color/black"
                     android:textAlignment="center"
-                    android:gravity="center" />
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
 
                 <EditText
                     android:id="@+id/addInfoEnterTemperature"

@@ -24,7 +24,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
-        <meta-data
+
+        <service android:name=".Notifications.MyFirebaseInstanceId" android:exported="true">
+        <intent-filter>
+            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+        </intent-filter>
+    </service>
+
+    <service android:name=".Notifications.MyFirebaseMessaging"
+        android:exported="false"
+        android:enabled="true">
+        <intent-filter>
+            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+        </intent-filter>
+    </service>
+
+
+    <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
 
@@ -94,6 +110,11 @@
         <activity
             android:name=".DayPregnancyActivity"
             android:exported="true"></activity>
+        <activity
+            android:name=".MainWindowDoctor"
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".MedicineActivity"
             android:exported="true"></activity>

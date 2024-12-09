@@ -226,7 +226,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 updateDrinkCount()
                 updateDrinkCountInFirestore()
             } else {
-                Toast.makeText(this, "Drinks count cannot be negative.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Wprowadzona ilość płynów nie może być ujemna.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -240,10 +240,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .document(selectedDate?.toString() ?: LocalDate.now().toString())
             .update("mucusType", mucusType)
             .addOnSuccessListener {
-                Toast.makeText(this, "Mucus type updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Zaktualizowano typ śluzu", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error updating mucus type: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd przy aktualizowaniu typu śluzu: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -267,12 +267,12 @@ class AdditionalInformationActivity : AppCompatActivity() {
                             updateDrinkCount()
                         }
                         .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error creating daily info: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Błąd przy tworzeniu informacji z dnia: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error fetching drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd podczas pobierania liczby napojów: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
     private fun updateDrinkCountInFirestore() {
@@ -281,10 +281,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .document(selectedDate.toString())
             .update("drinksCount", drinksCount)
             .addOnSuccessListener {
-                Toast.makeText(this, "Drinks count updated in Firestore", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Liczba najpojów zaktualizowana w bazie danych", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error updating drinks count: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd przy aktualizacji liczby napojów: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -325,10 +325,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .document(selectedDate?.toString() ?: LocalDate.now().toString())
             .set(data)
             .addOnSuccessListener {
-                Toast.makeText(this, "Information saved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Dane zapisane", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -343,10 +343,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .document(symptom.name)
             .set(mapOf("checked" to symptom.isChecked))
             .addOnSuccessListener {
-                Toast.makeText(this, "Symptom status updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Stan objawów został zaktualizowany", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -497,10 +497,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 if (documentSnapshot.exists()) {
                     dailyInfoDocRef.update("mood", mood)
                         .addOnSuccessListener {
-                            Toast.makeText(this, "Mood updated", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Humor zaktualizowany", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error updating mood: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Błąd przy aktualizowaniu nastroju: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                 } else {
                     val data = hashMapOf(
@@ -512,15 +512,15 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
                     dailyInfoDocRef.set(data)
                         .addOnSuccessListener {
-                            Toast.makeText(this, "New mood saved", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Zapisano nowy nastrój", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error saving mood: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Błąd przy zapisywaniu nastroju: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error checking dailyInfo document existence: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd przy sprawdzaniu czy dokument z dodatkowymi informacjami z dnia istnieje: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

@@ -130,7 +130,7 @@ class MessageChatActivity : AppCompatActivity() {
                     apiService?.sendNotification(sender)?.enqueue(object : Callback<MyResponse> {
                         override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
                             if (response.code() == 200 && response.body()?.success != 1) {
-                                showToast("Failed to send notification")
+                                showToast("Nie udało się wysłać powiadomienia")
                             }
                         }
 
@@ -159,12 +159,12 @@ class MessageChatActivity : AppCompatActivity() {
 
         db.collection("Chats").add(messageData)
             .addOnSuccessListener {
-                showToast("Message sent to $userLogin")
+                showToast("Wysłano wiadomość do  $userLogin")
                 messageText.text.clear()
             }
             .addOnFailureListener { e ->
                 Log.e("MessageChatActivity", "Failed to send message: ${e.message}")
-                showToast("Error: Could not send message")
+                showToast("Błąd: nie udało się wysłać wiadomości")
             }
 
         addToChatList(senderId, receiverId)

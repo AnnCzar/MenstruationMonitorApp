@@ -88,7 +88,7 @@ class MedicineActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
@@ -165,7 +165,7 @@ class MedicineActivity : AppCompatActivity() {
                 Toast.makeText(this, "Medicine status updated", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

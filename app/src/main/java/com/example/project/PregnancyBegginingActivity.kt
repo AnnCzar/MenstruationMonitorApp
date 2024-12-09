@@ -92,14 +92,14 @@ class PregnancyBegginingActivity : AppCompatActivity() {
             db.collection("users").document(userId).collection("pregnancies")
                 .add(pregnancyData)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Pregnancy start date saved", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Zapisano datę początku ciąży", Toast.LENGTH_SHORT).show()
                     openMainWindowPregnancyActivity(userId)
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            Toast.makeText(this, "Invalid date format. Use yyyy-MM-dd", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Nieprawidłowy format daty. Użyj RRRR-MM-dd", Toast.LENGTH_SHORT).show()
         }
     }
 

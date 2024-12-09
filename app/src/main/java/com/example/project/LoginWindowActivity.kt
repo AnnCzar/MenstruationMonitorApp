@@ -151,6 +151,7 @@ class LoginWindowActivity : AppCompatActivity() {
         val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", uid)
         startActivity(intent)
+        finish()
     }
 
 
@@ -164,6 +165,7 @@ class LoginWindowActivity : AppCompatActivity() {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
+        finish()
     }
 
     private fun openMainWindowPregnancyActivity(userId: String) {
@@ -172,5 +174,6 @@ class LoginWindowActivity : AppCompatActivity() {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
+        finish()
     }
 }

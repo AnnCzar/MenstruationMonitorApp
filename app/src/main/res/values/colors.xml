@@ -13,4 +13,11 @@
     <style name="CustomCalendarMonth">
         <item name="android:textColorPrimary">@color/black</item>
     </style>
+
+
+    <style name="SearchViewThemeNoUnderline" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
 </resources>

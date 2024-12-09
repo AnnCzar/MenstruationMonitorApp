@@ -29,7 +29,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 import android.graphics.Color
-
+import androidx.activity.OnBackPressedCallback
 
 
 import java.util.*
@@ -92,6 +92,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         createNotificationChannel()
         createNotificationChannelPeriod()
         userId = intent.getStringExtra("USER_ID") ?: ""
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(this@MainWindowPeriodActivity, "Cofanie jest wyłączone!", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         db = FirebaseFirestore.getInstance()
 
@@ -217,7 +223,7 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
     }
@@ -653,8 +659,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
 
         }.addOnFailureListener { e ->
-            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            Log.e("FirestoreError", "Error fetching medicines: ${e.message}")
+            Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e("FirestoreError", "Błąd pobierania leków: ${e.message}")
         }
     }
 
@@ -680,9 +686,13 @@ class MainWindowPeriodActivity : AppCompatActivity() {
                 fetchMedicinesStatus(selectedDate) // Teraz fetchMedicinesStatus() będzie wywołane po fetchMedicines
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error fetching medicines: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd przy pobieraniu leków: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -752,7 +762,7 @@ private fun scheduleNotification() {
                 doctorAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
