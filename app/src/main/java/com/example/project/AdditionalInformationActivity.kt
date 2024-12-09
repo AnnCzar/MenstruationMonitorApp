@@ -77,7 +77,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
         configureRecyclerView()
         setListeners()
 
-        loadAdditionalInformation(selectedDate)
+//        loadAdditionalInformation(selectedDate)
         addDate.text = selectedDate.toString()
 
         homeButtonaddInfo.setOnClickListener {
@@ -152,6 +152,8 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = symptomsAdapter
+
+        loadAdditionalInformation(selectedDate)
     }
 
 
