@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +50,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
     private lateinit var doctorsRecyclerViewPregnancy: RecyclerView
     private lateinit var doctorAdapter: DoctorVisitAdapter
 
+
     class DoctorVisitAdapter(
         private val visits: List<DoctorVisit>,
     ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
@@ -59,6 +61,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
             return DoctorVisitViewHolder(view)
         }
+
 
         override fun onBindViewHolder(holder: DoctorVisitViewHolder, position: Int) {
             val visit = visits[position]
@@ -106,6 +109,11 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
         checkDate()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(this@MainWindowPregnancyActivity, "Cofanie jest wyłączone!", Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
 
@@ -382,6 +390,9 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         val intent = Intent(this, LoginWindowActivity::class.java)
         startActivity(intent)
         finish()
+    }
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
     }
 
     private fun openCalendarActivity() {

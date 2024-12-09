@@ -111,6 +111,11 @@
             android:name=".DayPregnancyActivity"
             android:exported="true"></activity>
         <activity
+            android:name=".MainWindowDoctor"
+            android:exported="true">
+        </activity>
+
+        <activity
             android:name=".MedicineActivity"
             android:exported="true"></activity>
         <activity
