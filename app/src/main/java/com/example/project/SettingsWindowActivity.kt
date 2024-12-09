@@ -190,7 +190,13 @@ class SettingsWindowActivity : AppCompatActivity() {
         chart.viewport.setScrollableY(true)
 
         val staticLabelsFormatter = StaticLabelsFormatter(chart)
-        staticLabelsFormatter.setHorizontalLabels(dateLabels.toTypedArray()) // Ustawienie dat jako etykiet
+        // Dodaj domyślne etykiety w przypadku braku wystarczających danych
+        val labels = if (dateLabels.size < 2) {
+            listOf("Start", "End") // Domyślne etykiety
+        } else {
+            dateLabels
+        }
+        staticLabelsFormatter.setHorizontalLabels(labels.toTypedArray()) // Ustawienie dat jako etykiet
         chart.gridLabelRenderer.labelFormatter = staticLabelsFormatter
 
         // Ustawienia dla osi
