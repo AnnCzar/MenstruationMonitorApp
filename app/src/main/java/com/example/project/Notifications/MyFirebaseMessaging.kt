@@ -19,7 +19,6 @@ import com.google.firebase.messaging.RemoteMessage
 class MyFirebaseMessaging : FirebaseMessagingService() {
     override fun onMessageReceived(mRemoteMessage: RemoteMessage) {
         super.onMessageReceived(mRemoteMessage)
-        Log.d("FCM DUPA", "Message received: ${mRemoteMessage.data}")
         val sented = mRemoteMessage.data["sented"]
         val user = mRemoteMessage.data["user"]
 
