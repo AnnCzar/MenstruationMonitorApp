@@ -1,6 +1,9 @@
 package com.example.project
 
 import Token
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -198,13 +201,30 @@ class MessageChatActivity : AppCompatActivity() {
                 }
 
                 snapshots?.documentChanges?.forEach { dc ->
-                    if (dc.type == DocumentChange.Type.ADDED) {
-                        val chat = dc.document.toObject(Chat::class.java)
-                        if ((chat.receiver == senderId && chat.sender == receiverId) ||
-                            (chat.receiver == receiverId && chat.sender == senderId)
-                        ) {
-                            mChatList.add(chat)
-                            chatAdapter.notifyItemInserted(mChatList.size - 1)
+                    val chat = dc.document.toObject(Chat::class.java)
+                    when (dc.type) {
+                        DocumentChange.Type.ADDED -> {
+                            if ((chat.receiver == senderId && chat.sender == receiverId) ||
+                                (chat.receiver == receiverId && chat.sender == senderId)
+                            ) {
+                                mChatList.add(chat)
+                                chatAdapter.notifyItemInserted(mChatList.size - 1)
+
+                                // Aktualizacja wiadomości jako "seen"
+                                if (chat.sender == receiverId && !chat.isseen) {
+                                    markMessageAsSeen(dc.document.id)
+                                }
+                            }
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            val updatedChatIndex = mChatList.indexOfFirst { it.timestamp == chat.timestamp }
+                            if (updatedChatIndex != -1) {
+                                mChatList[updatedChatIndex] = chat
+                                chatAdapter.notifyItemChanged(updatedChatIndex)
+                            }
+                        }
+                        else -> {
+                            Log.e("MessageChatActivity", "Nieobsługiwany typ zmiany: ${dc.type}")
                         }
                     }
                 }
@@ -213,6 +233,17 @@ class MessageChatActivity : AppCompatActivity() {
                 if (mChatList.isNotEmpty()) {
                     chatRecyclerView.scrollToPosition(mChatList.size - 1)
                 }
+            }
+    }
+
+    // Funkcja aktualizująca status wiadomości na "zobaczone"
+    private fun markMessageAsSeen(messageId: String) {
+        db.collection("Chats").document(messageId).update("isseen", true)
+            .addOnSuccessListener {
+                Log.d("MessageChatActivity", "Message marked as seen: $messageId")
+            }
+            .addOnFailureListener { e ->
+                Log.e("MessageChatActivity", "Error marking message as seen: ${e.message}")
             }
     }
 

@@ -1,6 +1,7 @@
 package com.example.project
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class ChatAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textMessage: TextView = itemView.findViewById(R.id.message_text)
         val textSeen: TextView? = itemView.findViewById(R.id.text_see)
+        val textTimestamp: TextView = itemView.findViewById(R.id.text_timestamp)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,6 +29,7 @@ class ChatAdapter(
         } else {
             R.layout.message_item_left
         }
+        Log.d("ChatAdapter", "Inflating layout: $layoutId")
         val view = LayoutInflater.from(mContext).inflate(layoutId, parent, false)
         return ViewHolder(view)
     }
@@ -36,16 +39,25 @@ class ChatAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chat = mChatList[position]
 
-        // Ustawienie treści wiadomości
+//        // Ustawienie treści wiadomości
         holder.textMessage.text = chat.message
-
-        // Obsługa widoczności statusu "zobaczone"
+//
+//        // Obsługa widoczności statusu "zobaczone"
+//        if (position == mChatList.size - 1) {
+//            holder.textSeen?.visibility = View.VISIBLE
+//            holder.textSeen?.text = if (chat.isSeen) "Seen" else "Delivered"
+//        } else {
+//            holder.textSeen?.visibility = View.GONE
+//        }
         if (position == mChatList.size - 1) {
             holder.textSeen?.visibility = View.VISIBLE
-            holder.textSeen?.text = if (chat.isSeen) "Seen" else "Delivered"
+            holder.textSeen?.text = if (chat.isseen) "Seen" else "Delivered"
         } else {
             holder.textSeen?.visibility = View.GONE
         }
+        val timestamp = chat.timestamp
+        val formattedDate = formatTimestamp(timestamp)
+        holder.textTimestamp.text = formattedDate
 
 
     }
@@ -57,6 +69,15 @@ class ChatAdapter(
             MESSAGE_TYPE_LEFT
         }
     }
+
+    // Funkcja formatująca timestamp na datę i godzinę
+    private fun formatTimestamp(timestamp: Long): String {
+        val dateFormat = android.text.format.DateFormat.getDateFormat(mContext)
+        val timeFormat = android.text.format.DateFormat.getTimeFormat(mContext)
+        val date = java.util.Date(timestamp)
+        return "${dateFormat.format(date)} ${timeFormat.format(date)}"
+    }
+
 
     companion object {
         private const val MESSAGE_TYPE_RIGHT = 1

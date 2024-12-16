@@ -5,7 +5,8 @@ data class Chat(
     
     var message: String = "",
     var receiver: String = "",
-    var isSeen: Boolean = false,
-    var messageId: String = ""
+    var isseen: Boolean = false,
+    var messageId: String = "",
+    val timestamp: Long = 0L,
 
-)
+    )
