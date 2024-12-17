@@ -23,45 +23,6 @@
         android:textColor="#E89B6978"
         android:textSize="36dp" />
 
-
-    <SearchView
-        android:id="@+id/searchByAddress"
-        android:layout_width="match_parent"
-        android:background="@drawable/round_shape"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:theme="@style/SearchViewThemeNoUnderline"
-/>
-
-    <TextView
-        android:id="@+id/radiusText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ml"
-        android:text="Promień wyszukiwania: "
-        android:textAlignment="center"
-        android:textColor="#C69AA7"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:textSize="20dp"  />
-
-    <SeekBar
-        android:id="@+id/radiusChoice"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/round_shape"
-        android:contentDescription="Wybierz promień wyszukiwania"
-        android:max="10"
-        android:progress="5"
- />
-
-
     <Spinner
         android:id="@+id/typePlaceChoice"
         android:layout_width="match_parent"
@@ -74,7 +35,41 @@
         android:textAlignment="center"
         android:textColor="@color/black" />
 
+    <SeekBar
+        android:id="@+id/radiusChoice"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_shape"
+        android:contentDescription="Wybierz promień wyszukiwania"
+        android:max="10"
+        android:progress="5"
+        />
 
+    <TextView
+        android:id="@+id/radiusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/ml"
+        android:text="Promień wyszukiwania: "
+        android:textAlignment="center"
+        android:textColor="#C69AA7"
+        android:textSize="20dp" />
+
+    <SearchView
+        android:id="@+id/searchByAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/round_shape"
+        android:textColor="@color/black"
+        android:theme="@style/SearchViewThemeNoUnderline" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView2"

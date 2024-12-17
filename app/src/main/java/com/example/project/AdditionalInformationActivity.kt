@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -14,8 +15,11 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 class AdditionalInformationActivity : AppCompatActivity() {
 
@@ -23,6 +27,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var symptoms: MutableList<Symptom>
     private lateinit var symptomsAdapter: SymptomsAdapter
+    private lateinit var imageButtonHappyColor: ImageButton
+    private lateinit var imageButtonNeutralColor: ImageButton
+    private lateinit var imageButtonSadColor: ImageButton
 
     private lateinit var imageButtonHappy: ImageButton
     private lateinit var imageButtonNeutral: ImageButton
@@ -105,7 +112,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
         addInfoSettingAcountButton.setOnClickListener {
             openAccountWindowActivity(userId)
         }
-
+        restoreMoodState()
         addInfoSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
@@ -115,7 +122,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
         homeButtonaddInfo = findViewById(R.id.homeButtonaddInfo)
-
+        imageButtonHappyColor = findViewById(R.id.imageButtonHappyColor)
+        imageButtonNeutralColor = findViewById(R.id.imageButtonNeutralColor)
+        imageButtonSadColor = findViewById(R.id.imageButtonSadColor)
         imageButtonHappy = findViewById(R.id.imageButtonHappy)
         imageButtonNeutral = findViewById(R.id.imageButtonNeutral)
         imageButtonSad = findViewById(R.id.imageButtonSad)
@@ -182,31 +191,48 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
 
         imageButtonHappy.setOnClickListener {
-            setCurrentMood("happy")
-            saveMoodToDatabase("happy")
-            imageButtonHappy.isSelected = true
-            // Pozostałe przyciski są odznaczone
-            imageButtonNeutral.isSelected = false
-            imageButtonSad.isSelected = false
+            if (!imageButtonHappy.isSelected) {
+                setCurrentMood("happy")
+                saveMoodToDatabase("happy")
+                saveMoodToPreferences("happy")
+                imageButtonHappy.isSelected = true
+                imageButtonHappy.visibility = Button.GONE
+                imageButtonHappyColor.visibility = Button.VISIBLE
+
+                resetOtherButtons("happy")
+            }
         }
 
         imageButtonNeutral.setOnClickListener {
-            setCurrentMood("neutral")
-            saveMoodToDatabase("neutral")
-            imageButtonNeutral.isSelected = true
-            // Pozostałe przyciski są odznaczone
-            imageButtonHappy.isSelected = false
-            imageButtonSad.isSelected = false
+            if (!imageButtonNeutral.isSelected) {
+                setCurrentMood("neutral")
+                saveMoodToDatabase("neutral")
+                saveMoodToPreferences("neutral")
+
+                imageButtonNeutral.isSelected = true
+                imageButtonNeutral.visibility = Button.GONE
+                imageButtonNeutralColor.visibility = Button.VISIBLE
+
+                resetOtherButtons("neutral")
+            }
         }
 
+// Ustawienia dla imageButtonSad
         imageButtonSad.setOnClickListener {
-            setCurrentMood("sad")
-            saveMoodToDatabase("sad")
-            imageButtonSad.isSelected = true
-            // Pozostałe przyciski są odznaczone
-            imageButtonHappy.isSelected = false
-            imageButtonNeutral.isSelected = false
+            if (!imageButtonSad.isSelected) {
+                setCurrentMood("sad")
+                saveMoodToDatabase("sad")
+                saveMoodToPreferences("sad")
+                imageButtonSad.isSelected = true
+                imageButtonSad.visibility = Button.GONE
+                imageButtonSadColor.visibility = Button.VISIBLE
+
+                resetOtherButtons("sad")
+            }
         }
+
+
+
 
 
 //        addInfoSettingButton.setOnClickListener {
@@ -351,6 +377,91 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    fun saveMoodToPreferences(mood: String) {
+        val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("currentMood", mood)
+        editor.putString("date", getCurrentDate())
+        editor.apply()
+    }
+
+    fun loadMoodFromPreferences(): String? {
+        val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
+        val savedDate = sharedPreferences.getString("date", "")
+        return if (savedDate == getCurrentDate()) {
+            sharedPreferences.getString("currentMood", null)
+        } else {
+            null
+        }
+    }
+
+    fun restoreMoodState() {
+        val savedMood = loadMoodFromPreferences()
+
+        when (savedMood) {
+            "happy" -> {
+                imageButtonHappy.isSelected = true
+                imageButtonHappy.visibility = Button.GONE
+                imageButtonHappyColor.visibility = Button.VISIBLE
+                resetOtherButtons("happy")
+            }
+            "neutral" -> {
+                imageButtonNeutral.isSelected = true
+                imageButtonNeutral.visibility = Button.GONE
+                imageButtonNeutralColor.visibility = Button.VISIBLE
+                resetOtherButtons("neutral")
+            }
+            "sad" -> {
+                imageButtonSad.isSelected = true
+                imageButtonSad.visibility = Button.GONE
+                imageButtonSadColor.visibility = Button.VISIBLE
+                resetOtherButtons("sad")
+            }
+        }
+    }
+
+
+    fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
+
+
+
+
+    fun resetOtherButtons(currentMood: String) {
+        when (currentMood) {
+            "happy" -> {
+                imageButtonNeutral.isSelected = false
+                imageButtonNeutral.visibility = Button.VISIBLE
+                imageButtonNeutralColor.visibility = Button.GONE
+
+                imageButtonSad.isSelected = false
+                imageButtonSad.visibility = Button.VISIBLE
+                imageButtonSadColor.visibility = Button.GONE
+            }
+            "neutral" -> {
+                imageButtonHappy.isSelected = false
+                imageButtonHappy.visibility = Button.VISIBLE
+                imageButtonHappyColor.visibility = Button.GONE
+
+                imageButtonSad.isSelected = false
+                imageButtonSad.visibility = Button.VISIBLE
+                imageButtonSadColor.visibility = Button.GONE
+            }
+            "sad" -> {
+                imageButtonHappy.isSelected = false
+                imageButtonHappy.visibility = Button.VISIBLE
+                imageButtonHappyColor.visibility = Button.GONE
+
+                imageButtonNeutral.isSelected = false
+                imageButtonNeutral.visibility = Button.VISIBLE
+                imageButtonNeutralColor.visibility = Button.GONE
+            }
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchSymptomsForWeek() {
