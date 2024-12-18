@@ -91,7 +91,7 @@ class RegisterWindow2DoctorActivity : AppCompatActivity(){
     }
 
     private fun openMainWindowDoctor(userId: String){
-        val intent = Intent(this, MainWindowDoctor::class.java)
+        val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }

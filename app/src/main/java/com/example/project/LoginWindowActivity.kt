@@ -3,6 +3,8 @@ package com.example.project
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -15,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -25,16 +28,23 @@ class LoginWindowActivity : AppCompatActivity() {
     private lateinit var buttonConfirmLogin: Button
     private lateinit var auth: FirebaseAuth
 
+    companion object {
+        private const val REQUEST_CODE_NOTIFICATIONS = 101
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_window)
 
         auth = FirebaseAuth.getInstance()
 
+        checkAndRequestPostNotificationPermission()
+
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val userId = sharedPreferences.getString("USER_ID", null)
-
+        // Zapisz token FCM do Firestore
+        auth.uid?.let { saveFCMToken(it) }
         if (isLoggedIn && userId != null) {
             val currentUser = auth.currentUser
             if (currentUser != null && currentUser.uid == userId) {
@@ -73,6 +83,28 @@ class LoginWindowActivity : AppCompatActivity() {
             logInRegisteredUser()
         }
     }
+    private fun checkAndRequestPostNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    REQUEST_CODE_NOTIFICATIONS
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_NOTIFICATIONS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Permissions", "Uprawnienie POST_NOTIFICATIONS zostało przyznane.")
+            } else {
+                Log.e("Permissions", "Uprawnienie POST_NOTIFICATIONS zostało odrzucone.")
+                Toast.makeText(this, "Nie udzielono zgody na powiadomienia.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     val db = Firebase.firestore
 
@@ -107,8 +139,11 @@ class LoginWindowActivity : AppCompatActivity() {
                                 try {
                                     val userDocument = db.collection("users").document(user.uid).get().await()
                                     val role = userDocument.getString("role")
-                                    Log.d(role, "dziala rola")
                                     val statusPregnancy = userDocument.getBoolean("statusPregnancy")
+
+                                    // Zapisanie tokena FCM
+                                    saveFCMToken(user.uid)
+
 
                                     val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
                                     with(sharedPreferences.edit()) {
@@ -146,6 +181,32 @@ class LoginWindowActivity : AppCompatActivity() {
             showErrorSnackBar("Pola nie mogą być puste", true)
         }
     }
+    private fun saveFCMToken(userId: String) {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.e("FCM", "Fetching FCM registration token failed", task.exception)
+                    return@addOnCompleteListener
+                }
+
+                // Uzyskaj token
+                val token = task.result
+                Log.d("FCM", "Pobrano token: $token")
+                if (token != null) {
+                    val tokenData = mapOf("token" to token)
+
+                    db.collection("Tokens").document(userId)
+                        .set(tokenData)
+                        .addOnSuccessListener {
+                            Log.d("FCM", "Token zapisany w Firestore dla użytkownika: $userId")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("FCM", "Nie udało się zapisać tokena: ${e.message}")
+                        }
+                }
+            }
+    }
+
 
     private fun openMainWindowDoctor(uid: String) {
         val intent = Intent(this, ChatDoctorActivity::class.java)

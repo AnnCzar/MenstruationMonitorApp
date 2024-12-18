@@ -16,7 +16,7 @@ val localProperties = Properties().apply {
 }
 
 val MAPS_API_KEY = localProperties.getProperty("MAPS_API_KEY") ?: ""
-val chatApiKey: String? = project.findProperty("CHAT_API_KEY") as String?
+val CHAT_API_KEY: String? = project.findProperty("CHAT_API_KEY") as String?
 
 android {
     buildFeatures {
@@ -39,11 +39,11 @@ android {
         debug {
             buildConfigField("String", "MAPS_API_KEY", "\"$MAPS_API_KEY\"")
 
-            buildConfigField("String", "CHAT_API_KEY", "\"$chatApiKey\"")
+            buildConfigField("String", "CHAT_API_KEY", "\"$CHAT_API_KEY\"")
         }
         release {
             buildConfigField("String", "MAPS_API_KEY", "\"$MAPS_API_KEY\"")
-            buildConfigField("String", "CHAT_API_KEY", "\"$chatApiKey\"")
+            buildConfigField("String", "CHAT_API_KEY", "\"$CHAT_API_KEY\"")
 
             isMinifyEnabled = false
             proguardFiles(
@@ -74,6 +74,14 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"  // Use the appropriate version here
+    }
+    // Prevent duplicate file issue
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/NOTICE.txt")
     }
 
 }
@@ -132,5 +140,8 @@ dependencies {
 
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.10.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("com.google.api-client:google-api-client:1.32.1") // Do API FCM
 
 }
