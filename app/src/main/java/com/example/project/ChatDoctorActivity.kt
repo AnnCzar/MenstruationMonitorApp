@@ -62,15 +62,20 @@ class ChatDoctorActivity : AppCompatActivity() {
         }
         chatUserRV.adapter = chatUserAdapter
 
-
+        updateUserTimestamp(userId)
         fetchChatUsers()
+
 
 
 
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Toast.makeText(this@ChatDoctorActivity, "Cofanie jest wyłączone!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ChatDoctorActivity,
+                    "Cofanie jest wyłączone!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -91,7 +96,10 @@ class ChatDoctorActivity : AppCompatActivity() {
                     Log.w("Firestore dupa 1", "Listen failed: ${e.message}", e)
                     return@addSnapshotListener
                 }
-                Log.d("Firestore dupa ", "Snapshot received for doctor: ${snapshots?.documents?.size ?: 0} documents")
+                Log.d(
+                    "Firestore dupa ",
+                    "Snapshot received for doctor: ${snapshots?.documents?.size ?: 0} documents"
+                )
                 // Znajdź najnowszą wiadomość (na podstawie timestamp)
                 val latestMessage = snapshots?.documents
                     ?.map { it.toObject(Message::class.java) }
@@ -137,31 +145,65 @@ class ChatDoctorActivity : AppCompatActivity() {
     )
 
 
+//
+//    private fun sendNotification(message: Message) {
+////        Log.d("Notifications dupa 4", "Preparing notification for message: ${message.message}")
+//
+//        val notificationManager =
+//            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel = NotificationChannel(
+//                "default",
+//                "Default Notifications",
+//                NotificationManager.IMPORTANCE_DEFAULT
+//            )
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//        val notification = NotificationCompat.Builder(this, "default")
+//            .setContentTitle("Nowa wiadomość od ${message.sender}")
+//            .setContentText(message.message)
+//            .setSmallIcon(R.drawable.ic_launcher_foreground)
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            .setAutoCancel(true)
+//            .build()
+//        Log.d("Notifications dupa 5", "Sending notification with timestamp: ${message.timestamp}")
+//        notificationManager.notify(message.timestamp.toInt(), notification)
+//    }
 
-    private fun sendNotification(message: Message) {
-        Log.d("Notifications dupa 4", "Preparing notification for message: ${message.message}")
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "default",
-                "Default Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-        val notification = NotificationCompat.Builder(this, "default")
-            .setContentTitle("Nowa wiadomość od ${message.sender}")
-            .setContentText(message.message)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-            .build()
-        Log.d("Notifications dupa 5", "Sending notification with timestamp: ${message.timestamp}")
-        notificationManager.notify(message.timestamp.toInt(), notification)
+    private fun sendNotification(message: ChatDoctorActivity.Message) {
+        val firestore = FirebaseFirestore.getInstance()
 
+        firestore.collection("users")
+            .document(message.sender)
+            .get()
+            .addOnSuccessListener { document ->
+                val senderLogin = document.getString("login") ?: "Nieznany użytkownik"
 
+                val notificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val channel = NotificationChannel(
+                        "default",
+                        "Default Notifications",
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    )
+                    notificationManager.createNotificationChannel(channel)
+                }
+
+                val notification = NotificationCompat.Builder(this, "default")
+                    .setContentTitle("Nowa wiadomość od $senderLogin")
+                    .setContentText(message.message)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true)
+                    .build()
+
+                notificationManager.notify(message.timestamp.toInt(), notification)
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+            }
     }
 
     override fun onResume() {
@@ -169,6 +211,7 @@ class ChatDoctorActivity : AppCompatActivity() {
         fetchChatUsers()
 
     }
+
     private fun logout() {
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
@@ -202,31 +245,72 @@ class ChatDoctorActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun fetchChatUsers() {
-        db.collection("users")
-            .get()
-            .addOnSuccessListener { result ->
-                chatUserList.clear()
-                for (document in result) {
-                    val login = document.getString("login")
-                    val id = document.id // ID dokumentu z Firestore
-                    if (login.isNullOrEmpty() && id.isEmpty()) {
-                        Toast.makeText(this, "Brakuje pola loginu", Toast.LENGTH_SHORT).show()
-                    } else {
-                        chatUserList.add(ChatUser(login = login.toString(), id = id))
-                    }
-                }
-                chatUserAdapter.notifyDataSetChanged()
+    private fun updateUserTimestamp(userId: String) {
+        db.collection("users").document(userId)
+            .update("timestamp", System.currentTimeMillis())
+            .addOnSuccessListener {
+                Log.d("Firestore", "Timestamp zaktualizowany dla użytkownika: $userId")
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Firestore", "Błąd podczas aktualizacji timestamp: ${e.message}", e)
             }
     }
 
 
+    private fun fetchChatUsers() {
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { userDocuments ->
+                val allUsers = mutableListOf<ChatUser>()
+
+                for (document in userDocuments) {
+                    val login = document.getString("login") ?: "Nieznany użytkownik"
+                    val id = document.id
+                    allUsers.add(
+                        ChatUser(
+                            login = login,
+                            id = id,
+                            timestamp = 0L
+                        )
+                    )
+                }
+
+                db.collection("Chats")
+                    .whereEqualTo("receiver", userId)
+                    .get()
+                    .addOnSuccessListener { chatDocuments ->
+                        val latestMessages =
+                            mutableMapOf<String, Long>()
+                        for (document in chatDocuments) {
+                            val sender = document.getString("sender") ?: continue
+                            val timestamp = document.getLong("timestamp") ?: 0L
+                            if (latestMessages[sender] == null || timestamp > latestMessages[sender]!!) {
+                                latestMessages[sender] = timestamp
+                            }
+                        }
+
+                        for (user in allUsers) {
+                            if (latestMessages.containsKey(user.id)) {
+                                user.timestamp = latestMessages[user.id]!!
+                            }
+                        }
+
+                        chatUserList.clear()
+                        chatUserList.addAll(allUsers.sortedWith(compareByDescending<ChatUser> { it.timestamp > 0L }.thenByDescending { it.timestamp }))
+
+                        chatUserAdapter.notifyDataSetChanged()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
+    }
+
+    private fun <E> MutableList<E>.add(element: Medicine) {
+
+    }
 }
-
-private fun <E> MutableList<E>.add(element: Medicine) {
-
-}
-

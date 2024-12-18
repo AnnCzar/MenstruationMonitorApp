@@ -1,4 +1,5 @@
 package database.collections
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
 import java.time.LocalDate
 

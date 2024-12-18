@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project.MainWindowPeriodActivity.Message
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import database.collections.Pregnancy
@@ -233,31 +234,42 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
     )
 
 
-    private fun sendNotification(message: Message) {
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "default",
-                "Default Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-        val notification = NotificationCompat.Builder(this, "default")
-            .setContentTitle("Nowa wiadomość od ${message.sender}")
-            .setContentText(message.message)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-            .build()
-        notificationManager.notify(message.timestamp.toInt(), notification)
+    private fun sendNotification(message: MainWindowPregnancyActivity.Message) {
+        val firestore = FirebaseFirestore.getInstance()
 
+        firestore.collection("users")
+            .document(message.sender)
+            .get()
+            .addOnSuccessListener { document ->
+                val senderLogin = document.getString("login") ?: "Nieznany użytkownik"
 
+                val notificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val channel = NotificationChannel(
+                        "default",
+                        "Default Notifications",
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    )
+                    notificationManager.createNotificationChannel(channel)
+                }
 
+                val notification = NotificationCompat.Builder(this, "default")
+                    .setContentTitle("Nowa wiadomość od $senderLogin")
+                    .setContentText(message.message)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true)
+                    .build()
 
+                notificationManager.notify(message.timestamp.toInt(), notification)
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+            }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()

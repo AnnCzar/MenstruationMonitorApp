@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -134,18 +135,16 @@ class ChatUserActivity : AppCompatActivity() {
             .whereEqualTo("role", "Lekarz")
             .whereEqualTo("specialisation", specialisation)
             .get()
-            .addOnSuccessListener { result ->
-                chatUserList.clear()
-                for (document in result) {
-                    val login = document.getString("login")
+            .addOnSuccessListener { userDocuments ->
+                val allUsers = mutableListOf<ChatUser>()
+
+                for (document in userDocuments) {
+                    val login = document.getString("login") ?: "Nieznany użytkownik"
                     val id = document.id
-                    if (login.isNullOrEmpty() && id.isEmpty()) {
-                        Toast.makeText(this, "Brakuje pola loginu", Toast.LENGTH_SHORT).show()
-                    } else {
-                        chatUserList.add(ChatUser(login = login.toString(), id = id))
-                    }
+                    allUsers.add(ChatUser(login = login, id = id, timestamp = 0L))
                 }
-                chatUserAdapter.notifyDataSetChanged()
+
+                fetchAndSortUsers(allUsers)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -156,25 +155,55 @@ class ChatUserActivity : AppCompatActivity() {
         db.collection("users")
             .whereEqualTo("role", "Lekarz")
             .get()
-            .addOnSuccessListener { result ->
-                chatUserList.clear()
-                for (document in result) {
-                    val login = document.getString("login")
+            .addOnSuccessListener { userDocuments ->
+                val allUsers = mutableListOf<ChatUser>()
+
+                for (document in userDocuments) {
+                    val login = document.getString("login") ?: "Nieznany użytkownik"
                     val id = document.id
-                    if (login.isNullOrEmpty() && id.isEmpty()) {
-                        Toast.makeText(this, "Brakuje pola loginu", Toast.LENGTH_SHORT).show()
-                    } else {
-                        chatUserList.add(ChatUser(login = login.toString(), id = id))
-                    }
+                    allUsers.add(ChatUser(login = login, id = id, timestamp = 0L))
                 }
-                chatUserAdapter.notifyDataSetChanged()
+
+                fetchAndSortUsers(allUsers)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
+    private fun fetchAndSortUsers(allUsers: MutableList<ChatUser>) {
+        db.collection("Chats")
+            .whereEqualTo("receiver", userId)
+            .get()
+            .addOnSuccessListener { chatDocuments ->
+                val latestMessages = mutableMapOf<String, Long>()
 
+                for (document in chatDocuments) {
+                    val sender = document.getString("sender") ?: continue
+                    val timestamp = document.getLong("timestamp") ?: 0L
+                    if (latestMessages[sender] == null || timestamp > latestMessages[sender]!!) {
+                        latestMessages[sender] = timestamp
+                    }
+                }
+
+                for (user in allUsers) {
+                    user.timestamp = latestMessages[user.id] ?: 0L
+                }
+
+                chatUserList.clear()
+                chatUserList.addAll(
+                    allUsers.sortedWith(
+                        compareByDescending<ChatUser> { it.timestamp > 0L }
+                            .thenByDescending { it.timestamp }
+                    )
+                )
+
+                chatUserAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -192,6 +221,7 @@ class ChatUserActivity : AppCompatActivity() {
                 Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun openAccountWindowActivity(userId: String) {
         val intent = Intent(this, AccountWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)

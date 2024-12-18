@@ -214,11 +214,10 @@ class DoctorVisitsActivity : AppCompatActivity() {
         val now = System.currentTimeMillis()
         val timeUntilVisit = visitTimeInMillis - now
 
-        // Harmonogram alarmu
         val alarmTime = when {
-            timeUntilVisit > 24 * 60 * 60 * 1000 -> visitTimeInMillis - (24 * 60 * 60 * 1000) // 24 godziny wcześniej
+            timeUntilVisit > 24 * 60 * 60 * 1000 -> visitTimeInMillis - (24 * 60 * 60 * 1000)
             timeUntilVisit > 60 * 60 * 1000 -> visitTimeInMillis - (60 * 60 * 1000) // 1 godzina wcześniej
-            else -> null // Zbyt mało czasu na ustawienie powiadomienia
+            else -> null
         }
 
         alarmTime?.let {

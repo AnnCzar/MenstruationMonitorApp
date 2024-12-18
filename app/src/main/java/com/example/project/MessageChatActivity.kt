@@ -31,7 +31,7 @@ class MessageChatActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
 
     private var notify = false
-    private var apiService: APIService? = null
+//    private var apiService: APIService? = null
 
     private var isChatActive = false
 
@@ -41,7 +41,7 @@ class MessageChatActivity : AppCompatActivity() {
 
         initializeUI()
         initializeFirebase()
-        apiService = Client.getClient("https://fcm.googleapis.com/")!!.create(APIService::class.java)
+//        apiService = Client.getClient("https://fcm.googleapis.com/")!!.create(APIService::class.java)
 
         setupRecyclerView()
         setupSendButton()
@@ -76,7 +76,7 @@ class MessageChatActivity : AppCompatActivity() {
     // Inicjalizacja Firebase i Retrofit
     private fun initializeFirebase() {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
-        apiService = Client.getClient("https://fcm.googleapis.com/")!!.create(APIService::class.java)
+//        apiService = Client.getClient("https://fcm.googleapis.com/")!!.create(APIService::class.java)
     }
 
     // Konfiguracja RecyclerView
@@ -100,7 +100,6 @@ class MessageChatActivity : AppCompatActivity() {
     }
 
 
-    // Wysyłanie wiadomości
     private fun sendMessageToUser(senderId: String, receiverId: String, message: String) {
         val messageData = mapOf(
             "sender" to senderId,
