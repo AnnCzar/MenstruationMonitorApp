@@ -1,6 +1,5 @@
 package com.example.project
 
-import Token
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -11,18 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.Notifications.Client
-import com.example.project.Notifications.Data
-import com.example.project.Notifications.MyResponse
-import com.example.project.Notifications.Sender
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MessageChatActivity : AppCompatActivity() {
 
@@ -37,10 +28,12 @@ class MessageChatActivity : AppCompatActivity() {
     private lateinit var userId: String
 
     private lateinit var firebaseUser: FirebaseUser
-    private val db = Firebase.firestore
+    private val db = FirebaseFirestore.getInstance()
 
     private var notify = false
     private var apiService: APIService? = null
+
+    private var isChatActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +41,22 @@ class MessageChatActivity : AppCompatActivity() {
 
         initializeUI()
         initializeFirebase()
+        apiService = Client.getClient("https://fcm.googleapis.com/")!!.create(APIService::class.java)
+
         setupRecyclerView()
         setupSendButton()
 
         retrieveMessages(firebaseUser.uid, userId)
-        setupNotificationListener()
+
+    }
+    override fun onResume() {
+        super.onResume()
+        isChatActive = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isChatActive = false
     }
 
 
@@ -95,57 +99,6 @@ class MessageChatActivity : AppCompatActivity() {
         }
     }
 
-    // Słuchacz powiadomień
-    private fun setupNotificationListener() {
-        val userRef = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser.uid)
-        userRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(ChatUser::class.java)
-                if (notify) {
-                    sendNotification(userId, user?.login, messageText.text.toString())
-                    notify = false
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("MessageChatActivity", "Notification listener cancelled: ${error.message}")
-            }
-        })
-    }
-
-    // Wysyłanie powiadomienia
-    private fun sendNotification(receiverId: String?, userName: String?, message: String) {
-        val tokensRef = FirebaseDatabase.getInstance().reference.child("Tokens")
-        val query = tokensRef.orderByKey().equalTo(receiverId)
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (dataSnapshot in snapshot.children) {
-                    val token: Token? = dataSnapshot.getValue(Token::class.java)
-                    val data = Data(firebaseUser.uid,
-                        R.mipmap.ic_launcher, "$userName: $message", "New Message", receiverId.toString()
-                    )
-                    val sender = Sender(data, token?.token.toString())
-
-                    apiService?.sendNotification(sender)?.enqueue(object : Callback<MyResponse> {
-                        override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
-                            if (response.code() == 200 && response.body()?.success != 1) {
-                                showToast("Nie udało się wysłać powiadomienia")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                            Log.e("MessageChatActivity", "Notification failed: ${t.message}")
-                        }
-                    })
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("MessageChatActivity", "Notification query cancelled: ${error.message}")
-            }
-        })
-    }
 
     // Wysyłanie wiadomości
     private fun sendMessageToUser(senderId: String, receiverId: String, message: String) {
@@ -161,6 +114,12 @@ class MessageChatActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 showToast("Wysłano wiadomość do  $userLogin")
                 messageText.text.clear()
+
+                // Wyślij powiadomienie push
+                if (notify) {
+
+                    notify = false
+                }
             }
             .addOnFailureListener { e ->
                 Log.e("MessageChatActivity", "Failed to send message: ${e.message}")
@@ -169,6 +128,7 @@ class MessageChatActivity : AppCompatActivity() {
 
         addToChatList(senderId, receiverId)
     }
+
 
     // Dodawanie do listy czatów
     private fun addToChatList(senderId: String, receiverId: String) {
@@ -198,13 +158,30 @@ class MessageChatActivity : AppCompatActivity() {
                 }
 
                 snapshots?.documentChanges?.forEach { dc ->
-                    if (dc.type == DocumentChange.Type.ADDED) {
-                        val chat = dc.document.toObject(Chat::class.java)
-                        if ((chat.receiver == senderId && chat.sender == receiverId) ||
-                            (chat.receiver == receiverId && chat.sender == senderId)
-                        ) {
-                            mChatList.add(chat)
-                            chatAdapter.notifyItemInserted(mChatList.size - 1)
+                    val chat = dc.document.toObject(Chat::class.java)
+                    when (dc.type) {
+                        DocumentChange.Type.ADDED -> {
+                            if ((chat.receiver == senderId && chat.sender == receiverId) ||
+                                (chat.receiver == receiverId && chat.sender == senderId)
+                            ) {
+                                mChatList.add(chat)
+                                chatAdapter.notifyItemInserted(mChatList.size - 1)
+
+                                // Aktualizacja wiadomości jako "seen"
+                                if (isChatActive && chat.sender == receiverId && !chat.isseen) {
+                                    markMessageAsSeen(dc.document.id)
+                                }
+                            }
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            val updatedChatIndex = mChatList.indexOfFirst { it.timestamp == chat.timestamp }
+                            if (updatedChatIndex != -1) {
+                                mChatList[updatedChatIndex] = chat
+                                chatAdapter.notifyItemChanged(updatedChatIndex)
+                            }
+                        }
+                        else -> {
+                            Log.e("MessageChatActivity", "Nieobsługiwany typ zmiany: ${dc.type}")
                         }
                     }
                 }
@@ -216,8 +193,22 @@ class MessageChatActivity : AppCompatActivity() {
             }
     }
 
+    // Funkcja aktualizująca status wiadomości na "zobaczone"
+    private fun markMessageAsSeen(messageId: String) {
+        db.collection("Chats").document(messageId).update("isseen", true)
+            .addOnSuccessListener {
+                Log.d("MessageChatActivity", "Message marked as seen: $messageId")
+            }
+            .addOnFailureListener { e ->
+                Log.e("MessageChatActivity", "Error marking message as seen: ${e.message}")
+            }
+    }
+
     // Pomocnicza funkcja wyświetlająca Toast
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
+
+
+

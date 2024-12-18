@@ -8,6 +8,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.project.MessageChatActivity
 import com.example.project.Notifications.OreoNotification.Companion.CHANNEL_ID
@@ -18,22 +19,30 @@ import com.google.firebase.messaging.RemoteMessage
 class MyFirebaseMessaging : FirebaseMessagingService() {
     override fun onMessageReceived(mRemoteMessage: RemoteMessage) {
         super.onMessageReceived(mRemoteMessage)
-
         val sented = mRemoteMessage.data["sented"]
         val user = mRemoteMessage.data["user"]
 
-        val sharedPref = getSharedPreferences("PREFS", Context.MODE_PRIVATE)
-        val currentOnlineUser = sharedPref.getString("currentUser", "none")
+//        val sharedPref = getSharedPreferences("PREFS", Context.MODE_PRIVATE)
+//        val currentOnlineUser = sharedPref.getString("currentUser", "none")
 
+//        val firebaseUser = FirebaseAuth.getInstance().currentUser
+//
+//        if (firebaseUser != null && sented == firebaseUser.uid) {
+//            if (currentOnlineUser != user) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    sendOreoNotification(mRemoteMessage)
+//                } else {
+//                    sendNotification(mRemoteMessage)
+//                }
+//            }
+//        }
+//    }
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-
         if (firebaseUser != null && sented == firebaseUser.uid) {
-            if (currentOnlineUser != user) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    sendOreoNotification(mRemoteMessage)
-                } else {
-                    sendNotification(mRemoteMessage)
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                sendOreoNotification(mRemoteMessage)
+            } else {
+                sendNotification(mRemoteMessage)
             }
         }
     }

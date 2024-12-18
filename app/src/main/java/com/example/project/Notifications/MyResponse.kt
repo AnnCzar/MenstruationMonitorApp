@@ -1,5 +1,5 @@
-package com.example.project.Notifications
-
-class MyResponse {
-    var success = 0
-}
+//package com.example.project.Notifications
+//
+//class MyResponse {
+//    var success = 0
+//}

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,8 @@ import java.time.format.DateTimeFormatter
 import android.graphics.Color
 import androidx.activity.OnBackPressedCallback
 
-
+import androidx.core.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
 class MainWindowPeriodActivity : AppCompatActivity() {
@@ -51,12 +53,14 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var doctorAdapter: DoctorVisitAdapter
+
     class DoctorVisitAdapter(
         private val visits: List<DoctorVisit>,
     ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(android.R.layout.simple_list_item_1, parent, false)
             return DoctorVisitViewHolder(view)
         }
 
@@ -72,12 +76,14 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
             fun bind(visit: DoctorVisit) {
 
-                textView.text = "${visit.doctorName} - Godzina: ${visit.time}\nInformacje: ${visit.extraInfo}"
+                textView.text =
+                    "${visit.doctorName} - Godzina: ${visit.time}\nInformacje: ${visit.extraInfo}"
                 textView.setTextColor(Color.BLACK)
 
             }
         }
     }
+
     private val doctors = mutableListOf<DoctorVisit>()
 
     private lateinit var medicineRecyclerView: RecyclerView
@@ -95,7 +101,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Toast.makeText(this@MainWindowPeriodActivity, "Cofanie jest wyłączone!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MainWindowPeriodActivity,
+                    "Cofanie jest wyłączone!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -168,11 +178,93 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         mainWindowPeriodSettingButton.setOnClickListener {
             openSettingsWindowActivity(userId)
         }
-
-//        fetchMedicines()
         fetchTodaysCycleDay()
 
         scheduleNotification()
+
+        FirebaseMessaging.getInstance().subscribeToTopic("user_${userId}")
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed"
+                if (!task.isSuccessful) {
+                    msg = "Subscription failed"
+                }
+                Log.d("FCM", msg)
+            }
+        db.collection("Chats")
+            .whereEqualTo("receiver", userId)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("Firestore", "Listen failed: ${e.message}", e)
+                    return@addSnapshotListener
+                }
+                // Znajdź najnowszą wiadomość (na podstawie timestamp)
+                val latestMessage = snapshots?.documents
+                    ?.map { it.toObject(Message::class.java) }
+                    ?.maxByOrNull { it?.timestamp ?: 0L }
+                if (latestMessage != null) {
+                    sendNotification(latestMessage)
+                }
+            }
+
+
+                FirebaseMessaging.getInstance().subscribeToTopic("user_${userId}")
+                    .addOnCompleteListener { task ->
+                        val msg = if (task.isSuccessful) "Subscribed" else "Subscription failed"
+                        Log.d("FCM", msg)
+                    }
+
+        db.collection("Chats") // Poprawiona nazwa kolekcji
+            .whereEqualTo("receiver", userId) // Użycie poprawnej nazwy pola "receiver"
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("Firestore", "Listen failed: ${e.message}", e)
+                    return@addSnapshotListener
+                }
+
+                // Znalezienie najnowszej wiadomości na podstawie pola "timestamp"
+                val latestMessage = snapshots?.documents
+                    ?.mapNotNull { it.toObject(Message::class.java) } // Konwersja do obiektu Message
+                    ?.maxByOrNull { it.timestamp ?: 0L }
+
+                if (latestMessage != null) {
+                    sendNotification(latestMessage)
+                }
+            }}
+
+        // Klasa Message odpowiadająca strukturze dokumentu w Firestore
+        data class Message(
+            val message: String = "",
+            val receiver: String = "",
+            val sender: String = "",
+            val timestamp: Long = 0L,
+            val isseen: Boolean = false
+        )
+
+
+    private fun sendNotification(message: Message) {
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "default",
+                "Default Notifications",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        val notification = NotificationCompat.Builder(this, "default")
+            .setContentTitle("Nowa wiadomość od ${message.sender}")
+            .setContentText(message.message)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .build()
+        notificationManager.notify(message.timestamp.toInt(), notification)
+
+
+
+//        fetchMedicines()
+
     }
 
 

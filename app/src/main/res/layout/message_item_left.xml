@@ -14,14 +14,17 @@
         android:padding="12dp"
         android:background="@drawable/background_rounded_white">
     </TextView>
+
     <TextView
-        android:id="@+id/text_see"
+        android:id="@+id/text_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/message_text"
         android:layout_marginLeft="6dp"
-        android:text="seen"
-        android:layout_below="@+id/message_text">
-    </TextView>
+        android:layout_marginTop="4dp"
+        android:text="12:30 PM"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
 
 
 </RelativeLayout>

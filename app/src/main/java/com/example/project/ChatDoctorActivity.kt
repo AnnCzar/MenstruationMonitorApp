@@ -1,17 +1,23 @@
 package com.example.project
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -62,7 +68,102 @@ class ChatDoctorActivity : AppCompatActivity() {
 
 
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(this@ChatDoctorActivity, "Cofanie jest wyłączone!", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+
+        FirebaseMessaging.getInstance().subscribeToTopic("user_${userId}")
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed"
+                if (!task.isSuccessful) {
+                    msg = "Subscription failed"
+                }
+                Log.d("FCM", msg)
+            }
+        db.collection("Chats")
+            .whereEqualTo("receiver", userId)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("Firestore dupa 1", "Listen failed: ${e.message}", e)
+                    return@addSnapshotListener
+                }
+                Log.d("Firestore dupa ", "Snapshot received for doctor: ${snapshots?.documents?.size ?: 0} documents")
+                // Znajdź najnowszą wiadomość (na podstawie timestamp)
+                val latestMessage = snapshots?.documents
+                    ?.map { it.toObject(Message::class.java) }
+                    ?.maxByOrNull { it?.timestamp ?: 0L }
+                if (latestMessage != null) {
+                    Log.d("Firestore dupa 3", "Latest message for doctor: ${latestMessage.message}")
+                    sendNotification(latestMessage)
+                }
+            }
+        FirebaseMessaging.getInstance().subscribeToTopic("user_${userId}")
+            .addOnCompleteListener { task ->
+                val msg = if (task.isSuccessful) "Subscribed" else "Subscription failed"
+                Log.d("FCM", msg)
+            }
+        db.collection("Chats") // Poprawiona nazwa kolekcji
+            .whereEqualTo("receiver", userId) // Użycie poprawnej nazwy pola "receiver"
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("Firestore", "Listen failed: ${e.message}", e)
+                    return@addSnapshotListener
+                }
+
+                // Znalezienie najnowszej wiadomości na podstawie pola "timestamp"
+                val latestMessage = snapshots?.documents
+                    ?.mapNotNull { it.toObject(Message::class.java) } // Konwersja do obiektu Message
+                    ?.maxByOrNull { it.timestamp ?: 0L }
+
+                if (latestMessage != null) {
+                    sendNotification(latestMessage)
+                }
+            }
+
+
     }
+
+    // Klasa Message odpowiadająca strukturze dokumentu w Firestore
+    data class Message(
+        val message: String = "",
+        val receiver: String = "",
+        val sender: String = "",
+        val timestamp: Long = 0L,
+        val isseen: Boolean = false
+    )
+
+
+
+    private fun sendNotification(message: Message) {
+        Log.d("Notifications dupa 4", "Preparing notification for message: ${message.message}")
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "default",
+                "Default Notifications",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        val notification = NotificationCompat.Builder(this, "default")
+            .setContentTitle("Nowa wiadomość od ${message.sender}")
+            .setContentText(message.message)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .build()
+        Log.d("Notifications dupa 5", "Sending notification with timestamp: ${message.timestamp}")
+        notificationManager.notify(message.timestamp.toInt(), notification)
+
+
+
+    }
+
     override fun onResume() {
         super.onResume()
         fetchChatUsers()
