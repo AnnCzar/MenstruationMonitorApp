@@ -2,16 +2,11 @@ package com.example.project
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
-
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
-
-import android.widget.ImageView
-
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -22,42 +17,27 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class AccountWindowActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private lateinit var userId: String
+
     private lateinit var accountWidnowSettingButton: ImageButton
     private lateinit var homeButtonProfil: ImageButton
     private lateinit var usernameTextView: TextView
     private lateinit var lastWeightTextView: TextView
     private lateinit var visitsButton: Button
     private lateinit var medicationsButton: Button
-
     private lateinit var chatButton: Button
-
     private lateinit var begginingPregnancyButton: Button
     private lateinit var logoutButton: ImageButton
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    private lateinit var userId: String
     private lateinit var mapSearch: Button
     private lateinit var meanCycle: TextView
     private lateinit var meanMenstruation: TextView
     private lateinit var chatBot: Button
 
 
-private fun logout() {
-    val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
-    with(sharedPreferences.edit()) {
-        putBoolean("isLoggedIn", false)
-        putString("USER_ID", null)
-        apply()
-    }
-    auth.signOut()
 
-
-    val intent = Intent(this, FirstWindowActivity::class.java)
-
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    startActivity(intent)
-    finish()
-}
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,37 +48,9 @@ private fun logout() {
 
         userId = intent.getStringExtra("USER_ID") ?: ""
         db = FirebaseFirestore.getInstance()
-        meanCycle = findViewById(R.id.meanCycle)
-        meanMenstruation = findViewById(R.id.meanMenstruation)
+        auth = FirebaseAuth.getInstance()
 
         loadUserInfo()
-
-        accountWidnowSettingButton.setOnClickListener {
-            openSettingsWindowActivity(userId)
-        }
-
-        chatButton.setOnClickListener {
-            openChatWindowActivity(userId)
-        }
-
-        visitsButton.setOnClickListener {
-            openVisitsWindow(userId)
-        }
-        begginingPregnancyButton = findViewById(R.id.endingPregnancyButton)
-        logoutButton = findViewById(R.id.logoutButton)
-
-        logoutButton.setOnClickListener {
-            logout()
-
-        }
-        chatBot.setOnClickListener {
-            openChatBot(userId)
-        }
-        auth = FirebaseAuth.getInstance()
-        begginingPregnancyButton.setOnClickListener {
-            updatePregnancyStatusToTrue(userId)
-            openPregnancyBegginingActivity(userId)
-        }
         fetchCycleData()
 
         homeButtonProfil.setOnClickListener {
@@ -122,16 +74,70 @@ private fun logout() {
         }
     }
 
-    private fun openChatBot(userId: String) {
-        val intent = Intent(this, GeminiChatBot::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
-
     override fun onResume() {
         super.onResume()
         checkPregnantStatus()
+    }
+    private fun initializeViews() {
+        accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
+        homeButtonProfil = findViewById(R.id.homeButtonProfil)
+        usernameTextView = findViewById(R.id.usernameTextView)
+        lastWeightTextView = findViewById(R.id.lastWeightTextView)
+        visitsButton = findViewById(R.id.visitsButton)
+        medicationsButton = findViewById(R.id.medicationsButton)
+        mapSearch = findViewById(R.id.mapSearch)
+        chatBot = findViewById(R.id.chatBot)
+        chatButton =findViewById(R.id.contactDoctor)
+        meanCycle = findViewById(R.id.meanCycle)
+        meanMenstruation = findViewById(R.id.meanMenstruation)
+        begginingPregnancyButton = findViewById(R.id.endingPregnancyButton)
+        logoutButton = findViewById(R.id.logoutButton)
+
+        accountWidnowSettingButton.setOnClickListener {
+            openSettingsWindowActivity(userId)
+        }
+
+        chatButton.setOnClickListener {
+            openChatWindowActivity(userId)
+        }
+
+        visitsButton.setOnClickListener {
+            openVisitsWindow(userId)
+        }
+
+        logoutButton.setOnClickListener {
+            logout()
+        }
+        chatBot.setOnClickListener {
+            openChatBot(userId)
+        }
+
+        begginingPregnancyButton.setOnClickListener {
+
+            openPregnancyBegginingActivity(userId)
+        }
+        medicationsButton.setOnClickListener {
+            openMedicineWindowActivity(userId)
+        }
+        mapSearch.setOnClickListener {
+            openMapWindowActivity(userId)
+        }
+    }
+
+
+    private fun logout() {
+        val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("isLoggedIn", false)
+            putString("USER_ID", null)
+            apply()
+        }
+        auth.signOut()
+        val intent = Intent(this, FirstWindowActivity::class.java)
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun checkPregnantStatus() {
@@ -166,11 +172,6 @@ private fun logout() {
     }
 
 
-    private fun openPregnancyBegginingActivity(userId: String) {
-        val intent = Intent(this, PregnancyBegginingActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
     private fun updatePregnancyStatusToTrue(userId: String) {
         val userRef = db.collection("users").document(userId)
         userRef
@@ -182,6 +183,7 @@ private fun logout() {
                 Toast.makeText(this@AccountWindowActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun loadUserInfo() {
         db.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
@@ -207,8 +209,6 @@ private fun logout() {
                                     .addOnSuccessListener { dateDocuments ->
                                         if (!dateDocuments.isEmpty) {
                                             val lastWeight = dateDocuments.documents[0].getDouble("weight") ?: 0.0
-
-
                                             lastWeightTextView.text = "$lastWeight kg"
                                             Log.d("Firestore", "Last weight from dailyInfo: $lastWeight")
                                         } else {
@@ -229,8 +229,6 @@ private fun logout() {
                             }
                         }
                         .addOnFailureListener { e ->
-
-
                             lastWeightTextView.text = "$userWeight kg"
 
                             Log.e("Firestore", "Error fetching dailyInfo data, using user weight: $userWeight", e)
@@ -242,33 +240,14 @@ private fun logout() {
                 }
             }
             .addOnFailureListener { e ->
-                usernameTextView.text = "Error: ${e.message}"
-                lastWeightTextView.text = "Error: ${e.message}"
+                usernameTextView.text = "Błąd: ${e.message}"
+                lastWeightTextView.text = "Błąd: ${e.message}"
                 Log.e("Firestore", "Error fetching user data", e)
             }
     }
 
-    private fun initializeViews() {
-        accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
-        homeButtonProfil = findViewById(R.id.homeButtonProfil)
-        usernameTextView = findViewById(R.id.usernameTextView)
-        lastWeightTextView = findViewById(R.id.lastWeightTextView)
-        visitsButton = findViewById(R.id.visitsButton)
-        medicationsButton = findViewById(R.id.medicationsButton)
-        mapSearch = findViewById(R.id.mapSearch)
-        chatBot = findViewById(R.id.chatBot)
-        chatButton =findViewById(R.id.contactDoctor)
 
-
-        medicationsButton.setOnClickListener {
-            openMedicineWindowActivity(userId)
-        }
-        mapSearch.setOnClickListener {
-            openMapWindowActivity(userId)
-        }
-    }
-
-
+    // nawigacja do innych okien
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -276,14 +255,12 @@ private fun logout() {
         startActivity(intent)
     }
 
-
     private fun openChatWindowActivity(userId: String) {
         val intent = Intent(this, ChatUserActivity::class.java).apply {
             putExtra("USER_ID", userId)
         }
         startActivity(intent)
     }
-
 
     private fun openVisitsWindow(userId: String) {
         val intent = Intent(this, DoctorVisitsActivity::class.java)
@@ -295,7 +272,6 @@ private fun logout() {
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
-//        intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
 
@@ -304,7 +280,6 @@ private fun logout() {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
-
         startActivity(intent)
     }
 
@@ -315,6 +290,16 @@ private fun logout() {
     }
     private fun openMapWindowActivity(userId: String) {
         val intent = Intent(this, MapActivityPlaces::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+    private fun openChatBot(userId: String) {
+        val intent = Intent(this, GeminiChatBot::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+    private fun openPregnancyBegginingActivity(userId: String) {
+        val intent = Intent(this, PregnancyBegginingActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }

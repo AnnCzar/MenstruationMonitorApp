@@ -2,7 +2,6 @@ package com.example.project
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -73,7 +71,6 @@ class LoginWindowActivity : AppCompatActivity() {
                 }
             }
         }
-
 
         enterLogin = findViewById(R.id.enterLogin)
         enterPassword = findViewById(R.id.enterPassword)
@@ -208,6 +205,15 @@ class LoginWindowActivity : AppCompatActivity() {
     }
 
 
+
+
+
+    private fun showErrorSnackBar(message: String, errorMessage: Boolean) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+
+    //NAWIGACJA
     private fun openMainWindowDoctor(uid: String) {
         val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", uid)
@@ -215,14 +221,7 @@ class LoginWindowActivity : AppCompatActivity() {
         finish()
     }
 
-
-    private fun showErrorSnackBar(message: String, errorMessage: Boolean) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun openMainWindowPeriodActivity(userId: String) {
-
-        println("Opening MainWindowPeriodActivity for userId: $userId")
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
@@ -230,8 +229,6 @@ class LoginWindowActivity : AppCompatActivity() {
     }
 
     private fun openMainWindowPregnancyActivity(userId: String) {
-
-        println("Opening MainWindowPregnancyActivity for userId: $userId")
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)

@@ -22,11 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import androidx.recyclerview.widget.RecyclerView
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
-
-//
-// do okna wizyt jak wjedzie sie przez profil
 
 class DoctorVisitsActivity : AppCompatActivity() {
 
@@ -104,43 +100,12 @@ class DoctorVisitsActivity : AppCompatActivity() {
                 }
         }
     }
-
-    private fun openMainWindowPeriodActivity(userId: String) {
-        val intent = Intent(this, MainWindowPeriodActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
-    private fun openMainWindowPregnancyActivity(userId: String) {
-        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
-        intent.putExtra("USER_ID", userId)
-        startActivity(intent)
-    }
-
     override fun onResume() {
         super.onResume()
         doctorsList.clear()
         fetchDoctorVisits()
     }
 
-    private fun showOnMap(visit: DoctorVisit) {
-        val intent = Intent(this, MapsActivity::class.java)
-        intent.putExtra("VISIT_ADDRESS", visit.address)
-        startActivity(intent)
-    }
-
-    private fun openSettingsWindowActivity(userId: String) {
-        val intent = Intent(this, SettingsWindowActivity::class.java).apply {
-            putExtra("USER_ID", userId)
-        }
-        startActivity(intent)
-    }
-    private fun openAccountWindowActivity(userId: String){
-        val intent = Intent(this, AccountWindowActivity::class.java).apply {
-            putExtra("USER_ID", userId)
-        }
-        startActivity(intent)
-    }
 
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
@@ -229,37 +194,6 @@ class DoctorVisitsActivity : AppCompatActivity() {
         }
     }
 
-//    @SuppressLint("ScheduleExactAlarm")
-//    private fun scheduleNotification(visitTimeInMillis: Long) {
-//        val intent = Intent(this, visitReminder::class.java)
-//        val pendingIntent = PendingIntent.getBroadcast(
-//            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//        )
-//
-//        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val now = System.currentTimeMillis()
-//
-//        val timeUntilVisit = visitTimeInMillis - now
-//
-//        val calendar = Calendar.getInstance()
-//
-//        if (timeUntilVisit > 24 * 60 * 60 * 1000) {
-//            calendar.timeInMillis = visitTimeInMillis - (24 * 60 * 60 * 1000)
-//            calendar.set(Calendar.HOUR_OF_DAY, 20)
-//            calendar.set(Calendar.MINUTE, 49)
-//        } else if (timeUntilVisit > 60 * 60 * 1000) {
-//            calendar.timeInMillis = visitTimeInMillis - (60 * 60 * 1000)
-//        } else {
-//            return
-//        }
-//
-//        alarmManager.setExactAndAllowWhileIdle(
-//            AlarmManager.RTC_WAKEUP,
-//            calendar.timeInMillis,
-//            pendingIntent
-//        )
-//    }
-
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "VisitReminderChannel"
@@ -276,7 +210,6 @@ class DoctorVisitsActivity : AppCompatActivity() {
     }
 
 
-
     private fun deleteVisit(visit: DoctorVisit) {
         db.collection("users").document(userId).collection("doctorVisits")
             .document(visit.id)
@@ -289,5 +222,34 @@ class DoctorVisitsActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+// NAWIGACJA
+    private fun openMainWindowPeriodActivity(userId: String) {
+        val intent = Intent(this, MainWindowPeriodActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+
+    private fun openMainWindowPregnancyActivity(userId: String) {
+        val intent = Intent(this, MainWindowPregnancyActivity::class.java)
+        intent.putExtra("USER_ID", userId)
+        startActivity(intent)
+    }
+    private fun showOnMap(visit: DoctorVisit) {
+        val intent = Intent(this, MapsActivity::class.java)
+        intent.putExtra("VISIT_ADDRESS", visit.address)
+        startActivity(intent)
+    }
+    private fun openSettingsWindowActivity(userId: String) {
+        val intent = Intent(this, SettingsWindowActivity::class.java).apply {
+            putExtra("USER_ID", userId)
+        }
+        startActivity(intent)
+    }
+    private fun openAccountWindowActivity(userId: String){
+        val intent = Intent(this, AccountWindowActivity::class.java).apply {
+            putExtra("USER_ID", userId)
+        }
+        startActivity(intent)
     }
 }

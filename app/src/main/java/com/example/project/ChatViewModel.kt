@@ -1,6 +1,5 @@
 package com.example.project
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,8 +38,6 @@ class ChatViewModel : ViewModel() {
                 messageList.removeLast()
                 messageList.add(MessageModel("Error : "+e.message.toString(),"model"))
             }
-
-
         }
     }
 }

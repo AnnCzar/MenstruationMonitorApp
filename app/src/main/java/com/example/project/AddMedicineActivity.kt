@@ -9,13 +9,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import database.collections.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.Month
-import java.time.format.DateTimeFormatter
 
 class AddMedicineActivity : AppCompatActivity(){
 
@@ -69,9 +65,5 @@ class AddMedicineActivity : AppCompatActivity(){
                 Toast.makeText(this, "Pola nie mogą być puste", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
-
-
 }

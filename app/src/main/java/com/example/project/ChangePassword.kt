@@ -11,27 +11,19 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import database.FirestoreDatabaseOperations
-import database.collections.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.util.UUID
+
 
 class ChangePassword : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
+    val db = Firebase.firestore
 
     private lateinit var enterOldPassword: EditText
     private lateinit var enterNewPassword: EditText
     private lateinit var repeatNewPassword: EditText
-
-    //    private lateinit var enterPasswordRegisterConfirm: EditText
-//    private lateinit var enterUsernameRegister: EditText
     private lateinit var buttonConfirmNewPassword: Button
-
-    private lateinit var auth: FirebaseAuth
-
-    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +35,9 @@ class ChangePassword : AppCompatActivity() {
         enterOldPassword = findViewById(R.id.enterOldPassword)
         enterNewPassword = findViewById(R.id.enterChangedPassword)
         repeatNewPassword = findViewById(R.id.repeatChangedPassword)
-//        enterPasswordRegisterConfirm = findViewById(R.id.enterPasswordRegisterConfirm)
-//        enterUsernameRegister = findViewById(R.id.enterUsernameRegister)
         buttonConfirmNewPassword = findViewById(R.id.buttonConfirmNewPassword)
 
         buttonConfirmNewPassword.setOnClickListener {
-            // Pobranie danych użytkownika z pól tekstowych
             val newPassword = enterNewPassword.text.toString()
             val repeatedPassword = repeatNewPassword.text.toString()
             val oldPassword = enterOldPassword.text.toString()
@@ -129,29 +118,3 @@ class ChangePassword : AppCompatActivity() {
         finish()
     }
 }
-
-//    private suspend fun checkIfEmailExists(email: String): Boolean {
-//        return try {
-//            val result = db.collection("users").whereEqualTo("email", email).get().await()
-//            !result.isEmpty
-//        } catch (e: Exception) {
-//            false
-//        }
-//    }
-//
-//
-//    private fun openRegisterWindow2Activity(
-//        userId: String,
-//        email: String,
-//        password: String,
-//        username: String
-//    ) {
-//        val intent = Intent(this, RegisterWindow2Activity::class.java).apply {
-//            putExtra("USER_ID", userId)
-//            putExtra("EMAIL", email)
-//            putExtra("PASSWORD", password)
-//            putExtra("USERNAME", username)
-//        }
-//        startActivity(intent)
-//    }
-//}

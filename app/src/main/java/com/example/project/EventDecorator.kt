@@ -32,7 +32,6 @@ class EventDecorator(
         calendarView.invalidate()
     }
 
-
     fun markOvulation( ovulationDate: Date) {
         val ovulationTime = ovulationDate.time
         val event = Event(Color.GREEN, ovulationTime)

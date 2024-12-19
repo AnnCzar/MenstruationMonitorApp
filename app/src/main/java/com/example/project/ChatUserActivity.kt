@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -29,8 +28,6 @@ class ChatUserActivity : AppCompatActivity() {
     private lateinit var chatUserHomeButton: ImageButton
     private lateinit var  doctorType: Spinner
 
-
-
     private val chatUserList = ArrayList<ChatUser>()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -39,6 +36,7 @@ class ChatUserActivity : AppCompatActivity() {
         setContentView(R.layout.chat_list_user)
 
         db = FirebaseFirestore.getInstance()
+        userId = intent.getStringExtra("USER_ID") ?: ""
 
         chatUserRV = findViewById(R.id.chatUserRV)
         chatUserRV.layoutManager = LinearLayoutManager(this)
@@ -66,14 +64,10 @@ class ChatUserActivity : AppCompatActivity() {
             }
         }
 
-
-
         chatUserAcountButton = findViewById(R.id.chatUserAcountButton)
         chatUserSettingButton = findViewById(R.id.chatUserSettingButton)
         chatUserHomeButton = findViewById(R.id.chatUserHomeButton)
 
-
-        userId = intent.getStringExtra("USER_ID") ?: ""
 
         chatUserAdapter = ChatDoctorAdapter(usersNames = chatUserList) { chatUser ->
             openMessageChatActivity(chatUser)
@@ -107,29 +101,10 @@ class ChatUserActivity : AppCompatActivity() {
                     Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-
-    }
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    private fun openMessageChatActivity(chatUser: ChatUser) {
-        val intent = Intent(this, MessageChatActivity::class.java).apply {
-            putExtra("USER_LOGIN", chatUser.login)
-            putExtra("USER_ID", chatUser.id)
-        }
-        startActivity(intent)
     }
 
 
-    private fun openSettingsWindowActivity(userId: String) {
-        val intent = Intent(this, SettingsWindowActivity::class.java).apply {
-            putExtra("USER_ID", userId)
-        }
-        startActivity(intent)
-    }
-
+// FETCHE
     private fun fetchChatUsers(specialisation: String) {
         db.collection("users")
             .whereEqualTo("role", "Lekarz")
@@ -206,21 +181,7 @@ class ChatUserActivity : AppCompatActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveMedicineCheckStatus(medicine: Medicine) {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(LocalDate.now().toString())
-            .collection("medicines")
-            .document(medicine.id)
-            .set(mapOf("checked" to medicine.isChecked))
-            .addOnSuccessListener {
-                Toast.makeText(this, "Zaktualizowano stan leków", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
+    // NAWIGACJA
 
     private fun openAccountWindowActivity(userId: String) {
         val intent = Intent(this, AccountWindowActivity::class.java)
@@ -241,6 +202,21 @@ class ChatUserActivity : AppCompatActivity() {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
+        startActivity(intent)
+    }
+    private fun openMessageChatActivity(chatUser: ChatUser) {
+        val intent = Intent(this, MessageChatActivity::class.java).apply {
+            putExtra("USER_LOGIN", chatUser.login)
+            putExtra("USER_ID", chatUser.id)
+        }
+        startActivity(intent)
+    }
+
+
+    private fun openSettingsWindowActivity(userId: String) {
+        val intent = Intent(this, SettingsWindowActivity::class.java).apply {
+            putExtra("USER_ID", userId)
+        }
         startActivity(intent)
     }
 }

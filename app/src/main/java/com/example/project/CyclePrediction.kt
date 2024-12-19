@@ -2,11 +2,9 @@ package com.example.project
 
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.Date
@@ -14,7 +12,6 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 class CyclePrediction(private val db: FirebaseFirestore) {
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateMedianCycleLength(userId: String, onComplete: (Long) -> Unit) {

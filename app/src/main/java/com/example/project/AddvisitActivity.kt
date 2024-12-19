@@ -3,7 +3,6 @@ package com.example.project
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TimePicker
@@ -36,9 +35,7 @@ class AddVisitActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_visit)
 
-
         db = FirebaseFirestore.getInstance()
-
         userId = intent.getStringExtra("USER_ID") ?: ""
 
 
@@ -52,11 +49,6 @@ class AddVisitActivity : AppCompatActivity() {
         visitDateEditText.setOnClickListener{
             showDatePickerDialog()
         }
-
-        addresText.setOnClickListener {
-
-        }
-
 
         addVisitConfirmButton.setOnClickListener {
             val doctorName = doctorNameEditText.text.toString()
@@ -99,24 +91,19 @@ class AddVisitActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addNewDoctorVisit() {
         val dateStr = visitDateEditText.text.toString()
-
         val doctorName = doctorNameEditText.text.toString()
-
         val extraInfo = extrInformationEditText.text.toString()
         val address = addresText.text.toString()
-
         val selectedTime = getTimeFromTimePicker(timePicker)
-
 
         if (dateStr == null) {
             Toast.makeText(this, "Niepoprawny format daty", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // tworzenie nowego dokuemntu aby miec id do doktork
+        // tworzenie nowego dokuemntu aby miec id do doktorka
         val newDocRef = db.collection("users").document(userId)
             .collection("doctorVisits").document()
-
 
         val newDoctorVisit = DoctorVisit(
             id = newDocRef.id,
@@ -136,6 +123,5 @@ class AddVisitActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Nie zapisano wizyty", Toast.LENGTH_SHORT).show()
             }
-
     }
 }

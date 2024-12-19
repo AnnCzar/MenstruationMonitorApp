@@ -68,6 +68,16 @@ class PregnancyBegginingActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun savePregnancyStartDate() {
+        val userRef = db.collection("users").document(userId)
+        userRef
+            .update("statusPregnancy", true)
+            .addOnSuccessListener {
+                Toast.makeText(this@PregnancyBegginingActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this@PregnancyBegginingActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
         val dateStr = insert_date_pregnancy_start.text.toString().trim()
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         sdf.isLenient = false

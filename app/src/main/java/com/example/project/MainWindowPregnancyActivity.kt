@@ -6,9 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-
 import android.graphics.Color
-
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -25,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.project.MainWindowPeriodActivity.Message
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import database.collections.Pregnancy
@@ -185,12 +182,12 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
             }
         db.collection("Chats")
             .whereEqualTo("receiver", userId)
+            .whereEqualTo("isseen", false)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.w("Firestore", "Listen failed: ${e.message}", e)
                     return@addSnapshotListener
                 }
-                // Znajdź najnowszą wiadomość (na podstawie timestamp)
                 val latestMessage = snapshots?.documents
                     ?.map { it.toObject(Message::class.java) }
                     ?.maxByOrNull { it?.timestamp ?: 0L }
@@ -206,17 +203,17 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 Log.d("FCM", msg)
             }
 
-        db.collection("Chats") // Poprawiona nazwa kolekcji
-            .whereEqualTo("receiver", userId) // Użycie poprawnej nazwy pola "receiver"
+        db.collection("Chats")
+            .whereEqualTo("receiver", userId)
+            .whereEqualTo("isseen", false)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.w("Firestore", "Listen failed: ${e.message}", e)
                     return@addSnapshotListener
                 }
 
-                // Znalezienie najnowszej wiadomości na podstawie pola "timestamp"
                 val latestMessage = snapshots?.documents
-                    ?.mapNotNull { it.toObject(Message::class.java) } // Konwersja do obiektu Message
+                    ?.mapNotNull { it.toObject(Message::class.java) }
                     ?.maxByOrNull { it.timestamp ?: 0L }
 
                 if (latestMessage != null) {
@@ -224,17 +221,17 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 }
             }}
 
-    // Klasa Message odpowiadająca strukturze dokumentu w Firestore
-    data class Message(
-        val message: String = "",
-        val receiver: String = "",
-        val sender: String = "",
-        val timestamp: Long = 0L,
-        val isseen: Boolean = false
-    )
 
 
-    private fun sendNotification(message: MainWindowPregnancyActivity.Message) {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        checkDate()
+        fetchMedicines()
+    }
+
+    private fun sendNotification(message: Message) {
         val firestore = FirebaseFirestore.getInstance()
 
         firestore.collection("users")
@@ -270,12 +267,6 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onResume() {
-        super.onResume()
-        checkDate()
-        fetchMedicines()
-    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -356,7 +347,6 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicinesStatus(selectedDate: LocalDate) {
 
-
         val dailyInfoRef = db.collection("users").document(userId)
             .collection("dailyInfo").document(selectedDate.toString())
             .collection("medicines")
@@ -381,14 +371,13 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 Log.d(
                     "medicinesAfterUpdate",
                     medicines.toString()
-                )  // Log the medicines list after updating
+                )
                 medicineAdapter.notifyDataSetChanged()
             }
 
         } else {
         Log.d("medicinesEmpty", "Medicines list is empty!")
     }
-
 
         }.addOnFailureListener { e ->
             Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -414,8 +403,7 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 Log.d("FirestoreData", "Pobrano leki: $medicines")
                 medicineAdapter.notifyDataSetChanged()
 
-                // Po zakończeniu pobierania leków wywołaj fetchMedicinesStatus()
-                fetchMedicinesStatus(selectedDate) // Teraz fetchMedicinesStatus() będzie wywołane po fetchMedicines
+                fetchMedicinesStatus(selectedDate)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Błąd przy pobieraniu leków: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -423,26 +411,6 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
     }
 
-
-//    private fun fetchMedicines() {
-//        db.collection("users").document(userId).collection("medicines")
-//            .get()
-//            .addOnSuccessListener { result ->
-//                medicines.clear()
-//                for (document in result) {
-//                    val medicine = Medicine(
-//                        id = document.id,
-//                        name = document.getString("medicineName") ?: "",
-//                        isChecked = document.getBoolean("isChecked") ?: false
-//                    )
-//                    medicines.add(medicine)
-//                }
-//                medicineAdapter.notifyDataSetChanged()
-//            }
-//            .addOnFailureListener { e ->
-//                Log.e(TAG, "Error fetching medicines: ", e)
-//            }
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine, selectedDate: LocalDate) {
@@ -523,4 +491,12 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_LOCAL_DATE))
         startActivity(intent)
     }
+
+    data class Message(
+        val message: String = "",
+        val receiver: String = "",
+        val sender: String = "",
+        val timestamp: Long = 0L,
+        val isseen: Boolean = false
+    )
 }

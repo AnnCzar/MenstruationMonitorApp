@@ -18,8 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+
 
 class ChatDoctorActivity : AppCompatActivity() {
 
@@ -39,24 +38,17 @@ class ChatDoctorActivity : AppCompatActivity() {
         setContentView(R.layout.main_window_doctor)
 
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        userId = intent.getStringExtra("USER_ID") ?: ""
 
         chatUserRV = findViewById(R.id.chatUserRV)
         chatUserRV.layoutManager = LinearLayoutManager(this)
-        auth = FirebaseAuth.getInstance()
-
         logoutButton = findViewById(R.id.logoutButton)
 
         logoutButton.setOnClickListener {
             logout()
 
         }
-
-
-
-
-
-        userId = intent.getStringExtra("USER_ID") ?: ""
-
         chatUserAdapter = ChatDoctorAdapter(usersNames = chatUserList) { chatUser ->
             openMessageChatActivity(chatUser)
         }
@@ -64,10 +56,6 @@ class ChatDoctorActivity : AppCompatActivity() {
 
         updateUserTimestamp(userId)
         fetchChatUsers()
-
-
-
-
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -79,8 +67,7 @@ class ChatDoctorActivity : AppCompatActivity() {
             }
         })
 
-
-
+        // WYSYŁANIE POWIADOMIEN O NIEODCZYTANEJ WIADOMOŚCI
         FirebaseMessaging.getInstance().subscribeToTopic("user_${userId}")
             .addOnCompleteListener { task ->
                 var msg = "Subscribed"
@@ -91,21 +78,16 @@ class ChatDoctorActivity : AppCompatActivity() {
             }
         db.collection("Chats")
             .whereEqualTo("receiver", userId)
+            .whereEqualTo("isseen", false)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
-                    Log.w("Firestore dupa 1", "Listen failed: ${e.message}", e)
                     return@addSnapshotListener
                 }
-                Log.d(
-                    "Firestore dupa ",
-                    "Snapshot received for doctor: ${snapshots?.documents?.size ?: 0} documents"
-                )
-                // Znajdź najnowszą wiadomość (na podstawie timestamp)
+                // znajdywnaie wiadomosci (na podstawie timestamp)
                 val latestMessage = snapshots?.documents
                     ?.map { it.toObject(Message::class.java) }
                     ?.maxByOrNull { it?.timestamp ?: 0L }
                 if (latestMessage != null) {
-                    Log.d("Firestore dupa 3", "Latest message for doctor: ${latestMessage.message}")
                     sendNotification(latestMessage)
                 }
             }
@@ -114,63 +96,32 @@ class ChatDoctorActivity : AppCompatActivity() {
                 val msg = if (task.isSuccessful) "Subscribed" else "Subscription failed"
                 Log.d("FCM", msg)
             }
-        db.collection("Chats") // Poprawiona nazwa kolekcji
-            .whereEqualTo("receiver", userId) // Użycie poprawnej nazwy pola "receiver"
+        db.collection("Chats")
+            .whereEqualTo("receiver", userId)
+            .whereEqualTo("isseen", false)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.w("Firestore", "Listen failed: ${e.message}", e)
                     return@addSnapshotListener
                 }
 
-                // Znalezienie najnowszej wiadomości na podstawie pola "timestamp"
                 val latestMessage = snapshots?.documents
-                    ?.mapNotNull { it.toObject(Message::class.java) } // Konwersja do obiektu Message
+                    ?.mapNotNull { it.toObject(Message::class.java) }
                     ?.maxByOrNull { it.timestamp ?: 0L }
 
                 if (latestMessage != null) {
                     sendNotification(latestMessage)
                 }
             }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        fetchChatUsers()
 
     }
 
-    // Klasa Message odpowiadająca strukturze dokumentu w Firestore
-    data class Message(
-        val message: String = "",
-        val receiver: String = "",
-        val sender: String = "",
-        val timestamp: Long = 0L,
-        val isseen: Boolean = false
-    )
-
-
-//
-//    private fun sendNotification(message: Message) {
-////        Log.d("Notifications dupa 4", "Preparing notification for message: ${message.message}")
-//
-//        val notificationManager =
-//            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val channel = NotificationChannel(
-//                "default",
-//                "Default Notifications",
-//                NotificationManager.IMPORTANCE_DEFAULT
-//            )
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//        val notification = NotificationCompat.Builder(this, "default")
-//            .setContentTitle("Nowa wiadomość od ${message.sender}")
-//            .setContentText(message.message)
-//            .setSmallIcon(R.drawable.ic_launcher_foreground)
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setAutoCancel(true)
-//            .build()
-//        Log.d("Notifications dupa 5", "Sending notification with timestamp: ${message.timestamp}")
-//        notificationManager.notify(message.timestamp.toInt(), notification)
-//    }
-
-    private fun sendNotification(message: ChatDoctorActivity.Message) {
+    private fun sendNotification(message: Message) {
         val firestore = FirebaseFirestore.getInstance()
 
         firestore.collection("users")
@@ -206,11 +157,7 @@ class ChatDoctorActivity : AppCompatActivity() {
             }
     }
 
-    override fun onResume() {
-        super.onResume()
-        fetchChatUsers()
 
-    }
 
     private fun logout() {
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
@@ -221,7 +168,6 @@ class ChatDoctorActivity : AppCompatActivity() {
         }
         auth.signOut()
 
-
         val intent = Intent(this, LoginWindowActivity::class.java)
 
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -229,21 +175,8 @@ class ChatDoctorActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun openMessageChatActivity(chatUser: ChatUser) {
-        val intent = Intent(this, MessageChatActivity::class.java).apply {
-            putExtra("USER_LOGIN", chatUser.login)
-            putExtra("USER_ID", chatUser.id)
-        }
-        startActivity(intent)
-    }
 
 
-    private fun openSettingsWindowActivity(userId: String) {
-        val intent = Intent(this, SettingsWindowActivity::class.java).apply {
-            putExtra("USER_ID", userId)
-        }
-        startActivity(intent)
-    }
 
     private fun updateUserTimestamp(userId: String) {
         db.collection("users").document(userId)
@@ -294,10 +227,8 @@ class ChatDoctorActivity : AppCompatActivity() {
                                 user.timestamp = latestMessages[user.id]!!
                             }
                         }
-
                         chatUserList.clear()
                         chatUserList.addAll(allUsers.sortedWith(compareByDescending<ChatUser> { it.timestamp > 0L }.thenByDescending { it.timestamp }))
-
                         chatUserAdapter.notifyDataSetChanged()
                     }
                     .addOnFailureListener { e ->
@@ -310,7 +241,20 @@ class ChatDoctorActivity : AppCompatActivity() {
 
     }
 
-    private fun <E> MutableList<E>.add(element: Medicine) {
-
+    //NAWIGACJA
+    private fun openMessageChatActivity(chatUser: ChatUser) {
+        val intent = Intent(this, MessageChatActivity::class.java).apply {
+            putExtra("USER_LOGIN", chatUser.login)
+            putExtra("USER_ID", chatUser.id)
+        }
+        startActivity(intent)
     }
+
+    data class Message(
+        val message: String = "",
+        val receiver: String = "",
+        val sender: String = "",
+        val timestamp: Long = 0L,
+        val isseen: Boolean = false
+    )
 }

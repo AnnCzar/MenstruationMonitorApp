@@ -16,6 +16,4 @@ class ChatList {
     fun setId(id: String){
         this.id=id
     }
-
-
 }

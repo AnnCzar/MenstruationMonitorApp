@@ -41,14 +41,7 @@ class ChatAdapter(
 
 //        // Ustawienie treści wiadomości
         holder.textMessage.text = chat.message
-//
-//        // Obsługa widoczności statusu "zobaczone"
-//        if (position == mChatList.size - 1) {
-//            holder.textSeen?.visibility = View.VISIBLE
-//            holder.textSeen?.text = if (chat.isSeen) "Seen" else "Delivered"
-//        } else {
-//            holder.textSeen?.visibility = View.GONE
-//        }
+
         if (position == mChatList.size - 1) {
             holder.textSeen?.visibility = View.VISIBLE
             holder.textSeen?.text = if (chat.isseen) "Seen" else "Delivered"
@@ -58,8 +51,6 @@ class ChatAdapter(
         val timestamp = chat.timestamp
         val formattedDate = formatTimestamp(timestamp)
         holder.textTimestamp.text = formattedDate
-
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,7 +68,6 @@ class ChatAdapter(
         val date = java.util.Date(timestamp)
         return "${dateFormat.format(date)} ${timeFormat.format(date)}"
     }
-
 
     companion object {
         private const val MESSAGE_TYPE_RIGHT = 1

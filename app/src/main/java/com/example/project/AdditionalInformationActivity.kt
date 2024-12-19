@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -22,7 +21,6 @@ import java.util.Date
 import java.util.Locale
 
 class AdditionalInformationActivity : AppCompatActivity() {
-
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var symptoms: MutableList<Symptom>
@@ -34,11 +32,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private lateinit var imageButtonHappy: ImageButton
     private lateinit var imageButtonNeutral: ImageButton
     private lateinit var imageButtonSad: ImageButton
+    private var currentMood: String = ""
 
     private lateinit var drinksCountText: TextView
     private lateinit var increaseDrinkButton: Button
     private lateinit var decreaseDrinkButton: Button
-
     private var drinksCount: Int = 0
 
     private lateinit var enterWeight: EditText
@@ -55,7 +53,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var userId: String
     private var selectedDate: LocalDate? = null
-    private var currentMood: String = ""
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,41 +82,13 @@ class AdditionalInformationActivity : AppCompatActivity() {
         configureRecyclerView()
         setListeners()
 
-//        loadAdditionalInformation(selectedDate)
         addDate.text = selectedDate.toString()
 
-        homeButtonaddInfo.setOnClickListener {
-            val userRef = db.collection("users").document(userId)
-            userRef.get()
-                .addOnSuccessListener { user ->
-                    if (user != null) {
-                        val statusPregnancy = user.getBoolean("statusPregnancy")
-                        if (statusPregnancy != null) {
-                            if (!statusPregnancy) {
-                                openMainWindowPeriodActivity(userId)
-                            } else {
-                                openMainWindowPregnancyActivity(userId)
-                            }
-                        } else {
-                        }
-                    } else {
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-        addInfoSettingAcountButton.setOnClickListener {
-            openAccountWindowActivity(userId)
-        }
         restoreMoodState()
-        addInfoSettingButton.setOnClickListener {
-            openSettingsWindowActivity(userId)
-        }
         fetchSymptomsForWeek()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
         homeButtonaddInfo = findViewById(R.id.homeButtonaddInfo)
@@ -148,11 +118,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun configureRecyclerView() {
-
 
         symptomsAdapter = SymptomsAdapter(symptoms) { symptom, isChecked ->
             symptom.isChecked = isChecked
@@ -164,7 +134,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
         loadAdditionalInformation(selectedDate)
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners() {
@@ -189,7 +158,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
 
-
         imageButtonHappy.setOnClickListener {
             if (!imageButtonHappy.isSelected) {
                 setCurrentMood("happy")
@@ -198,7 +166,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 imageButtonHappy.isSelected = true
                 imageButtonHappy.visibility = Button.GONE
                 imageButtonHappyColor.visibility = Button.VISIBLE
-
                 resetOtherButtons("happy")
             }
         }
@@ -208,16 +175,13 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 setCurrentMood("neutral")
                 saveMoodToDatabase("neutral")
                 saveMoodToPreferences("neutral")
-
                 imageButtonNeutral.isSelected = true
                 imageButtonNeutral.visibility = Button.GONE
                 imageButtonNeutralColor.visibility = Button.VISIBLE
-
                 resetOtherButtons("neutral")
             }
         }
 
-// Ustawienia dla imageButtonSad
         imageButtonSad.setOnClickListener {
             if (!imageButtonSad.isSelected) {
                 setCurrentMood("sad")
@@ -226,22 +190,37 @@ class AdditionalInformationActivity : AppCompatActivity() {
                 imageButtonSad.isSelected = true
                 imageButtonSad.visibility = Button.GONE
                 imageButtonSadColor.visibility = Button.VISIBLE
-
                 resetOtherButtons("sad")
             }
         }
 
+        homeButtonaddInfo.setOnClickListener {
+            val userRef = db.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { user ->
+                    if (user != null) {
+                        val statusPregnancy = user.getBoolean("statusPregnancy")
+                        if (statusPregnancy != null) {
+                            if (!statusPregnancy) {
+                                openMainWindowPeriodActivity(userId)
+                            } else {
+                                openMainWindowPregnancyActivity(userId)
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
 
+        addInfoSettingAcountButton.setOnClickListener {
+            openAccountWindowActivity(userId)
+        }
+        addInfoSettingButton.setOnClickListener {
+            openSettingsWindowActivity(userId)
+        }
 
-
-
-//        addInfoSettingButton.setOnClickListener {
-//            openSettingsWindowActivity(userId)
-//        }
-//
-//        addInfoSettingAcountButton.setOnClickListener {
-//            openAccountWindowActivity(userId)
-//        }
         increaseDrinkButton.setOnClickListener {
             drinksCount++
             updateDrinkCount()
@@ -261,64 +240,8 @@ class AdditionalInformationActivity : AppCompatActivity() {
         fetchTodaysDrinkCount()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveMucusTypeToDatabase(mucusType: String) {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(selectedDate?.toString() ?: LocalDate.now().toString())
-            .update("mucusType", mucusType)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Zaktualizowano typ śluzu", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd przy aktualizowaniu typu śluzu: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 
-    private fun fetchTodaysDrinkCount() {
-        db.collection("users").document(userId).collection("dailyInfo")
-            .document(selectedDate.toString())
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    drinksCount = document.getLong("drinksCount")?.toInt() ?: 0
-                    updateDrinkCount()
-                } else {
-                    val defaultDailyInfo = hashMapOf(
-                        "drinksCount" to 0
-                    )
-                    db.collection("users").document(userId).collection("dailyInfo")
-                        .document(selectedDate.toString())
-                        .set(defaultDailyInfo)
-                        .addOnSuccessListener {
-                            drinksCount = 0
-                            updateDrinkCount()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Błąd przy tworzeniu informacji z dnia: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd podczas pobierania liczby napojów: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-    private fun updateDrinkCountInFirestore() {
-        db.collection("users").document(userId)
-            .collection("dailyInfo")
-            .document(selectedDate.toString())
-            .update("drinksCount", drinksCount)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Liczba najpojów zaktualizowana w bazie danych", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd przy aktualizacji liczby napojów: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun updateDrinkCount() {
-        drinksCountText.text = drinksCount.toString()
-    }
+    // ZAPIS DANYCH
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAdditionalInformation() {
@@ -358,8 +281,23 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+        db.collection("users").document(userId)
+            .update("weight", weight.toDouble())
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveMucusTypeToDatabase(mucusType: String) {
+        db.collection("users").document(userId)
+            .collection("dailyInfo")
+            .document(selectedDate?.toString() ?: LocalDate.now().toString())
+            .update("mucusType", mucusType)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Zaktualizowano typ śluzu", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd przy aktualizowaniu typu śluzu: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -385,84 +323,67 @@ class AdditionalInformationActivity : AppCompatActivity() {
         editor.putString("date", getCurrentDate())
         editor.apply()
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveMoodToDatabase(mood: String) {
+        val weight = enterWeight.text.toString()
+        val temperature = addInfoEnterTemperature.text.toString()
+        val symptomsData = symptomsAdapter.getSymptoms().map { it.name to it.isChecked }.toMap()
 
-    fun loadMoodFromPreferences(): String? {
-        val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
-        val savedDate = sharedPreferences.getString("date", "")
-        return if (savedDate == getCurrentDate()) {
-            sharedPreferences.getString("currentMood", null)
-        } else {
-            null
-        }
-    }
+        val userDocRef = db.collection("users").document(userId)
+        val dailyInfoDocRef = userDocRef.collection("dailyInfo").document(selectedDate?.toString() ?: LocalDate.now().toString())
+        dailyInfoDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    dailyInfoDocRef.update("mood", mood)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Humor zaktualizowany", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Błąd przy aktualizowaniu nastroju: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    val data = hashMapOf(
+                        "weight" to weight,
+                        "temperature" to temperature,
+                        "symptoms" to symptomsData,
+                        "mood" to mood
+                    )
 
-    fun restoreMoodState() {
-        val savedMood = loadMoodFromPreferences()
-
-        when (savedMood) {
-            "happy" -> {
-                imageButtonHappy.isSelected = true
-                imageButtonHappy.visibility = Button.GONE
-                imageButtonHappyColor.visibility = Button.VISIBLE
-                resetOtherButtons("happy")
+                    dailyInfoDocRef.set(data)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Zapisano nowy nastrój", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Błąd przy zapisywaniu nastroju: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
-            "neutral" -> {
-                imageButtonNeutral.isSelected = true
-                imageButtonNeutral.visibility = Button.GONE
-                imageButtonNeutralColor.visibility = Button.VISIBLE
-                resetOtherButtons("neutral")
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd przy sprawdzaniu czy dokument z dodatkowymi informacjami z dnia istnieje: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            "sad" -> {
-                imageButtonSad.isSelected = true
-                imageButtonSad.visibility = Button.GONE
-                imageButtonSadColor.visibility = Button.VISIBLE
-                resetOtherButtons("sad")
-            }
-        }
-    }
-
-
-    fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateFormat.format(Date())
-    }
-
-
-
-
-    fun resetOtherButtons(currentMood: String) {
-        when (currentMood) {
-            "happy" -> {
-                imageButtonNeutral.isSelected = false
-                imageButtonNeutral.visibility = Button.VISIBLE
-                imageButtonNeutralColor.visibility = Button.GONE
-
-                imageButtonSad.isSelected = false
-                imageButtonSad.visibility = Button.VISIBLE
-                imageButtonSadColor.visibility = Button.GONE
-            }
-            "neutral" -> {
-                imageButtonHappy.isSelected = false
-                imageButtonHappy.visibility = Button.VISIBLE
-                imageButtonHappyColor.visibility = Button.GONE
-
-                imageButtonSad.isSelected = false
-                imageButtonSad.visibility = Button.VISIBLE
-                imageButtonSadColor.visibility = Button.GONE
-            }
-            "sad" -> {
-                imageButtonHappy.isSelected = false
-                imageButtonHappy.visibility = Button.VISIBLE
-                imageButtonHappyColor.visibility = Button.GONE
-
-                imageButtonNeutral.isSelected = false
-                imageButtonNeutral.visibility = Button.VISIBLE
-                imageButtonNeutralColor.visibility = Button.GONE
-            }
-        }
     }
 
 
+    // UPDATE
+    private fun updateDrinkCountInFirestore() {
+        db.collection("users").document(userId)
+            .collection("dailyInfo")
+            .document(selectedDate.toString())
+            .update("drinksCount", drinksCount)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Liczba najpojów zaktualizowana w bazie danych", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd przy aktualizacji liczby napojów: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun updateDrinkCount() {
+        drinksCountText.text = drinksCount.toString()
+    }
+
+
+    // fetch
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchSymptomsForWeek() {
         val userDailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
@@ -511,10 +432,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-
     private fun loadAdditionalInformation(date: LocalDate?) {
         if (date == null) return
 
@@ -531,19 +448,17 @@ class AdditionalInformationActivity : AppCompatActivity() {
                         e.printStackTrace()
                         emptyMap<String, Boolean>()
                     }
-                    // Teraz zaktualizuj stany objawów w adapterze
+
                     symptoms.forEach { symptom ->
-                        // Ustaw stan zaznaczenia dla każdego objawu
                         symptom.isChecked = symptomsMap[symptom.name] == true
                     }
 
-                    symptomsAdapter.notifyDataSetChanged() // Odświeżenie adaptera
+                    symptomsAdapter.notifyDataSetChanged() // odswiezenie adaptera
 
                     val weight = document.getString("weight") ?: ""
 
                     enterWeight.setText(weight)
 
-                    // Pobranie temperatury z bezpiecznym rzutowaniem
                     val temperature: Double? = try {
                         document.getDouble("temperature")
                             ?: document.getString("temperature")?.toDoubleOrNull()
@@ -551,16 +466,13 @@ class AdditionalInformationActivity : AppCompatActivity() {
                         e.printStackTrace()
                         null
                     }
-                    // Ustawienie temperatury w polu tekstowym
+
                     addInfoEnterTemperature.setText(temperature?.toString() ?: "")
 
                     val mucusType = document.getString("mucusType") ?: "Brak danych"
                     val adapter = spinner.adapter as ArrayAdapter<String>
                     val position = adapter.getPosition(mucusType)
                     spinner.setSelection(if (position >= 0) position else 0)
-
-
-
 
                 } else {
                     enterWeight.setText("")
@@ -575,6 +487,110 @@ class AdditionalInformationActivity : AppCompatActivity() {
                     .show()
                 e.printStackTrace()
             }
+    }
+
+
+    private fun fetchTodaysDrinkCount() {
+        db.collection("users").document(userId).collection("dailyInfo")
+            .document(selectedDate.toString())
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    drinksCount = document.getLong("drinksCount")?.toInt() ?: 0
+                    updateDrinkCount()
+                } else {
+                    val defaultDailyInfo = hashMapOf(
+                        "drinksCount" to 0
+                    )
+                    db.collection("users").document(userId).collection("dailyInfo")
+                        .document(selectedDate.toString())
+                        .set(defaultDailyInfo)
+                        .addOnSuccessListener {
+                            drinksCount = 0
+                            updateDrinkCount()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Błąd przy tworzeniu informacji z dnia: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd podczas pobierania liczby napojów: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
+// ----------- POZOSTAŁE FUNKCJE
+    fun loadMoodFromPreferences(): String? {
+        val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
+        val savedDate = sharedPreferences.getString("date", "")
+        return if (savedDate == getCurrentDate()) {
+            sharedPreferences.getString("currentMood", null)
+        } else {
+            null
+        }
+    }
+
+    fun restoreMoodState() {
+        val savedMood = loadMoodFromPreferences()
+
+        when (savedMood) {
+            "happy" -> {
+                imageButtonHappy.isSelected = true
+                imageButtonHappy.visibility = Button.GONE
+                imageButtonHappyColor.visibility = Button.VISIBLE
+                resetOtherButtons("happy")
+            }
+            "neutral" -> {
+                imageButtonNeutral.isSelected = true
+                imageButtonNeutral.visibility = Button.GONE
+                imageButtonNeutralColor.visibility = Button.VISIBLE
+                resetOtherButtons("neutral")
+            }
+            "sad" -> {
+                imageButtonSad.isSelected = true
+                imageButtonSad.visibility = Button.GONE
+                imageButtonSadColor.visibility = Button.VISIBLE
+                resetOtherButtons("sad")
+            }
+        }
+    }
+
+    fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
+
+    fun resetOtherButtons(currentMood: String) {
+        when (currentMood) {
+            "happy" -> {
+                imageButtonNeutral.isSelected = false
+                imageButtonNeutral.visibility = Button.VISIBLE
+                imageButtonNeutralColor.visibility = Button.GONE
+
+                imageButtonSad.isSelected = false
+                imageButtonSad.visibility = Button.VISIBLE
+                imageButtonSadColor.visibility = Button.GONE
+            }
+            "neutral" -> {
+                imageButtonHappy.isSelected = false
+                imageButtonHappy.visibility = Button.VISIBLE
+                imageButtonHappyColor.visibility = Button.GONE
+
+                imageButtonSad.isSelected = false
+                imageButtonSad.visibility = Button.VISIBLE
+                imageButtonSadColor.visibility = Button.GONE
+            }
+            "sad" -> {
+                imageButtonHappy.isSelected = false
+                imageButtonHappy.visibility = Button.VISIBLE
+                imageButtonHappyColor.visibility = Button.GONE
+
+                imageButtonNeutral.isSelected = false
+                imageButtonNeutral.visibility = Button.VISIBLE
+                imageButtonNeutralColor.visibility = Button.GONE
+            }
+        }
     }
 
         private fun setCurrentMood(mood: String) {
@@ -597,46 +613,8 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveMoodToDatabase(mood: String) {
-        val weight = enterWeight.text.toString()
-        val temperature = addInfoEnterTemperature.text.toString()
-        val symptomsData = symptomsAdapter.getSymptoms().map { it.name to it.isChecked }.toMap()
 
-        val userDocRef = db.collection("users").document(userId)
-        val dailyInfoDocRef = userDocRef.collection("dailyInfo").document(selectedDate?.toString() ?: LocalDate.now().toString())
-        dailyInfoDocRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    dailyInfoDocRef.update("mood", mood)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Humor zaktualizowany", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Błąd przy aktualizowaniu nastroju: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    val data = hashMapOf(
-                        "weight" to weight,
-                        "temperature" to temperature,
-                        "symptoms" to symptomsData,
-                        "mood" to mood
-                    )
-
-                    dailyInfoDocRef.set(data)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Zapisano nowy nastrój", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Błąd przy zapisywaniu nastroju: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd przy sprawdzaniu czy dokument z dodatkowymi informacjami z dnia istnieje: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
+// NAWIGACJA
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
