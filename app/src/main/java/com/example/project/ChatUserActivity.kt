@@ -17,6 +17,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Activity responsible for displaying a list of chat users (doctors) based on specialization
+ * and providing navigation options for settings, account, and chat functionalities.
+ */
 class ChatUserActivity : AppCompatActivity() {
 
     private lateinit var chatUserRV: RecyclerView
@@ -30,6 +34,10 @@ class ChatUserActivity : AppCompatActivity() {
 
     private val chatUserList = ArrayList<ChatUser>()
 
+    /**
+     * Called when the activity is created. Initializes Firebase, UI components,
+     * and sets up event listeners for user interaction.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +112,9 @@ class ChatUserActivity : AppCompatActivity() {
     }
 
 
-// FETCHE
+    /**
+     * Fetches users with a specific specialization and updates the chat user list.
+     */
     private fun fetchChatUsers(specialisation: String) {
         db.collection("users")
             .whereEqualTo("role", "Lekarz")
@@ -126,6 +136,9 @@ class ChatUserActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Fetches all users with the role "Lekarz" and updates the chat user list.
+     */
     private fun fetchAllChatUsers() {
         db.collection("users")
             .whereEqualTo("role", "Lekarz")
@@ -146,6 +159,9 @@ class ChatUserActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Fetches and sorts chat users based on the latest message timestamp.
+     */
     private fun fetchAndSortUsers(allUsers: MutableList<ChatUser>) {
         db.collection("Chats")
             .whereEqualTo("receiver", userId)
@@ -182,13 +198,18 @@ class ChatUserActivity : AppCompatActivity() {
 
 
     // NAWIGACJA
-
+    /**
+     * Opens the account window activity for the specified user.
+     */
     private fun openAccountWindowActivity(userId: String) {
         val intent = Intent(this, AccountWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Opens the main window activity for the user with a period context.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
@@ -197,6 +218,9 @@ class ChatUserActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the main window activity for the user with a pregnancy context.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
@@ -204,6 +228,10 @@ class ChatUserActivity : AppCompatActivity() {
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
+
+    /**
+     * Opens the message chat activity for a selected user.
+     */
     private fun openMessageChatActivity(chatUser: ChatUser) {
         val intent = Intent(this, MessageChatActivity::class.java).apply {
             putExtra("USER_LOGIN", chatUser.login)
@@ -212,7 +240,9 @@ class ChatUserActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
+    /**
+     * Opens the settings window activity for the specified user.
+     */
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)

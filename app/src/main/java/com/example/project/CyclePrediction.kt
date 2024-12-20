@@ -11,8 +11,19 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
+/**
+ * Class responsible for predicting the menstrual cycle and period dates based on user data.
+ * It interacts with Firebase Firestore to fetch user cycle data and calculates median cycle lengths and menstruation periods.
+ */
 class CyclePrediction(private val db: FirebaseFirestore) {
 
+    /**
+     * Fetches the user's cycle and menstruation data from Firestore, calculates the median cycle lengths
+     * and menstruation periods, and updates the user document with these calculated values.
+     *
+     * @param userId The ID of the user for whom the cycle data is being calculated.
+     * @param onComplete A callback function that is invoked with the calculated median cycle length and period length.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateMedianCycleLength(userId: String, onComplete: (Long) -> Unit) {
         val cycleLengths = mutableListOf<Long>()
@@ -90,7 +101,15 @@ class CyclePrediction(private val db: FirebaseFirestore) {
             }
     }
 
-    // obliczanie mediany
+    /**
+     * Calculates the median cycle length and menstruation period from the provided lists,
+     * updates the user's Firestore document, and logs the results.
+     *
+     * @param userId The ID of the user whose cycle data is being calculated.
+     * @param cycleLengths A list of cycle lengths in days.
+     * @param menstruations A list of menstruation lengths in days.
+     * @param onComplete A callback function that is invoked with the calculated median cycle length and period length.
+     */
     fun calculateAndLogMedians(
         userId: String,
         cycleLengths: MutableList<Long>,
@@ -141,7 +160,11 @@ class CyclePrediction(private val db: FirebaseFirestore) {
     }
 
 
-    // trzeba ja odpalic pod starcie okresy i po zakonczeniu okresu
+    /**
+     * Predicts the next menstruation date based on the user's cycle length and the most recent cycle data.
+     *
+     * @param userId The ID of the user whose next menstruation date is being predicted.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun predictNextMenstruation(userId: String) {
 

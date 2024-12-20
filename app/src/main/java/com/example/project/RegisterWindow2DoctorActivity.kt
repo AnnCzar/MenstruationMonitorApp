@@ -17,6 +17,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * RegisterWindow2DoctorActivity is the registration screen for doctors where they enter their personal and professional details.
+ * This includes name and specialisation.
+ */
 class RegisterWindow2DoctorActivity : AppCompatActivity(){
 
     private lateinit var name: EditText
@@ -63,7 +67,16 @@ class RegisterWindow2DoctorActivity : AppCompatActivity(){
         }
     }
 
-
+    /**
+     * Saves all the user data (doctor's details) into Firestore.
+     *
+     * @param userId Unique identifier for the user.
+     * @param email User's email.
+     * @param password User's password.
+     * @param username User's username.
+     * @param role User's role (e.g., Doctor, Patient).
+     * @param selectedSpecification Selected specialisation for the doctor.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAllUserData(
         userId: String, email: String, password: String, username: String, role: String, selectedSpecification: String
@@ -90,6 +103,11 @@ class RegisterWindow2DoctorActivity : AppCompatActivity(){
         }
     }
 
+    /**
+     * Opens the main window for doctors after successful registration.
+     *
+     * @param userId Unique identifier for the registered user.
+     */
     private fun openMainWindowDoctor(userId: String){
         val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", userId)

@@ -22,7 +22,10 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-
+/**
+ * SettingsWindowActivity is the settings screen where users can view and manage their account settings.
+ * It allows users to view charts related to temperature, weight, and water consumption.
+ */
 class SettingsWindowActivity : AppCompatActivity() {
     private lateinit var homeButtonSetting: ImageButton
     private lateinit var settingWindowAcountButton: ImageButton
@@ -94,6 +97,10 @@ class SettingsWindowActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Loads chart data (temperature, weight, and water consumption) from Firestore.
+     * Displays the data in corresponding graphs.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadChartData() {
         val dailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
@@ -181,7 +188,13 @@ class SettingsWindowActivity : AppCompatActivity() {
     }
 
 
-
+    /**
+     * Configures a given chart with a title, scaling, and date labels.
+     *
+     * @param chart The GraphView chart to configure.
+     * @param title The title of the chart.
+     * @param dateLabels The labels to display on the X axis.
+     */
     private fun configureChart(chart: GraphView, title: String, dateLabels: List<String>) {
         chart.title = title
         chart.viewport.isScalable = true
@@ -212,7 +225,11 @@ class SettingsWindowActivity : AppCompatActivity() {
         chart.titleColor = Color.BLACK
     }
 
-
+    /**
+     * Opens the main window for period tracking after successful user interaction.
+     *
+     * @param userId The unique identifier for the registered user.
+     */
         @RequiresApi(Build.VERSION_CODES.O)
         private fun openMainWindowPeriodActivity(userId: String) {
             val intent = Intent(this, MainWindowPeriodActivity::class.java)
@@ -221,6 +238,11 @@ class SettingsWindowActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    /**
+     * Opens the main window for pregnancy tracking after successful user interaction.
+     *
+     * @param userId The unique identifier for the registered user.
+     */
         @RequiresApi(Build.VERSION_CODES.O)
         private fun openMainWindowPregnancyActivity(userId: String) {
             val intent = Intent(this, MainWindowPregnancyActivity::class.java)
@@ -229,13 +251,22 @@ class SettingsWindowActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    /**
+     * Opens the account window activity to allow the user to manage their account.
+     *
+     * @param userId The unique identifier for the registered user.
+     */
         private fun openAccountWindowActivity(userId: String) {
             val intent = Intent(this, AccountWindowActivity::class.java)
             intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
 
-
+    /**
+     * Opens the change password screen to allow the user to change their password.
+     *
+     * @param userId The unique identifier for the registered user.
+     */
         private fun openChangePassword(userId: String) {
             val intent = Intent(this, ChangePassword::class.java)
             intent.putExtra("USER_ID", userId)

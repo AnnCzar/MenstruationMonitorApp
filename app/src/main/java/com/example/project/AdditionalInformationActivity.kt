@@ -20,6 +20,10 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Activity to manage and display additional health and daily information.
+ * Users can log mood, symptoms, weight, temperature, and water intake.
+ */
 class AdditionalInformationActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -54,7 +58,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private lateinit var userId: String
     private var selectedDate: LocalDate? = null
 
-
+    /**
+     * Initializes the activity and sets up UI components and listeners.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +94,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
         fetchSymptomsForWeek()
     }
 
+    /**
+     * Initializes all the UI components used in the activity.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializeViews() {
         spinner = findViewById(R.id.spinner)
@@ -121,6 +130,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Configures the RecyclerView to display and manage the symptoms list.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun configureRecyclerView() {
 
@@ -135,6 +147,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
         loadAdditionalInformation(selectedDate)
     }
 
+    /**
+     * Sets click listeners for various UI components to handle user interactions.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners() {
         buttonSaveAddInfo.setOnClickListener {
@@ -241,8 +256,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
     }
 
 
-    // ZAPIS DANYCH
-
+    /**
+     * Saves additional health information such as weight, temperature, symptoms, mood, and mucus type to Firestore.
+     * Validates input fields and displays appropriate error messages for invalid input.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAdditionalInformation() {
         val weight = enterWeight.text.toString()
@@ -285,6 +302,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
             .update("weight", weight.toDouble())
     }
 
+    /**
+     * Updates the mucus type in Firestore for the selected date.
+     *
+     * @param mucusType The type of mucus selected by the user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMucusTypeToDatabase(mucusType: String) {
         db.collection("users").document(userId)
@@ -299,7 +321,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
 
-
+    /**
+     * Saves the check status of a specific symptom to Firestore.
+     *
+     * @param symptom The symptom object containing the name and its checked status.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveSymptomCheckStatus(symptom: Symptom) {
         db.collection("users").document(userId)
@@ -316,6 +342,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Saves the current mood to shared preferences for quick access.
+     *
+     * @param mood The current mood selected by the user (e.g., "happy", "neutral", "sad").
+     */
     fun saveMoodToPreferences(mood: String) {
         val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -323,6 +354,12 @@ class AdditionalInformationActivity : AppCompatActivity() {
         editor.putString("date", getCurrentDate())
         editor.apply()
     }
+
+    /**
+     * Saves the current mood to Firestore. If no record exists for the selected date, creates a new one.
+     *
+     * @param mood The mood to save or update in Firestore.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMoodToDatabase(mood: String) {
         val weight = enterWeight.text.toString()
@@ -364,7 +401,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
     }
 
 
-    // UPDATE
+    /**
+     * Updates the count of drinks consumed for the day in Firestore.
+     */
     private fun updateDrinkCountInFirestore() {
         db.collection("users").document(userId)
             .collection("dailyInfo")
@@ -378,12 +417,18 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Updates the drink count displayed in the UI.
+     */
     private fun updateDrinkCount() {
         drinksCountText.text = drinksCount.toString()
     }
 
 
-    // fetch
+    /**
+     * Fetches symptoms data from Firestore for the past 7 days.
+     * Identifies symptoms that occur every day and displays a warning if necessary.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchSymptomsForWeek() {
         val userDailyInfoRef = db.collection("users").document(userId).collection("dailyInfo")
@@ -432,6 +477,13 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * Loads additional health information for a specific date.
+     * Updates the UI with the fetched data or resets fields if no data exists.
+     *
+     * @param date The date for which to load the additional information.
+     */
     private fun loadAdditionalInformation(date: LocalDate?) {
         if (date == null) return
 
@@ -490,6 +542,10 @@ class AdditionalInformationActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Fetches the drink count for the selected date from Firestore.
+     * Initializes the count to 0 if no record exists.
+     */
     private fun fetchTodaysDrinkCount() {
         db.collection("users").document(userId).collection("dailyInfo")
             .document(selectedDate.toString())
@@ -520,7 +576,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
     }
 
 
-// ----------- POZOSTAŁE FUNKCJE
+    /**
+     * Loads the user's saved mood from shared preferences if the saved date matches the current date.
+     *
+     * @return The saved mood, or `null` if no mood is saved for today.
+     */
     fun loadMoodFromPreferences(): String? {
         val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
         val savedDate = sharedPreferences.getString("date", "")
@@ -531,6 +591,9 @@ class AdditionalInformationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Restores the user's mood state in the UI based on the mood saved in shared preferences.
+     */
     fun restoreMoodState() {
         val savedMood = loadMoodFromPreferences()
 
@@ -556,11 +619,22 @@ class AdditionalInformationActivity : AppCompatActivity() {
         }
     }
 
+
+    /**
+     * Returns the current date formatted as `yyyy-MM-dd`.
+     *
+     * @return A string representing the current date.
+     */
     fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(Date())
     }
 
+    /**
+     * Resets the visibility and selection states of mood buttons, excluding the button for the specified mood.
+     *
+     * @param currentMood The mood to keep active (e.g., "happy", "neutral", "sad").
+     */
     fun resetOtherButtons(currentMood: String) {
         when (currentMood) {
             "happy" -> {
@@ -593,6 +667,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Sets the current mood and updates the selection states of the mood buttons.
+     *
+     * @param mood The mood to set (e.g., "happy", "neutral", "sad").
+     */
         private fun setCurrentMood(mood: String) {
         currentMood = mood
         when (mood) {
@@ -614,7 +693,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
         }
     }
 
-// NAWIGACJA
+    /**
+     * Opens the Settings window activity and passes the user ID as an intent extra.
+     *
+     * @param userId The ID of the current user.
+     */
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -622,12 +705,23 @@ class AdditionalInformationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the Account window activity and passes the user ID as an intent extra.
+     *
+     * @param userId The ID of the current user.
+     */
     private fun openAccountWindowActivity(userId: String) {
         val intent = Intent (this, AccountWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
         }
         startActivity(intent)
     }
+
+    /**
+     * Opens the Main Window Period activity with the current date and user ID as intent extras.
+     *
+     * @param userId The ID of the current user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
@@ -636,6 +730,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the Main Window Pregnancy activity with the current date and user ID as intent extras.
+     *
+     * @param userId The ID of the current user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)

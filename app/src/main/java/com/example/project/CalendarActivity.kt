@@ -21,6 +21,11 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
+/**
+ * CalendarActivity is the main screen for displaying the user's menstrual and ovulation calendar.
+ * This activity connects with Firebase Firestore to retrieve and display relevant data such as period,
+ * ovulation dates, and mucus observations.
+ */
 class CalendarActivity : AppCompatActivity() {
 
     private lateinit var calendar: CompactCalendarView
@@ -42,6 +47,11 @@ class CalendarActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var textMucus: TextView
 
+
+    /**
+     * Called when the activity is created.
+     * Initializes views, sets up listeners, and fetches user data related to cycles and mucus.
+     */
     @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +80,10 @@ class CalendarActivity : AppCompatActivity() {
         fetchMucus()
         fetchUserPeriodAndOvulationDates()
 
+        /**
+         * This method is triggered when a user clicks on a specific date in the calendar.
+         * It fetches mucus data for the selected date and opens a new activity for that day.
+         */
         calendar.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
                 dateClicked?.let {
@@ -79,6 +93,10 @@ class CalendarActivity : AppCompatActivity() {
                 }
             }
 
+            /**
+             * This method is triggered when the user scrolls the calendar to a new month.
+             * It updates the displayed month name at the top of the screen.
+             */
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
                 updateMonthName(firstDayOfNewMonth)
             }
@@ -112,11 +130,18 @@ class CalendarActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called when the activity is resumed.
+     * Checks the pregnancy status of the user to adjust the UI accordingly.
+     */
     override fun onResume() {
         super.onResume()
         checkPregnantStatus()
     }
 
+    /**
+     * Checks if the user is pregnant and adjusts the UI to show or hide pregnancy-related elements.
+     */
     private fun checkPregnantStatus() {
         val userRef = db.collection("users").document(userId)
         userRef.get()
@@ -153,6 +178,9 @@ class CalendarActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Fetches the user's period and ovulation dates from Firestore and marks the respective days on the calendar.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchUserPeriodAndOvulationDates() {
         val cyclesRef = db.collection("users").document(userId).collection("cycles")
@@ -202,6 +230,9 @@ class CalendarActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Fetches the user's doctor visits from Firestore and marks the respective days on the calendar.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
@@ -226,6 +257,9 @@ class CalendarActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Fetches mucus data for a specific date and updates the UI with the corresponding description.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMucusForDate(date: LocalDate) {
         val mucusDescriptions = mapOf(
@@ -306,6 +340,11 @@ class CalendarActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Updates the displayed month name on the calendar view when the user scrolls to a new month.
+     *
+     * @param firstDayOfNewMonth The first day of the newly selected month.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateMonthName(date: Date) {
         val dateFormat = SimpleDateFormat("LLLL yyyy", Locale("pl"))
@@ -313,8 +352,12 @@ class CalendarActivity : AppCompatActivity() {
         monthNameTextView.text = monthName.capitalize(Locale("pl"))
     }
 
-
-// NAWIGACJA
+    /**
+     * Opens the activity for the specific day.
+     *
+     * @param userId The unique ID of the user.
+     * @param selectedDate The selected date to be displayed in the day activity.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openDayActivity(userId: String, date: LocalDate) {
         val userRef = db.collection("users").document(userId)
@@ -340,6 +383,9 @@ class CalendarActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Opens the settings window activity.
+     */
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -347,6 +393,9 @@ class CalendarActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the account window activity.
+     */
     private fun openAccountWindowActivity(userId: String){
         val intent = Intent(this, AccountWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -354,6 +403,9 @@ class CalendarActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the main window for the period activity.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
@@ -362,6 +414,9 @@ class CalendarActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the main window for the pregnancy activity.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)

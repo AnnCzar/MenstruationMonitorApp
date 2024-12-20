@@ -10,10 +10,23 @@ import java.util.Date
 import java.time.LocalDate
 import java.time.ZoneId
 
+
+/**
+ * Class responsible for decorating the CompactCalendarView with events.
+ *
+ * @param calendarView The CompactCalendarView instance to decorate.
+ */
 class EventDecorator(
     private val calendarView: CompactCalendarView,
 ) {
 
+
+    /**
+     * Marks a range of days (start to end) in the calendar as period days with a red color.
+     *
+     * @param startDate The start date of the period.
+     * @param endDate The end date of the period.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun markPeriodDays(startDate: Date, endDate: Date) {
         val startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
@@ -32,6 +45,11 @@ class EventDecorator(
         calendarView.invalidate()
     }
 
+    /**
+     * Marks a specific day in the calendar as the ovulation day with a green color.
+     *
+     * @param ovulationDate The date of ovulation.
+     */
     fun markOvulation( ovulationDate: Date) {
         val ovulationTime = ovulationDate.time
         val event = Event(Color.GREEN, ovulationTime)
@@ -39,11 +57,24 @@ class EventDecorator(
         calendarView.invalidate()
     }
 
+    /**
+     * Marks a specific day in the calendar for a doctor visit with a blue color.
+     *
+     * @param doctorVisit The date of the doctor visit.
+     */
     fun doctorVisits(doctorVisit: Date) {
         val doctorVisitTime = doctorVisit.time
         val event = Event(Color.BLUE, doctorVisitTime)
         calendarView.addEvent(event)
     }
+
+    /**
+     * Marks the fertile days around ovulation in the calendar with an orange color.
+     *
+     * Fertile days start 5 days before ovulation and end 1 day after ovulation.
+     *
+     * @param ovulationDate The date of ovulation.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun markFertilityDays(ovulationDate: LocalDate) {
         val firstFertalDay = ovulationDate.minusDays(5)

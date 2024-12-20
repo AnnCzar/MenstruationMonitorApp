@@ -29,6 +29,9 @@ import org.json.JSONObject
 import java.io.File
 import java.net.URLEncoder
 
+/**
+ * Activity for displaying a map and handling user location.
+ */
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
@@ -40,6 +43,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         private const val LOCATION_REQUEST_CODE = 1
     }
 
+    /**
+     * Method called when the activity is initialized.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +59,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
+    /**
+     * onMapReady - Callback for when the map is ready.
+     * @param googleMap - The Google Map instance.
+     */
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -73,12 +83,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-
+    /**
+     * onMarkerClick - Function called when a marker on the map is clicked.
+     * @param marker - The clicked marker.
+     * @return - Always false to not interfere with the default map behavior.
+     */
     override fun onMarkerClick(marker: Marker): Boolean {
         Log.d("MapsActivity", "Kliknięto marker: ${marker.title}")
         return false
     }
 
+    /**
+     * setUpMap - Basic settings for the map including user location.
+     */
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -108,12 +125,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
+    /**
+     * placeMarkerOnMap - Places a marker on the map at a specified location.
+     * @param location - The location to place the marker.
+     */
     private fun placeMarkerOnMap(currentLatLong: LatLng) {
         val markerOptions = MarkerOptions().position(currentLatLong)
         markerOptions.title("$currentLatLong")
         mMap.addMarker(markerOptions)
     }
 
+    /**
+     * findNearbyPharmacies - Finds nearby pharmacies based on the user's location.
+     * @param location - The location to search from.
+     */
 private fun findNearbyPharmacies(location: LatLng) {
     val apiKey = BuildConfig.MAPS_API_KEY
     val locationString = "${location.latitude},${location.longitude}"
@@ -125,7 +150,15 @@ private fun findNearbyPharmacies(location: LatLng) {
     searchNearbyPlacesWithKeyword(locationString, radius, "Hebe", apiKey, BitmapDescriptorFactory.HUE_BLUE, false)
 }
 
-
+    /**
+     * searchNearbyPlacesWithKeyword - Searches for nearby places with a specific keyword.
+     * @param locationString - The location string (latitude, longitude).
+     * @param radius - Search radius.
+     * @param keyword - Keyword to search for.
+     * @param apiKey - Google Maps API key.
+     * @param markerColor - Color for the marker on the map.
+     * @param ignore - Whether to ignore case in keyword matching.
+     */
     private fun searchNearbyPlacesWithKeyword(
         locationString: String,
         radius: Int,
@@ -171,8 +204,14 @@ private fun findNearbyPharmacies(location: LatLng) {
         Volley.newRequestQueue(this).add(request)
     }
 
-
-
+    /**
+     * searchNearbyPlaces - Searches for nearby places based on location and type.
+     * @param locationString - The location string (latitude, longitude).
+     * @param radius - Search radius.
+     * @param type - Type of places to search for (e.g., "pharmacy").
+     * @param apiKey - Google Maps API key.
+     * @param markerColor - Color for the marker on the map.
+     */
     private fun searchNearbyPlaces(locationString: String, radius: Int, type: String, apiKey: String, markerColor: Float) {
         val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$locationString&radius=$radius&type=$type&key=$apiKey"
 
@@ -205,6 +244,10 @@ private fun findNearbyPharmacies(location: LatLng) {
         Volley.newRequestQueue(this).add(request)
     }
 
+    /**
+     * geocodeAddress - Geocodes an address to obtain latitude and longitude.
+     * @param address - The address to geocode.
+     */
     private fun geocodeAddress(address: String) {
         val apiKey = BuildConfig.MAPS_API_KEY
         val encodedAddress = URLEncoder.encode(address, "UTF-8")

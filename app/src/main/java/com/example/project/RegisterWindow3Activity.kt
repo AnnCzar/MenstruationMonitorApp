@@ -18,6 +18,10 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
+/**
+ * RegisterWindow3Activity is the registration screen where users can enter additional details such as medication information.
+ * This includes medicine name, dose, and time.
+ */
 class RegisterWindow3Activity : AppCompatActivity() {
     private lateinit var enterMedicineName: EditText
     private lateinit var enterDoseMedicineRegister: EditText
@@ -89,6 +93,19 @@ class RegisterWindow3Activity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Saves all the user data along with medication information to Firestore.
+     *
+     * @param userId Unique identifier for the user.
+     * @param email User's email.
+     * @param password User's password.
+     * @param username User's username.
+     * @param lastPeriod Last menstrual period date.
+     * @param cycleLength Length of the menstrual cycle.
+     * @param periodLength Length of the menstrual period.
+     * @param weight User's weight.
+     * @param role User's role (e.g., Patient, Doctor).
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveAllUserData(
         userId: String, email: String, password: String, username: String,
@@ -118,6 +135,11 @@ class RegisterWindow3Activity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Opens the main window for the period tracking application after successful registration.
+     *
+     * @param userId Unique identifier for the registered user.
+     */
     private fun openMainWindowPeriodActivity(userId: String?) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId) // Przekazanie ID użytkownika do nowej aktywności

@@ -20,6 +20,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+
+/**
+ * Activity for user login functionality.
+ * Handles user authentication, role-based navigation, and FCM token management.
+ */
 class LoginWindowActivity : AppCompatActivity() {
     private lateinit var enterLogin: EditText
     private lateinit var enterPassword: EditText
@@ -30,6 +35,10 @@ class LoginWindowActivity : AppCompatActivity() {
         private const val REQUEST_CODE_NOTIFICATIONS = 101
     }
 
+    /**
+     * Lifecycle method called when the activity is created.
+     * Initializes Firebase Auth, sets up UI components, and manages login state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_window)
@@ -80,6 +89,10 @@ class LoginWindowActivity : AppCompatActivity() {
             logInRegisteredUser()
         }
     }
+
+    /**
+     * Checks and requests the POST_NOTIFICATIONS permission for Android 13+.
+     */
     private fun checkAndRequestPostNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -91,6 +104,9 @@ class LoginWindowActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Handles the result of permission requests.
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_NOTIFICATIONS) {
@@ -105,6 +121,11 @@ class LoginWindowActivity : AppCompatActivity() {
 
     val db = Firebase.firestore
 
+    /**
+     * Validates the login details entered by the user.
+     *
+     * @return True if details are valid, false otherwise.
+     */
     private fun validateLoginDetails(): Boolean {
         return when {
             TextUtils.isEmpty(enterLogin.text.toString().trim { it <= ' ' }) -> {
@@ -122,6 +143,9 @@ class LoginWindowActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Logs in a registered user and navigates based on their role and status.
+     */
     private fun logInRegisteredUser() {
         if (validateLoginDetails()) {
             val login = enterLogin.text.toString().trim { it <= ' ' }
@@ -178,6 +202,12 @@ class LoginWindowActivity : AppCompatActivity() {
             showErrorSnackBar("Pola nie mogą być puste", true)
         }
     }
+
+    /**
+     * Saves the FCM token for the user in Firestore.
+     *
+     * @param userId The user's ID.
+     */
     private fun saveFCMToken(userId: String) {
         FirebaseMessaging.getInstance().token
             .addOnCompleteListener { task ->
@@ -207,13 +237,20 @@ class LoginWindowActivity : AppCompatActivity() {
 
 
 
-
+    /**
+     * Shows an error or information message as a Toast.
+     *
+     * @param message The message to show.
+     * @param errorMessage Whether the message is an error.
+     */
     private fun showErrorSnackBar(message: String, errorMessage: Boolean) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 
-    //NAWIGACJA
+    /**
+     * Navigates to the doctor's main window.
+     */
     private fun openMainWindowDoctor(uid: String) {
         val intent = Intent(this, ChatDoctorActivity::class.java)
         intent.putExtra("USER_ID", uid)
@@ -221,6 +258,9 @@ class LoginWindowActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Navigates to the period tracking main window.
+     */
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
@@ -228,6 +268,9 @@ class LoginWindowActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Navigates to the pregnancy tracking main window.
+     */
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)
         intent.putExtra("USER_ID", userId)

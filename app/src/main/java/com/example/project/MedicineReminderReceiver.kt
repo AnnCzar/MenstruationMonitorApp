@@ -7,7 +7,19 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
+/**
+ * BroadcastReceiver for handling medicine reminders.
+ *
+ * This receiver is triggered at a specific time to show a notification reminding the user to take their medicine.
+ */
 class MedicineReminderReceiver : BroadcastReceiver() {
+
+    /**
+     * Handles the receipt of the broadcast.
+     *
+     * @param context The application context.
+     * @param intent The intent that was broadcast.
+     */
     override fun onReceive(context: Context, intent: Intent) {
         val notificationIntent = Intent(context, MainWindowPeriodActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(

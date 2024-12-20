@@ -17,6 +17,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * PregnancyBegginingActivity handles the UI and logic for recording the start date of a pregnancy
+ * and updating the user's pregnancy status in the Firestore database.
+ */
 class PregnancyBegginingActivity : AppCompatActivity() {
     private lateinit var pregnancy_beg_text: TextView
     private lateinit var insert_date_pregnancy_start: TextInputEditText
@@ -46,6 +50,9 @@ class PregnancyBegginingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Displays a DatePickerDialog allowing the user to select the pregnancy start date.
+     */
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -66,6 +73,10 @@ class PregnancyBegginingActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Saves the pregnancy start date to Firestore, updates the user's pregnancy status,
+     * and calculates the estimated end date for the pregnancy (266 days later).
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun savePregnancyStartDate() {
         val userRef = db.collection("users").document(userId)
@@ -113,6 +124,11 @@ class PregnancyBegginingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Opens the main pregnancy window activity after successfully saving the pregnancy data.
+     *
+     * @param userId The ID of the user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)

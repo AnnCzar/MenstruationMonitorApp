@@ -24,6 +24,10 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/**
+ * The DoctorVisitsActivity class handles the display and management of doctor visits.
+ * It allows the user to view, add, edit, delete visits, and receive notifications for upcoming visits.
+ */
 class DoctorVisitsActivity : AppCompatActivity() {
 
     private lateinit var visitRV: RecyclerView
@@ -37,6 +41,11 @@ class DoctorVisitsActivity : AppCompatActivity() {
 
     private val doctorsList = mutableListOf<DoctorVisit>()
 
+
+    /**
+     * Initializes the activity and sets up UI components, database connection, and event listeners.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down, this Bundle contains the most recent data.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,13 +109,19 @@ class DoctorVisitsActivity : AppCompatActivity() {
                 }
         }
     }
+
+    /**
+     * Refreshes the list of doctor visits when the activity resumes.
+     */
     override fun onResume() {
         super.onResume()
         doctorsList.clear()
         fetchDoctorVisits()
     }
 
-
+    /**
+     * Fetches doctor visits from the Firestore database.
+     */
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
             .whereEqualTo("checked", false)
@@ -143,6 +158,10 @@ class DoctorVisitsActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Edits a specified doctor visit.
+     * @param visit The visit to edit.
+     */
     private fun editVisit(visit: DoctorVisit) {
         Toast.makeText(this, "Nie ma edycji", Toast.LENGTH_SHORT).show() 
         val intent = Intent(this, ModifyVisitActivity::class.java)
@@ -150,6 +169,10 @@ class DoctorVisitsActivity : AppCompatActivity() {
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
+
+    /**
+     * Ensures the app has permission to schedule exact alarms.
+     */
     private fun ensureExactAlarmPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -160,6 +183,10 @@ class DoctorVisitsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Schedules a notification for a specific doctor visit.
+     * @param visit The doctor visit to schedule a notification for.
+     */
     @SuppressLint("ScheduleExactAlarm")
     private fun scheduleNotification(visitTimeInMillis: Long, visitId: String) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -194,6 +221,9 @@ class DoctorVisitsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates a notification channel for visit reminders.
+     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "VisitReminderChannel"
@@ -209,7 +239,10 @@ class DoctorVisitsActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Deletes a specified doctor visit.
+     * @param visit The visit to delete.
+     */
     private fun deleteVisit(visit: DoctorVisit) {
         db.collection("users").document(userId).collection("doctorVisits")
             .document(visit.id)

@@ -15,6 +15,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 
+/**
+ * Activity for handling chat messages between users.
+ *
+ * This activity allows users to send and receive messages in a chat. It sets up a RecyclerView for displaying messages, handles message sending, and manages message notifications.
+ */
 class MessageChatActivity : AppCompatActivity() {
 
     private lateinit var sendImageButton: ImageButton
@@ -60,7 +65,9 @@ class MessageChatActivity : AppCompatActivity() {
     }
 
 
-    // Inicjalizacja elementów interfejsu użytkownika
+    /**
+     * Initializes UI elements such as buttons, text fields, and RecyclerView.
+     */
     private fun initializeUI() {
         userLogin = intent.getStringExtra("USER_LOGIN") ?: ""
         userId = intent.getStringExtra("USER_ID") ?: ""
@@ -73,20 +80,26 @@ class MessageChatActivity : AppCompatActivity() {
         displayUserLogin.text = userLogin
     }
 
-    // Inicjalizacja Firebase i Retrofit
+    /**
+     * Initializes Firebase services and user authentication.
+     */
     private fun initializeFirebase() {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
 //        apiService = Client.getClient("https://fcm.googleapis.com/")!!.create(APIService::class.java)
     }
 
-    // Konfiguracja RecyclerView
+    /**
+     * Configures the RecyclerView to display chat messages.
+     */
     private fun setupRecyclerView() {
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatAdapter = ChatAdapter(this, mChatList)
         chatRecyclerView.adapter = chatAdapter
     }
 
-    // Obsługa przycisku wysyłania wiadomości
+    /**
+     * Configures the send button to send messages. It listens for click events, retrieves the message text, and calls the appropriate function to send the message.
+     */
     private fun setupSendButton() {
         sendImageButton.setOnClickListener {
             val message = messageText.text.toString().trim()
@@ -99,7 +112,13 @@ class MessageChatActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Sends a message from the current user to the specified user.
+     *
+     * @param senderId ID of the sender.
+     * @param receiverId ID of the receiver.
+     * @param message The message text.
+     */
     private fun sendMessageToUser(senderId: String, receiverId: String, message: String) {
         val messageData = mapOf(
             "sender" to senderId,
@@ -129,7 +148,12 @@ class MessageChatActivity : AppCompatActivity() {
     }
 
 
-    // Dodawanie do listy czatów
+    /**
+     * Adds the current chat to the user's chat list.
+     *
+     * @param senderId ID of the sender.
+     * @param receiverId ID of the receiver.
+     */
     private fun addToChatList(senderId: String, receiverId: String) {
         val chatListRef = db.collection("ChatLists")
 
@@ -146,7 +170,12 @@ class MessageChatActivity : AppCompatActivity() {
             }
     }
 
-    // Pobieranie wiadomości
+    /**
+     * Retrieves messages between the current user and the specified user.
+     *
+     * @param senderId ID of the sender.
+     * @param receiverId ID of the receiver.
+     */
     private fun retrieveMessages(senderId: String, receiverId: String) {
         db.collection("Chats")
             .orderBy("timestamp")
@@ -192,7 +221,11 @@ class MessageChatActivity : AppCompatActivity() {
             }
     }
 
-    // Funkcja aktualizująca status wiadomości na "zobaczone"
+    /**
+     * Marks a message as seen.
+     *
+     * @param messageId ID of the message to be marked as seen.
+     */
     private fun markMessageAsSeen(messageId: String) {
         db.collection("Chats").document(messageId).update("isseen", true)
             .addOnSuccessListener {
@@ -203,7 +236,11 @@ class MessageChatActivity : AppCompatActivity() {
             }
     }
 
-    // Pomocnicza funkcja wyświetlająca Toast
+    /**
+     * Displays a Toast message.
+     *
+     * @param message The message to be displayed.
+     */
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }

@@ -12,6 +12,10 @@ import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * RegisterWindow2Activity is the second registration screen where users enter additional details like last period,
+ * cycle length, period length, and weight. It acts as an intermediary before finalizing the registration.
+ */
 class RegisterWindow2Activity : AppCompatActivity() {
     private lateinit var enterLastPeriod: EditText
     private lateinit var cycleLen: EditText
@@ -60,6 +64,9 @@ class RegisterWindow2Activity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Shows a date picker dialog for the user to select their last period date.
+     */
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -79,6 +86,18 @@ class RegisterWindow2Activity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Opens the third registration window where users can finalize their registration.
+     * @param userId Unique identifier for the user.
+     * @param email Email address of the user.
+     * @param password Password for the user.
+     * @param username Username for the user.
+     * @param lastPeriod Date of the last period.
+     * @param cycleLength Length of the menstrual cycle.
+     * @param periodLength Length of the menstrual period.
+     * @param weight Weight of the user.
+     * @param role Role of the user (e.g., "Lekarz" or "Zwykły użytkownik").
+     */
     private fun openRegisterWindow3Activity(
         userId: String, email: String, password: String, username: String,
         lastPeriod: String, cycleLength: String, periodLength: String, weight: String, role: String

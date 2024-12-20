@@ -15,6 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Activity for managing medicines.
+ */
 class MedicineActivity : AppCompatActivity() {
 
     private lateinit var medicineRV: RecyclerView
@@ -98,6 +101,11 @@ class MedicineActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Edits the details of the selected medicine.
+     *
+     * @param medicine The medicine to be edited.
+     */
     private fun editVisit(medicine: MedicineList) {
         val intent = Intent(this, ModifyMedicineActivity::class.java)
         intent.putExtra("MEDICINE_ID", medicine.id)
@@ -105,6 +113,12 @@ class MedicineActivity : AppCompatActivity() {
         startActivity(intent)
 
     }
+
+    /**
+     * Deletes the selected medicine from the Firestore database.
+     *
+     * @param medicine The medicine to be deleted.
+     */
     private  fun deleteVisit(medicine: MedicineList){
         db.collection("users").document(userId).collection("medicines")
             .document(medicine.id)
@@ -119,6 +133,11 @@ class MedicineActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Opens the settings activity.
+     *
+     * @param userId The ID of the current user.
+     */
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)
@@ -126,12 +145,20 @@ class MedicineActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the account activity.
+     *
+     * @param userId The ID of the current user.
+     */
     private fun openAccountWindowActivity(userId: String) {
         val intent = Intent(this, AccountWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Fetches the list of medicines from Firestore and updates the UI.
+     */
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
             .get()
@@ -153,6 +180,11 @@ class MedicineActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Saves the check status of a medicine in Firestore.
+     *
+     * @param medicine The medicine whose status is to be updated.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine) {
         db.collection("users").document(userId)
@@ -169,6 +201,11 @@ class MedicineActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Opens the main activity for non-pregnant users.
+     *
+     * @param userId The ID of the current user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
@@ -177,6 +214,11 @@ class MedicineActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Opens the main activity for pregnant users.
+     *
+     * @param userId The ID of the current user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPregnancyActivity::class.java)

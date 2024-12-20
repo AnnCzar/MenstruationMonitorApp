@@ -13,6 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Activity responsible for adding new medicines to the user's Firestore database.
+ * Provides UI for entering medicine details and saving them.
+ */
 class AddMedicineActivity : AppCompatActivity(){
 
     private lateinit var enterMedicineName: EditText
@@ -23,6 +27,11 @@ class AddMedicineActivity : AppCompatActivity(){
 
     val db = Firebase.firestore
 
+    /**
+     * Initializes the activity, sets up UI components, and defines event handlers.
+     *
+     * @param savedInstanceState The saved state of the activity (if any).
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

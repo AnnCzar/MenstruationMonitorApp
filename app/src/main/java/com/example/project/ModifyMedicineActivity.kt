@@ -7,6 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 
+/**
+ * Activity for modifying medicine details.
+ *
+ * This activity allows users to view and edit medicine details such as name, dose, and time. It retrieves medicine information from Firebase Firestore, displays it for editing, and allows users to save the changes back to the database.
+ */
 class ModifyMedicineActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
@@ -38,7 +43,10 @@ class ModifyMedicineActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Loads the details of the selected medicine from Firestore and displays them in the respective EditTexts.
+     * If the medicine is not found, shows a message and finishes the activity.
+     */
     private fun loadMedicineDetails() {
         db.collection("users").document(userId).collection("medicines").document(medicineId)
             .get()
@@ -58,7 +66,11 @@ class ModifyMedicineActivity : AppCompatActivity() {
             }
     }
 
-
+    /**
+     * Saves the modified medicine details to Firestore.
+     * Checks if any field is empty and shows a message if required.
+     * On successful save, shows a success message and finishes the activity.
+     */
     private fun saveMedicineDetails() {
         val medicineName = medicineName.text.toString()
         val doseMedicine = medicineDose.text.toString()

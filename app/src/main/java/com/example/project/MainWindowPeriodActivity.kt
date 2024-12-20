@@ -33,6 +33,9 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
+/**
+ * Main activity for managing the period tracking interface.
+ */
 class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var currentDateTextPeriod: TextView
     private lateinit var daysLeftPeriod: TextView
@@ -51,26 +54,48 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     private lateinit var doctorRecyclerView: RecyclerView
     private lateinit var doctorAdapter: DoctorVisitAdapter
 
+
+    /**
+     * Adapter for displaying a list of doctor visits in a RecyclerView.
+     */
     class DoctorVisitAdapter(
         private val visits: List<DoctorVisit>,
     ) : RecyclerView.Adapter<DoctorVisitAdapter.DoctorVisitViewHolder>() {
 
+
+        /**
+         * Inflates the layout for individual items in the RecyclerView.
+         */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorVisitViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(android.R.layout.simple_list_item_1, parent, false)
             return DoctorVisitViewHolder(view)
         }
 
+        /**
+         * Binds data to the ViewHolder for each item in the list.
+         */
         override fun onBindViewHolder(holder: DoctorVisitViewHolder, position: Int) {
             val visit = visits[position]
             holder.bind(visit)
         }
 
+        /**
+         * Returns the total number of items in the list.
+         */
         override fun getItemCount(): Int = visits.size
 
+
+        /**
+         * ViewHolder for displaying individual doctor visit items.
+         */
         class DoctorVisitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             private val textView: TextView = itemView.findViewById(android.R.id.text1)
 
+
+            /**
+             * Binds a DoctorVisit object to the text view.
+             */
             fun bind(visit: DoctorVisit) {
 
                 textView.text =
@@ -225,7 +250,10 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         fetchLatestCycleData()
     }
 
-
+    /**
+     * Checks and sets the selected date from the intent or defaults to the current date.
+     * If no date is provided via intent, it initializes the selected date to the current day.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkDate() {
         val dateString = intent?.getStringExtra("SELECTED_DATE")
@@ -236,7 +264,13 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Updates the visibility of the period-related buttons.
+     * Shows the "Start Period" button if the period has not started,
+     * and shows the "End Period" button if the period is ongoing.
+     *
+     * @param isPeriodStarted Boolean indicating if the period has started.
+     */
     private fun updateButtonVisibility(isPeriodStarted: Boolean) {
         if(!isPeriodStarted){
             begginingPeriodButton.visibility = Button.VISIBLE
@@ -247,6 +281,13 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             endPeriodButton.visibility = Button.VISIBLE
         }
     }
+
+    /**
+     * Displays the current cycle day on the UI.
+     * Updates the cycle day text view with the provided day value.
+     *
+     * @param cycleDay The day of the menstrual cycle to display.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayCycleDay(cycleDay: Long) {
         Log.d("UI", "Updating UI with cycleDay: $cycleDay")
@@ -256,7 +297,10 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
 
-
+    /**
+     * Creates a notification channel for medicine reminders.
+     * Required for Android O (API level 26) and above to support notifications.
+     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "MedicineReminderChannel"
@@ -272,6 +316,10 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates a notification channel for period reminders.
+     * Ensures notifications for period tracking are properly handled.
+     */
     private fun createNotificationChannelPeriod() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "PeriodReminderChannel"
@@ -291,6 +339,13 @@ class MainWindowPeriodActivity : AppCompatActivity() {
 
 
 
+    /**
+     * Parses a custom date object into a LocalDate.
+     * Supports conversion from a map structure with year, month, and day keys.
+     *
+     * @param dateValue An object potentially representing a date in a map format.
+     * @return A LocalDate if parsing succeeds; null otherwise.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun parseCustomDate(dateValue: Any?): LocalDate? {
         return try {
@@ -307,7 +362,14 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Calculates a date based on the cycle day and cycle length.
+     *
+     * @param lastPeriodDate The date of the last period.
+     * @param cycleDay The current day of the cycle.
+     * @param cycleLength The total length of the cycle.
+     * @return A LocalDate representing the calculated date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateDateFromCycleDay(lastPeriodDate: LocalDate, cycleDay: Int, cycleLength: Int): LocalDate {
         val daysFromStart = (cycleDay - 1) % cycleLength
@@ -318,6 +380,13 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         begginingPeriodButton.visibility = Button.VISIBLE
     }
 
+
+    /**
+     * Calculates the number of days in a given month.
+     *
+     * @param month A string in the format "YYYY-MM".
+     * @return The number of days in the specified month.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getDaysInMonth(month: String): Int {
         val year = month.substring(0, 4).toInt()
@@ -326,12 +395,26 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         return firstDayOfMonth.lengthOfMonth()
     }
 
+    /**
+     * Calculates the current day in the menstrual cycle.
+     *
+     * @param lastPeriodDate The start date of the last period.
+     * @param tempDate The date for which to calculate the cycle day.
+     * @param cycleLength The length of the menstrual cycle in days.
+     * @return The day in the cycle or null if the date is invalid.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateCycleDay(lastPeriodDate: LocalDate, tempDate: LocalDate, cycleLength: Int): Int? {
         val daysDifference = java.time.temporal.ChronoUnit.DAYS.between(lastPeriodDate, tempDate).toInt()
         return if (daysDifference >= 0) (daysDifference % cycleLength) + 1 else null
     }
 
+    /**
+     * Calculates the median value of a list of integers.
+     *
+     * @param data The list of integers to process.
+     * @return The median value or 0.0 if the list is empty.
+     */
     private fun calculateMedian(data: List<Int>): Double {
         if (data.isEmpty()) return 0.0
         val sorted = data.sorted()
@@ -343,6 +426,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Calculates and updates the displayed dates related to the menstrual cycle.
+     *
+     * @param lastPeriodDate The start date of the last period.
+     * @param cycleLength The length of the menstrual cycle in days.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateAndDisplayDates(lastPeriodDate: LocalDate, cycleLength: Int) {
 
@@ -375,10 +464,12 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
+    /**
+     * Updates the displayed ovulation date information.
+     *
+     * @param nextOvulationDate The calculated next ovulation date.
+     * @param cycleLength The length of the menstrual cycle in days.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayDates(nextOvulationDate: LocalDate, cycleLength: Int) {
         var daysUntilNextOvulation = ChronoUnit.DAYS.between(selectedDate, nextOvulationDate)
@@ -393,19 +484,31 @@ class MainWindowPeriodActivity : AppCompatActivity() {
         }
     }
 
-
-
+    /**
+     * Displays a short message as a toast.
+     *
+     * @param message The message to display.
+     */
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 
 
-
+    /**
+     * Suppresses the default behavior of the back button press.
+     * This method is intentionally left empty to override and disable the default action.
+     */
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
     }
 
+    /**
+     * Saves the check status of a specific medicine for the selected date in the Firestore database.
+     *
+     * @param medicine The medicine whose status is being updated.
+     * @param selectedDate The date for which the status is being saved.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine, selectedDate: LocalDate) {
         Log.d("Zapis daty", selectedDate.toString())
@@ -429,7 +532,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
     }
 
 // POWIADOMIENIA
-
+    /**
+     * Sends a notification to the user when a new message is received.
+     *
+     * @param message The message details containing sender, receiver, and timestamp information.
+     */
     private fun sendNotification(message: Message) {
         val firestore = FirebaseFirestore.getInstance()
 
@@ -466,6 +573,11 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             }
 
     }
+
+    /**
+     * Schedules a notification for period reminders to trigger at 8:00 PM.
+     * This uses exact alarms to ensure timely delivery.
+     */
 @SuppressLint("ScheduleExactAlarm")
 private fun schedulePeriodNotification() {
     val intent = Intent(this, periodReminder::class.java)
@@ -486,6 +598,10 @@ private fun schedulePeriodNotification() {
         pendingIntent
     )
 }
+
+    /**
+     * Schedules a recurring notification for medicine reminders at 7:05 PM daily.
+     */
 private fun scheduleNotification() {
     val intent = Intent(this, MedicineReminderReceiver::class.java)
     val pendingIntent = PendingIntent.getBroadcast(
@@ -508,7 +624,10 @@ private fun scheduleNotification() {
 }
     // FETCHE
 
-
+    /**
+     * Fetches the latest cycle data for the user, including last period date, cycle length, and period length.
+     * Updates the UI or performs actions based on the fetched data.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleData() {
         val userDocRef = db.collection("users").document(userId)
@@ -542,7 +661,10 @@ private fun scheduleNotification() {
             }
     }
 
-
+    /**
+     * Determines and displays the current cycle day and the days until the next period.
+     * Schedules a period notification if the next period is within a day.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTodaysCycleDay() {   // to jest uzywane do przedstawiania ile dni do nastepengo okresu
 
@@ -598,6 +720,10 @@ private fun scheduleNotification() {
                 Log.e("FirestoreError", "Failed to fetch user data: $e")
             }
     }
+
+    /**
+     * Fetches the status of the current period (active or ended) and updates UI elements accordingly.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPeriodStatus() {
         db.collection("users").document(userId).collection("cycles")
@@ -621,6 +747,12 @@ private fun scheduleNotification() {
 
     }
 
+    /**
+     * Fetches the latest cycle document from Firestore and calculates or displays the next ovulation date.
+     *
+     * @param lastPeriodDate The date of the last period.
+     * @param cycleLength The length of the user's menstrual cycle.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLatestCycleDocument(lastPeriodDate: LocalDate, cycleLength: Int) {
         db.collection("users").document(userId).collection("cycles")
@@ -649,7 +781,12 @@ private fun scheduleNotification() {
             }
     }
 
-
+    /**
+     * Fetches daily temperature data, identifies ovulation dates, and estimates the next ovulation.
+     *
+     * @param lastPeriodDate The date of the last period.
+     * @param cycleLength The length of the user's menstrual cycle.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchTemperatureDataAndCalculateOvulation(lastPeriodDate: LocalDate, cycleLength: Int) {
         val ovulationDays = mutableListOf<Int>()
@@ -729,6 +866,11 @@ private fun scheduleNotification() {
             }
     }
 
+    /**
+     * Fetches the medicine statuses for the selected date and updates the UI.
+     *
+     * @param selectedDate The date for which medicine statuses are fetched.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicinesStatus(selectedDate: LocalDate) {
 
@@ -768,6 +910,11 @@ private fun scheduleNotification() {
             Log.e("FirestoreError", "Błąd pobierania leków: ${e.message}")
         }
     }
+
+    /**
+     * Fetches the list of medicines associated with the user from Firestore.
+     * Invokes `fetchMedicinesStatus` to update the statuses after fetching.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
@@ -794,6 +941,10 @@ private fun scheduleNotification() {
             }
 
     }
+
+    /**
+     * Fetches doctor visits for the selected date from Firestore and updates the UI with the data.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
@@ -824,23 +975,44 @@ private fun scheduleNotification() {
 
 // NAWIGACJA
 
+    /**
+     * Opens the calendar activity for the given user ID.
+     *
+     * @param userId The user's ID.
+     */
     private fun openCalendarActivity(userId: String) {
         val intent = Intent(this, CalendarActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Opens the settings activity for the given user ID.
+     *
+     * @param userId The user's ID.
+     */
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Opens the account information activity for the given user ID.
+     *
+     * @param userId The user's ID.
+     */
     private fun openAccountWindowActivity(userId: String) {
         val intent = Intent(this, AccountWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
+
+    /**
+     * Opens the period ending activity and finishes the current one.
+     *
+     * @param userId The user's ID.
+     */
     private fun openPeriodEnding(userId: String){
         val intent = Intent(this, PeriodEndingActivity::class.java)
         intent.putExtra("USER_ID", userId)
@@ -848,6 +1020,11 @@ private fun scheduleNotification() {
         finish()
     }
 
+    /**
+     * Opens the period beginning activity and finishes the current one.
+     *
+     * @param userId The user's ID.
+     */
     private fun openPeriodBeggining(userId: String) {
         val intent = Intent(this, PeriodBegginingActivity::class.java)
         intent.putExtra("USER_ID", userId)
@@ -855,6 +1032,13 @@ private fun scheduleNotification() {
         finish()
     }
 
+
+    /**
+     * Opens the additional information activity for a given date and user ID.
+     *
+     * @param userId The user's ID.
+     * @param date The selected date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)

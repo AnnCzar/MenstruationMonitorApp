@@ -19,7 +19,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 
-
+/**
+ * Activity for the doctor's chat interface.
+ * Displays a list of users who have sent messages to the doctor, and allows interaction with them.
+ * It also includes handling for notifications when new messages are received.
+ */
 class ChatDoctorActivity : AppCompatActivity() {
 
     private lateinit var chatUserRV: RecyclerView
@@ -32,6 +36,11 @@ class ChatDoctorActivity : AppCompatActivity() {
 
     private val chatUserList = ArrayList<ChatUser>()
 
+    /**
+     * Called when the activity is first created.
+     * Initializes UI components, sets up the RecyclerView, and subscribes to Firebase messaging for notifications.
+     * @param savedInstanceState Bundle containing saved state of the activity (if any).
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,12 +124,21 @@ class ChatDoctorActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Called when the activity is resumed, fetching the latest chat users.
+     */
     override fun onResume() {
         super.onResume()
         fetchChatUsers()
 
     }
 
+    /**
+     * Sends a notification to the user when a new message is received.
+     * Retrieves the sender's login and displays the message content.
+     *
+     * @param message The message object containing details about the message.
+     */
     private fun sendNotification(message: Message) {
         val firestore = FirebaseFirestore.getInstance()
 
@@ -158,7 +176,9 @@ class ChatDoctorActivity : AppCompatActivity() {
     }
 
 
-
+    /**
+     * Logs the user out, clearing shared preferences and navigating back to the login screen.
+     */
     private fun logout() {
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
@@ -175,9 +195,11 @@ class ChatDoctorActivity : AppCompatActivity() {
         finish()
     }
 
-
-
-
+    /**
+     * Updates the user's timestamp in Firestore.
+     *
+     * @param userId The ID of the user whose timestamp should be updated.
+     */
     private fun updateUserTimestamp(userId: String) {
         db.collection("users").document(userId)
             .update("timestamp", System.currentTimeMillis())
@@ -189,7 +211,9 @@ class ChatDoctorActivity : AppCompatActivity() {
             }
     }
 
-
+    /**
+     * Fetches the list of users from Firestore and updates the chat user list, showing the latest message from each user.
+     */
     private fun fetchChatUsers() {
         db.collection("users")
             .get()
@@ -241,7 +265,11 @@ class ChatDoctorActivity : AppCompatActivity() {
 
     }
 
-    //NAWIGACJA
+    /**
+     * Navigates to the chat screen for a specific user.
+     *
+     * @param chatUser The user whose chat should be opened.
+     */
     private fun openMessageChatActivity(chatUser: ChatUser) {
         val intent = Intent(this, MessageChatActivity::class.java).apply {
             putExtra("USER_LOGIN", chatUser.login)
@@ -250,6 +278,15 @@ class ChatDoctorActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Data class representing a message sent in the chat.
+     *
+     * @param message The content of the message.
+     * @param receiver The ID of the user receiving the message.
+     * @param sender The ID of the user sending the message.
+     * @param timestamp The timestamp of the message.
+     * @param isseen Whether the message has been seen by the receiver.
+     */
     data class Message(
         val message: String = "",
         val receiver: String = "",

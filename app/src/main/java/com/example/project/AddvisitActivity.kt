@@ -17,6 +17,10 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
+/**
+ * Activity for adding a new doctor visit to the Firestore database.
+ * Allows the user to input the doctor's name, visit date, time, address, and additional information.
+ */
 class AddVisitActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
@@ -29,7 +33,12 @@ class AddVisitActivity : AppCompatActivity() {
     private lateinit var addVisitConfirmButton: Button
     private lateinit var addresText: EditText
 
-
+    /**
+     * Called when the activity is first created.
+     * Sets up UI components and event listeners for the activity.
+     *
+     * @param savedInstanceState The saved state of the activity, if any.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +69,10 @@ class AddVisitActivity : AppCompatActivity() {
             }
         }
     }
+
+    /**
+     * Displays a date picker dialog for the user to select a visit date.
+     */
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -79,6 +92,12 @@ class AddVisitActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Retrieves the selected time from the time picker as a formatted string.
+     *
+     * @param timePicker The TimePicker UI component.
+     * @return A string representing the selected time in the format "HH:mm".
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeFromTimePicker(timePicker: TimePicker): String {
         val hour = timePicker.hour
@@ -88,6 +107,10 @@ class AddVisitActivity : AppCompatActivity() {
         return time.format(formatter)
     }
 
+    /**
+     * Adds a new doctor visit to the Firestore database.
+     * Collects data from UI components and creates a new document in the "doctorVisits" collection.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addNewDoctorVisit() {
         val dateStr = visitDateEditText.text.toString()
@@ -101,7 +124,6 @@ class AddVisitActivity : AppCompatActivity() {
             return
         }
 
-        // tworzenie nowego dokuemntu aby miec id do doktorka
         val newDocRef = db.collection("users").document(userId)
             .collection("doctorVisits").document()
 

@@ -22,6 +22,12 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Activity for managing the beginning of a user's menstrual period.
+ *
+ * This activity allows users to input the start date of their menstrual cycle and calculates
+ * the predicted next period date and ovulation date. The data is then saved to Firestore.
+ */
 class PeriodBegginingActivity : AppCompatActivity() {
 
     private lateinit var period_beg_text: TextView
@@ -55,6 +61,9 @@ class PeriodBegginingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Displays a date picker dialog for users to select the start date of their menstrual cycle.
+     */
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -74,6 +83,12 @@ class PeriodBegginingActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    /**
+     * Adds the cycle data (start date, predicted next period, ovulation date) to Firestore.
+     *
+     * This method retrieves the start date from the input, parses it, and then calculates the next
+     * period date and ovulation date. It then saves this data under the user's document in Firestore.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addCycleDataToFirestore() {
         val dateStr = insert_date_period_beg.text.toString()
@@ -141,17 +156,37 @@ class PeriodBegginingActivity : AppCompatActivity() {
             }
     }
 
-
+    /**
+     * Calculates the next predicted period date based on the current date and a standard cycle length of 28 days.
+     *
+     * @param currentDate The current date as a `LocalDate`.
+     * @return The next predicted period date as a `LocalDate`.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateNextPeriodDate(currentDate: LocalDate): LocalDate {
         return currentDate.plusDays(28)
     }
 
+    /**
+     * Calculates the ovulation date based on the predicted next period date.
+     *
+     * The ovulation date is approximately 14 days before the next period date.
+     *
+     * @param nextPeriodDate The predicted next period date as a `LocalDate`.
+     * @return The predicted ovulation date as a `LocalDate`.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateOvulationDate(nextPeriodDate: LocalDate): LocalDate {
         return nextPeriodDate.minusDays(14)
     }
 
+    /**
+     * Opens the main window for managing period-related data.
+     *
+     * This method starts the `MainWindowPeriodActivity`, passing the user ID and the current date.
+     *
+     * @param userId The ID of the current user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPeriod(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)

@@ -26,6 +26,19 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.net.URLEncoder
 
+
+/**
+ * `MapActivityPlaces` is an `AppCompatActivity` that provides a user interface for locating places
+ * on a map using Google Maps and fetching place information using Google Places API.
+ * It allows users to:
+ * - Search for places by address or nearby places based on type and radius.
+ * - Use a `SeekBar` to set the search radius.
+ * - Use a `Spinner` to select place types.
+ * - Use a `SearchView` to search for a location by address.
+ *
+ * The class integrates with Google Maps to display the user's current location, search for places,
+ * and place markers on the map based on the user's input.
+ */
 class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
@@ -134,6 +147,12 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         return false
     }
 
+    /**
+     * Configures the map to show the user's current location.
+     * If location permission is not granted, it requests the permission.
+     * Once permission is granted and location is fetched, the map is centered on the user's location,
+     * and a search is performed around that location.
+     */
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -160,6 +179,14 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         }
     }
 
+    /**
+     * Performs a search for places around a given location.
+     * Results are filtered based on the selected place type and search radius.
+     * Depending on the place type, it makes a network request to the Google Places API to fetch
+     * nearby places and place markers on the map.
+     *
+     * @param location The central location around which to perform the search.
+     */
     private fun performSearch(location: LatLng) {
         clearMap()
         val apiKey = BuildConfig.MAPS_API_KEY
@@ -175,6 +202,13 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
             }
         }
     }
+
+    /**
+     * Geocodes an address to get its latitude and longitude.
+     * A network request is made to the Google Geocoding API to get the location details of the address.
+     *
+     * @param address The address to geocode.
+     */
     private fun geocodeAddress(address: String) {
         val apiKey = BuildConfig.MAPS_API_KEY
         val encodedAddress = URLEncoder.encode(address, "UTF-8")
@@ -222,10 +256,22 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         Volley.newRequestQueue(this).add(request)
     }
 
+    /**
+     * Clears all markers from the map.
+     */
     private fun clearMap() {
         mMap.clear()
     }
 
+    /**
+     * Searches for nearby places using Google Places API with a specific keyword.
+     *
+     * @param locationString The central location for the search.
+     * @param radius The search radius.
+     * @param keyword The keyword to filter the search.
+     * @param apiKey The API key for Google Places API.
+     * @param markerColor The color of the marker to display on the map.
+     */
     private fun searchNearbyPlacesWithKeyword(
         locationString: String,
         radius: Int,
@@ -268,6 +314,15 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         Volley.newRequestQueue(this).add(request)
     }
 
+    /**
+     * Searches for nearby places using Google Places API.
+     *
+     * @param locationString The central location for the search.
+     * @param radius The search radius.
+     * @param type The type of place to search for.
+     * @param apiKey The API key for Google Places API.
+     * @param markerColor The color of the marker to display on the map.
+     */
     private fun searchNearbyPlaces(locationString: String, radius: Int, type: String, apiKey: String, markerColor: Float) {
         val url =
             "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$locationString&radius=$radius&type=$type&key=$apiKey"

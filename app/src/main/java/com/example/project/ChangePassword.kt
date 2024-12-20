@@ -15,7 +15,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
+/**
+ * Activity for changing the user's password.
+ * This activity allows users to input their old password, new password, and confirm the new password.
+ * Upon validation, the password is changed, and the user is logged out.
+ */
 class ChangePassword : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
@@ -25,6 +29,9 @@ class ChangePassword : AppCompatActivity() {
     private lateinit var repeatNewPassword: EditText
     private lateinit var buttonConfirmNewPassword: Button
 
+    /**
+     * Called when the activity is created. Initializes the views and sets up the button click listener.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.change_password)
@@ -56,6 +63,13 @@ class ChangePassword : AppCompatActivity() {
         }
     }
 
+    /**
+     * Changes the user's password after re-authenticating with their old password.
+     * This method performs re-authentication and updates the password if successful.
+     *
+     * @param newPassword The new password to be set.
+     * @param oldPassword The current password to be validated.
+     */
     private fun changeUserPassword(newPassword: String, oldPassword: String) {
         val user = auth.currentUser
 
@@ -103,6 +117,10 @@ class ChangePassword : AppCompatActivity() {
         }
     }
 
+    /**
+     * Logs out the user and redirects to the login screen.
+     * Clears login-related preferences and signs out the Firebase user.
+     */
     private fun logout() {
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {

@@ -16,6 +16,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
+/**
+ * AccountWindowActivity provides the main account interface for the user.
+ * It displays user-specific data such as username, weight, and cycle information.
+ * It also allows navigation to other activities in the application.
+ */
 class AccountWindowActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
@@ -35,9 +41,6 @@ class AccountWindowActivity : AppCompatActivity() {
     private lateinit var meanCycle: TextView
     private lateinit var meanMenstruation: TextView
     private lateinit var chatBot: Button
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,10 +77,18 @@ class AccountWindowActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called when the activity resumes.
+     * Checks the user's pregnancy status and updates the UI accordingly.
+     */
     override fun onResume() {
         super.onResume()
         checkPregnantStatus()
     }
+
+    /**
+     * Initializes the UI elements and sets their onClick listeners.
+     */
     private fun initializeViews() {
         accountWidnowSettingButton = findViewById(R.id.accountWidnowSettingButton)
         homeButtonProfil = findViewById(R.id.homeButtonProfil)
@@ -124,7 +135,9 @@ class AccountWindowActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Logs out the user by clearing session data and returning to the login screen.
+     */
     private fun logout() {
         val sharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
@@ -140,6 +153,9 @@ class AccountWindowActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Checks the pregnancy status of the user and updates the UI visibility of certain buttons.
+     */
     private fun checkPregnantStatus() {
         val userRef = db.collection("users").document(userId)
         userRef.get()
@@ -158,6 +174,9 @@ class AccountWindowActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Fetches and displays cycle and menstruation data for the user.
+     */
     private fun fetchCycleData() {
         val userRef = db.collection("users").document(userId)
         userRef.get()
@@ -171,19 +190,9 @@ class AccountWindowActivity : AppCompatActivity() {
             }
     }
 
-
-    private fun updatePregnancyStatusToTrue(userId: String) {
-        val userRef = db.collection("users").document(userId)
-        userRef
-            .update("statusPregnancy", true)
-            .addOnSuccessListener {
-                Toast.makeText(this@AccountWindowActivity, "Status ciąży zaktualizowany na true", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this@AccountWindowActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
+    /**
+     * Loads user information, such as username and weight, from the Firestore database.
+     */
     private fun loadUserInfo() {
         db.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
@@ -246,8 +255,7 @@ class AccountWindowActivity : AppCompatActivity() {
             }
     }
 
-
-    // nawigacja do innych okien
+    // Navigation methods for other activities
     private fun openSettingsWindowActivity(userId: String) {
         val intent = Intent(this, SettingsWindowActivity::class.java).apply {
             putExtra("USER_ID", userId)

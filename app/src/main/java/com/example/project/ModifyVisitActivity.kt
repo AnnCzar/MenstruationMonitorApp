@@ -12,6 +12,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Activity for modifying doctor visit details.
+ *
+ * This activity allows users to view and edit doctor visit details such as doctor's name, visit date, time, address, and additional information.
+ * It retrieves visit information from Firebase Firestore, displays it for editing, and saves any modifications back to the database.
+ */
 class ModifyVisitActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
@@ -49,6 +55,10 @@ class ModifyVisitActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Loads the details of the selected doctor visit from Firestore and displays them in the respective EditTexts.
+     * If the visit details are not found, shows a message and finishes the activity.
+     */
     private fun loadVisitDetails() {
         db.collection("users").document(userId).collection("doctorVisits").document(visitId)
             .get()
@@ -83,6 +93,11 @@ class ModifyVisitActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Saves the modified doctor visit details to Firestore.
+     * Checks if any required field is empty and shows a message if necessary.
+     * On successful save, shows a success message and finishes the activity.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveVisitDetails() {
         val doctorName = doctorNameEditText.text.toString()
@@ -117,6 +132,10 @@ class ModifyVisitActivity : AppCompatActivity() {
                 Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    /**
+     * Converts the selected time from the TimePicker into a string formatted as "HH:mm".
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeFromTimePicker(timePicker: TimePicker): String {
         val hour = timePicker.hour

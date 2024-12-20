@@ -12,6 +12,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.project.databinding.ActivityMapsBinding
 
+/**
+ * MapsActivity is responsible for displaying a map using Google Maps API.
+ * It initializes the map and sets up a marker on the map.
+ */
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap

@@ -10,10 +10,21 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import java.util.Calendar
 
+/**
+ * Receiver triggered after the system finishes booting (BOOT_COMPLETED).
+ * It sets a daily alarm at 12:00 and launches the main activity of the application.
+ */
 class BootCompletedReceiver : BroadcastReceiver() {
 
     private val notificationId = 123
 
+    /**
+     * Method called when the system finishes booting or when this receiver is triggered.
+     * It sets the alarm and starts the main activity of the app.
+     *
+     * @param context The context of the application.
+     * @param intent The intent that triggered this receiver.
+     */
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             // Ustawienie codziennego alarmu o 12:00
@@ -25,6 +36,12 @@ class BootCompletedReceiver : BroadcastReceiver() {
         }
     }
 
+    /**
+     * Sets a daily alarm at 11:08 AM.
+     * The alarm triggers the NotificationReceiver to show a notification.
+     *
+     * @param context The context of the application.
+     */
     private fun setDailyAlarm(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(context, NotificationReceiver::class.java).let { intent ->
@@ -49,14 +66,31 @@ class BootCompletedReceiver : BroadcastReceiver() {
     }
 }
 
+/**
+ * Receiver responsible for receiving alarms and showing notifications.
+ * It shows a reminder about taking medicine.
+ */
 class NotificationReceiver : BroadcastReceiver() {
 
     private val notificationId = 123
 
+    /**
+     * Method called when an alarm is received. It shows the medicine reminder notification.
+     *
+     * @param context The context of the application.
+     * @param intent The intent that triggered this receiver.
+     */
     override fun onReceive(context: Context, intent: Intent) {
         showNotification(context, "Przypomnienie o lekach", "Nie zapomnij o swojej dawce dziś!")
     }
 
+    /**
+     * Shows a notification about taking medicine.
+     *
+     * @param context The context of the application.
+     * @param title The title of the notification.
+     * @param message The message of the notification.
+     */
     private fun showNotification(context: Context, title: String, message: String) {
         val notificationManager = ContextCompat.getSystemService(
             context,

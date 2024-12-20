@@ -32,6 +32,10 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
 
+/**
+ * MainWindowPregnancyActivity represents the main interface for managing pregnancy-related features
+ * such as doctor visits, medicines, notifications, and more.
+ */
 class MainWindowPregnancyActivity : AppCompatActivity() {
     private lateinit var daysLeftPregnancy: TextView
 
@@ -231,6 +235,11 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         fetchMedicines()
     }
 
+    /**
+     * Sends a notification to the user when a new message is received.
+     *
+     * @param message The new message received.
+     */
     private fun sendNotification(message: Message) {
         val firestore = FirebaseFirestore.getInstance()
 
@@ -268,7 +277,9 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
     }
 
 
-
+    /**
+     * Fetches the selected date from the intent or defaults to the current date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkDate() {
         val dateString = intent?.getStringExtra("SELECTED_DATE")
@@ -280,6 +291,9 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Fetches pregnancy data from Firestore and displays the days left until the due date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchPregnancyData() {
         db.collection("users").document(userId).collection("pregnancies")
@@ -304,6 +318,10 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 daysLeftPregnancy.text = "Error"
             }
     }
+
+    /**
+     * Fetches doctor visits from Firestore for the selected date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchDoctorVisits() {
         db.collection("users").document(userId).collection("doctorVisits")
@@ -331,19 +349,33 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Calculates the end date of the pregnancy from the start date.
+     *
+     * @param startDate The start date of the pregnancy.
+     * @return The end date of the pregnancy.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateEndDate(startDate: Date): LocalDate {
         val startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         return startLocalDate.plusDays(PREGNANCY_DURATION_DAYS)
     }
 
+    /**
+     * Calculates the number of days left until the due date.
+     *
+     * @param endDate The end date of the pregnancy.
+     * @return The number of days left.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateDaysLeft(endDate: LocalDate): Long {
         val today = LocalDate.now()
         return ChronoUnit.DAYS.between(today, endDate)
     }
 
-
+    /**
+     * Fetches medicines from Firestore.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicinesStatus(selectedDate: LocalDate) {
 
@@ -385,6 +417,9 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         }
        }
 
+    /**
+     * Fetches the list of medicines for the current user from Firestore.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchMedicines() {
         db.collection("users").document(userId).collection("medicines")
@@ -411,7 +446,12 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
 
     }
 
-
+    /**
+     * Saves the medicine check status for a particular date.
+     *
+     * @param medicine The medicine object.
+     * @param date The date to associate the medicine check with.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveMedicineCheckStatus(medicine: Medicine, selectedDate: LocalDate) {
         Log.d("Zapis daty", selectedDate.toString())
@@ -433,6 +473,12 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 Toast.makeText(this, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    /**
+     * Updates the pregnancy status to false for a given user.
+     *
+     * @param userId The ID of the user.
+     */
     private fun updatePregnancyStatusToFalse(userId: String) {
         val userRef = db.collection("users").document(userId)
         userRef
@@ -444,7 +490,9 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
                 Toast.makeText(this@MainWindowPregnancyActivity, "Błąd: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
+    /**
+     * Logs out the user by clearing their data from shared preferences and redirecting to the login screen.
+     */
     private fun logout() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -459,24 +507,40 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
     override fun onBackPressed() {
     }
 
+    /**
+     * Opens the calendar activity.
+     */
     private fun openCalendarActivity() {
         val intent = Intent(this, CalendarActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Opens the main period activity.
+     *
+     * @param userId The ID of the user.
+     */
     private fun openMainPeriodActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Opens the settings window activity.
+     */
     private fun openSettingsWindowActivity() {
         val intent = Intent(this, SettingsWindowActivity::class.java)
         intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 
+    /**
+     * Opens the account window activity.
+     *
+     * @RequiresApi(Build.VERSION_CODES.O) This method requires the O version of Android API.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openAccountWindowActivity() {
         val intent = Intent(this, AccountWindowActivity::class.java)
@@ -484,6 +548,14 @@ class MainWindowPregnancyActivity : AppCompatActivity() {
         intent.putExtra("SELECTED_DATE", LocalDate.now().format(DateTimeFormatter.ISO_DATE))
         startActivity(intent)
     }
+
+    /**
+     * Opens the additional information activity.
+     *
+     * @RequiresApi(Build.VERSION_CODES.O) This method requires the O version of Android API.
+     * @param userId The ID of the user.
+     * @param date The selected date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)

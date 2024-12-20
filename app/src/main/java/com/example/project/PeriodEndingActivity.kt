@@ -21,6 +21,12 @@ import java.util.Date
 
 import java.util.Locale
 
+/**
+ * Activity for managing the end of a user's menstrual period.
+ *
+ * This activity allows users to input the end date of their menstrual cycle. Once the end date is saved,
+ * the app calculates the median cycle length and predicts the next menstruation date. The data is then saved to Firestore.
+ */
 class PeriodEndingActivity : AppCompatActivity(){
     private lateinit var period_end_text: TextView
     private lateinit var insert_date_period_end: TextInputEditText
@@ -58,7 +64,9 @@ class PeriodEndingActivity : AppCompatActivity(){
         }
     }
 
-
+    /**
+     * Displays a date picker dialog for users to select the end date of their menstrual cycle.
+     */
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -78,8 +86,14 @@ class PeriodEndingActivity : AppCompatActivity(){
         datePickerDialog.show()
     }
 
+    /**
+     * Saves the end date of the menstrual period to Firestore.
+     *
+     * This method retrieves the end date from the input, parses it, and updates the most recent cycle
+     * document under the user's profile in Firestore with the end date.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun savePeriodEndDate() {   // tutaj dac nowy algorytm
+    private fun savePeriodEndDate() {
 
         val dateStr = insert_date_period_end.text.toString()
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -112,6 +126,13 @@ class PeriodEndingActivity : AppCompatActivity(){
                 }
         }
 
+    /**
+     * Opens the main window for managing period-related data.
+     *
+     * This method starts the `MainWindowPeriodActivity`, passing the user ID and the current date.
+     *
+     * @param userId The ID of the current user.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun openMainWindowPregnancyActivity(userId: String) {
         val intent = Intent(this, MainWindowPeriodActivity::class.java)
