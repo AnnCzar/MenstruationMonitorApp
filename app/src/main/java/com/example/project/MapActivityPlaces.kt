@@ -127,13 +127,13 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
                     val currentLatLong = LatLng(it.latitude, it.longitude)
                     performSearch(currentLatLong)
                 } ?: run {
-                    Toast.makeText(this@MapActivityPlaces, "Lokalizacja nie jest jeszcze dostępna", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MapActivityPlaces, "Lokalizacja nie jest jeszcze dostępna", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
