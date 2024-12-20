@@ -1,6 +1,7 @@
 package com.example.project
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -13,11 +14,14 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -56,6 +60,8 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.map_places)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         typePlaceChoice = findViewById(R.id.typePlaceChoice)
         radiusChoice = findViewById(R.id.radiusChoice)
@@ -127,14 +133,14 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+        
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
-        val mapView: MapView = findViewById(R.id.mapView2)
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
     }
-
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
@@ -153,31 +159,40 @@ class MapActivityPlaces : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
      * Once permission is granted and location is fetched, the map is centered on the user's location,
      * and a search is performed around that location.
      */
+    @SuppressLint("MissingPermission")
     private fun setUpMap() {
+        // Sprawdzenie, czy aplikacja ma uprawnienia do lokalizacji
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            // Prośba o przyznanie uprawnień
             ActivityCompat.requestPermissions(
                 this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 LOCATION_REQUEST_CODE
             )
             return
         }
+
+        // Włączenie wyświetlania niebieskiej kropki
         mMap.isMyLocationEnabled = true
 
+        // Pobranie ostatniej znanej lokalizacji użytkownika
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
             if (location != null) {
-                lastLocation = location
+                // Zapisanie lokalizacji i przesunięcie kamery na aktualną lokalizację
                 val currentLatLong = LatLng(location.latitude, location.longitude)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 11f))
-                performSearch(currentLatLong)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 15f))
+                Log.d("MapActivityPlaces", "Lokalizacja ustawiona: $currentLatLong")
             } else {
+                Log.e("MapActivityPlaces", "Nie udało się pobrać ostatniej lokalizacji")
                 Toast.makeText(this, "Nie udało się pobrać lokalizacji", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+
 
     /**
      * Performs a search for places around a given location.

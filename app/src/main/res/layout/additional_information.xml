@@ -132,6 +132,7 @@
             android:id="@+id/imageButtonHappy"
             android:layout_width="40dp"
             android:layout_height="37dp"
+            android:layout_marginStart="8dp"
             android:background="@null"
             android:src="@drawable/happy_emoticon" />
 
@@ -140,6 +141,7 @@
             android:layout_width="40dp"
             android:layout_height="37dp"
             android:background="@null"
+            android:layout_marginStart="8dp"
             android:visibility="invisible"
             android:src="@drawable/happy_emoticon_color" />
 

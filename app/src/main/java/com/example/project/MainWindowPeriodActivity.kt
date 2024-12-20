@@ -172,7 +172,8 @@ class MainWindowPeriodActivity : AppCompatActivity() {
             openCalendarActivity(userId)
         }
         additionalInfoPeriod.setOnClickListener {
-            openAdditionalInformationActivity(userId, selectedDate)
+            val selectedDate1 = currentDateTextPeriod.text.toString()
+            openAdditionalInformationActivity(userId, selectedDate1)
         }
 
         begginingPeriodButton.setOnClickListener {
@@ -1040,10 +1041,10 @@ private fun scheduleNotification() {
      * @param date The selected date.
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun openAdditionalInformationActivity(userId: String, date: LocalDate) {
+    private fun openAdditionalInformationActivity(userId: String, date: String) {
         val intent = Intent(this, AdditionalInformationActivity::class.java)
         intent.putExtra("USER_ID", userId)
-        intent.putExtra("SELECTED_DATE", date.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        intent.putExtra("SELECTED_DATE", date)
         startActivity(intent)
     }
     data class Message(

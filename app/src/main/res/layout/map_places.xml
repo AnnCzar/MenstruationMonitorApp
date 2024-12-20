@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map_places"
-        android:background="@drawable/tlo"
-        android:orientation="vertical"
-        android:textAlignment="center">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/map_places"
+    android:background="@drawable/tlo"
+    android:orientation="vertical"
+    android:textAlignment="center">
 
     <TextView
         android:id="@+id/findplace"
@@ -45,8 +42,7 @@
         android:background="@drawable/round_shape"
         android:contentDescription="Wybierz promień wyszukiwania"
         android:max="10"
-        android:progress="5"
-        />
+        android:progress="5" />
 
     <TextView
         android:id="@+id/radiusText"
@@ -71,13 +67,10 @@
         android:textColor="@color/black"
         android:theme="@style/SearchViewThemeNoUnderline" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView2"
+    <fragment
+        android:id="@+id/mapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:contentDescription="Mapa z lokalizacjami"
- />
-
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
 </LinearLayout>

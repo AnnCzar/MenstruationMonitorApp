@@ -90,7 +90,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
         addDate.text = selectedDate.toString()
 
-        restoreMoodState()
+        restoreMoodStateFromDatabase(userId)
         fetchSymptomsForWeek()
     }
 
@@ -177,7 +177,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             if (!imageButtonHappy.isSelected) {
                 setCurrentMood("happy")
                 saveMoodToDatabase("happy")
-                saveMoodToPreferences("happy")
                 imageButtonHappy.isSelected = true
                 imageButtonHappy.visibility = Button.GONE
                 imageButtonHappyColor.visibility = Button.VISIBLE
@@ -189,7 +188,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             if (!imageButtonNeutral.isSelected) {
                 setCurrentMood("neutral")
                 saveMoodToDatabase("neutral")
-                saveMoodToPreferences("neutral")
                 imageButtonNeutral.isSelected = true
                 imageButtonNeutral.visibility = Button.GONE
                 imageButtonNeutralColor.visibility = Button.VISIBLE
@@ -201,7 +199,6 @@ class AdditionalInformationActivity : AppCompatActivity() {
             if (!imageButtonSad.isSelected) {
                 setCurrentMood("sad")
                 saveMoodToDatabase("sad")
-                saveMoodToPreferences("sad")
                 imageButtonSad.isSelected = true
                 imageButtonSad.visibility = Button.GONE
                 imageButtonSadColor.visibility = Button.VISIBLE
@@ -342,18 +339,7 @@ class AdditionalInformationActivity : AppCompatActivity() {
             }
     }
 
-    /**
-     * Saves the current mood to shared preferences for quick access.
-     *
-     * @param mood The current mood selected by the user (e.g., "happy", "neutral", "sad").
-     */
-    fun saveMoodToPreferences(mood: String) {
-        val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("currentMood", mood)
-        editor.putString("date", getCurrentDate())
-        editor.apply()
-    }
+
 
     /**
      * Saves the current mood to Firestore. If no record exists for the selected date, creates a new one.
@@ -487,11 +473,44 @@ class AdditionalInformationActivity : AppCompatActivity() {
     private fun loadAdditionalInformation(date: LocalDate?) {
         if (date == null) return
 
+//        db.collection("users").document(userId).get()
+//            .addOnSuccessListener { document ->
+//                if (document != null) {
+//                    val userWeight = document.getDouble("weight") ?: 0.0
+//                    enterWeight.setText("$userWeight kg")
+//
+//                }}
+
         db.collection("users").document(userId)
             .collection("dailyInfo")
             .document(date.toString())
             .get()
             .addOnSuccessListener { document ->
+                val weight: String? = try {
+                    document.getString("weight")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+
+                if (!weight.isNullOrEmpty()) {
+                    // Display weight from `dailyInfo`
+                    enterWeight.setText("$weight kg")
+                } else {
+                    // Fallback: Load weight from main `users` document if not found in `dailyInfo`
+                    db.collection("users").document(userId)
+                        .get()
+                        .addOnSuccessListener { userDocument ->
+                            val userWeight: Double = userDocument.getDouble("weight") ?: 0.0
+                            enterWeight.setText("$userWeight kg")
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Błąd pobierania danych użytkownika: ${e.message}", Toast.LENGTH_SHORT).show()
+                            e.printStackTrace()
+                        }
+                }
+
+
                 if (document.exists()) {
 
                     val symptomsMap = try {
@@ -507,9 +526,11 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
                     symptomsAdapter.notifyDataSetChanged() // odswiezenie adaptera
 
-                    val weight = document.getString("weight") ?: ""
 
-                    enterWeight.setText(weight)
+
+//                    val weight = document.getString("weight") ?: ""
+//
+//                    enterWeight.setText(weight)
 
                     val temperature: Double? = try {
                         document.getDouble("temperature")
@@ -577,57 +598,66 @@ class AdditionalInformationActivity : AppCompatActivity() {
 
 
     /**
-     * Loads the user's saved mood from shared preferences if the saved date matches the current date.
+     * Loads the user's saved mood from data base if the saved date matches the current date.
      *
      * @return The saved mood, or `null` if no mood is saved for today.
      */
-    fun loadMoodFromPreferences(): String? {
-        val sharedPreferences = getSharedPreferences("MoodPrefs", Context.MODE_PRIVATE)
-        val savedDate = sharedPreferences.getString("date", "")
-        return if (savedDate == getCurrentDate()) {
-            sharedPreferences.getString("currentMood", null)
-        } else {
-            null
-        }
+
+    fun loadMoodFromDatabase(userId: String, selectedDate: String, callback: (String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(userId)
+            .collection("dailyInfo")
+            .document(selectedDate)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val mood = try {
+                        document.getString("mood")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+                    callback(mood)
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(null)
+            }
     }
 
     /**
-     * Restores the user's mood state in the UI based on the mood saved in shared preferences.
+     * Restores the user's mood state in the UI based on the mood saved in the Firestore database.
      */
-    fun restoreMoodState() {
-        val savedMood = loadMoodFromPreferences()
-
-        when (savedMood) {
-            "happy" -> {
-                imageButtonHappy.isSelected = true
-                imageButtonHappy.visibility = Button.GONE
-                imageButtonHappyColor.visibility = Button.VISIBLE
-                resetOtherButtons("happy")
-            }
-            "neutral" -> {
-                imageButtonNeutral.isSelected = true
-                imageButtonNeutral.visibility = Button.GONE
-                imageButtonNeutralColor.visibility = Button.VISIBLE
-                resetOtherButtons("neutral")
-            }
-            "sad" -> {
-                imageButtonSad.isSelected = true
-                imageButtonSad.visibility = Button.GONE
-                imageButtonSadColor.visibility = Button.VISIBLE
-                resetOtherButtons("sad")
+    fun restoreMoodStateFromDatabase(userId: String) {
+        loadMoodFromDatabase(userId, selectedDate.toString()) { savedMood ->
+            when (savedMood) {
+                "happy" -> {
+                    imageButtonHappy.isSelected = true
+                    imageButtonHappy.visibility = Button.GONE
+                    imageButtonHappyColor.visibility = Button.VISIBLE
+                    resetOtherButtons("happy")
+                }
+                "neutral" -> {
+                    imageButtonNeutral.isSelected = true
+                    imageButtonNeutral.visibility = Button.GONE
+                    imageButtonNeutralColor.visibility = Button.VISIBLE
+                    resetOtherButtons("neutral")
+                }
+                "sad" -> {
+                    imageButtonSad.isSelected = true
+                    imageButtonSad.visibility = Button.GONE
+                    imageButtonSadColor.visibility = Button.VISIBLE
+                    resetOtherButtons("sad")
+                }
+                else -> {
+                    // Handle case where no mood is found
+                    resetOtherButtons("")
+                }
             }
         }
-    }
-
-
-    /**
-     * Returns the current date formatted as `yyyy-MM-dd`.
-     *
-     * @return A string representing the current date.
-     */
-    fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateFormat.format(Date())
     }
 
     /**
